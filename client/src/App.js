@@ -18,6 +18,7 @@ import Loader from "./components/Loader";
 const Auth = lazy(() => import("./pages/auth/Index"));
 const Home = lazy(() => import("./pages/home/Index"));
 const Dashboard = lazy(() => import("./pages/dashboard/Index"));
+const Admin = lazy(() => import("./pages/admin/Index"));
 
 const App = () => {
   const location = useLocation();
@@ -87,6 +88,7 @@ const App = () => {
         <AppContext.Provider value={{ users, setUsers, role, setRole, mode, handleMode, category, setCategory, isProfileComplete }}>
           <Suspense fallback={<Loader />}>
             <Routes>
+              <Route path={"/admin/*"} element={<Admin />} />
               <Route path={"/dashboard/*"} element={<Dashboard />} />
               <Route path={"/auth/*"} element={<Auth />} />
               <Route path={"/*"} element={<Home />} />

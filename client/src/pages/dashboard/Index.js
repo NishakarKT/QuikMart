@@ -3,10 +3,9 @@ import axios from "axios";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 // mui
 import { styled } from '@mui/material/styles';
-import { CssBaseline, Drawer as MuiDrawer, Box, AppBar as MuiAppBar, Toolbar, Typography, Divider, IconButton, Badge, List, SpeedDial, SpeedDialIcon, SpeedDialAction, colors } from '@mui/material';
+import { CssBaseline, Drawer as MuiDrawer, Box, AppBar as MuiAppBar, Toolbar, Typography, Divider, IconButton, List, SpeedDial, SpeedDialIcon, SpeedDialAction, colors } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -76,8 +75,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const Index = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { user, mode, handleMode } = useContext(AppContext);
     const [open, setOpen] = useState(false);
+    const { user, mode, handleMode } = useContext(AppContext);
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([]);
 
@@ -127,11 +126,6 @@ const Index = () => {
                     >
                         Dashboard
                     </Typography>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
