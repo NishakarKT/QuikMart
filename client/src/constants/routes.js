@@ -13,3 +13,6 @@ export const DASHBOARD_NEW_PRODUCTS_ROUTE = "/dashboard/new-products";
 export const DASHBOARD_PRODUCTS_ROUTE = "/dashboard/products";
 // auth Routes
 export const AUTH_ROUTE = "/auth";
+export const AUTH_USER_ROUTE = "/auth/user";
+export const AUTH_ADMIN_ROUTE = "/auth/admin";
+export const AUTH_VENDOR_ROUTE = "/auth/vendor";

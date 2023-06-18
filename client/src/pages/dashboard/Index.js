@@ -177,9 +177,9 @@ const Index = () => {
             </Drawer>
             <DashboardContext.Provider value={{ products, setProducts, orders, setOrders }}>
                 <Routes>
-                    <Route exact path="/products" element={<Products />} />
-                    <Route exact path="/new-products" element={<NewProducts />} />
-                    <Route exact path="/" element={<Dashboard />} />
+                    <Route exact path="/products/*" element={<Products />} />
+                    <Route exact path="/new-products/*" element={<NewProducts />} />
+                    <Route exact path="/*" element={<Dashboard />} />
                 </Routes>
             </DashboardContext.Provider>
         </Box>

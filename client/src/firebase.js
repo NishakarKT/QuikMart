@@ -2,13 +2,13 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCyHMTpdSkMErh-WxGS-pkZ_ZR9SqWh5Lk",
-    authDomain: "mycompany-d58f3.firebaseapp.com",
-    projectId: "mycompany-d58f3",
-    storageBucket: "mycompany-d58f3.appspot.com",
-    messagingSenderId: "1084628427265",
-    appId: "1:1084628427265:web:e65a61caaa42e16c845600",
-    measurementId: "G-K84C6QSXW4"
+    apiKey: "AIzaSyBP3ya7CCJxJHbwwwx76DoHrOGcCJ-9c8k",
+    authDomain: "quikmartt.firebaseapp.com",
+    projectId: "quikmartt",
+    storageBucket: "quikmartt.appspot.com",
+    messagingSenderId: "194662547496",
+    appId: "1:194662547496:web:e5f89ca532bf7c543fb51d",
+    measurementId: "G-QB47G4FW58"
 };
 
 firebase.initializeApp(firebaseConfig);

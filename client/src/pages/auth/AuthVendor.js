@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
-import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import validator from "validator";
 import { Helmet } from "react-helmet";
+// firebase
+import { auth, googleProvider } from "../../firebase";
 // mui
 import {
   Container,
@@ -28,16 +28,26 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { makeStyles } from "@mui/styles";
-import { AccountCircle, Key, Login, LockOpen, LightMode, DarkMode, Home, HowToReg, StarBorder } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Key,
+  Login,
+  LockOpen,
+  LightMode,
+  DarkMode,
+  Home,
+  StarBorder,
+  AdminPanelSettings,
+  Google,
+} from "@mui/icons-material";
 // contexts
 import AppContext from "../../contexts/AppContext";
 // constants
-import { categories } from "../../constants/data";
 import { COMPANY, COMPANY2 } from "../../constants/variables";
-import { HOME_ROUTE } from "../../constants/routes";
+import { HOME_ROUTE, AUTH_ADMIN_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
 import { AUTH_IN_ENDPOINT, AUTH_OTP_GENERATE_ENDPOINT, AUTH_OTP_VERIFY_ENDPOINT } from "../../constants/endpoints";
 import { IMAGES_WEBSITE_LOGO_BLACK_PNG, IMAGES_WEBSITE_LOGO_WHITE_PNG } from "../../constants/images";
-import { AUTH_MP4 } from "../../constants/videos";
+import { VIDEOS_AUTH_VENDOR_MP4 } from "../../constants/videos";
 // styles
 const useStyles = makeStyles({
   container: {
@@ -100,35 +110,57 @@ const useStyles = makeStyles({
   },
 });
 
-const Auth = () => {
+const AuthVendor = () => {
+  const role = "vendor";
   const classes = useStyles();
   const navigate = useNavigate();
-  const category = categories[Math.floor(Math.random() * categories.length)];
-  const { setUser, mode, handleMode } = useContext(AppContext);
+  const { setUsers, setRole, mode, handleMode } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGglLoading, setIsGglLoading] = useState(false);
   const [remMe, setRemMe] = useState(true);
   const [emailErr, setEmailErr] = useState("");
   const [otpErr, setOtpErr] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
 
-  const handleGoogleAuth = (email) => {
-    try {
-      axios
-        .post(AUTH_IN_ENDPOINT, { email })
-        .then((res) => {
-          const { user, token } = res.data;
-          // storing token
-          const localData = JSON.parse(localStorage.getItem(COMPANY)) || {};
-          localStorage.setItem(COMPANY, JSON.stringify({ ...localData, token }));
-          // setting user
-          setUser(user);
-          // back to home
-          navigate(HOME_ROUTE);
-        })
-        .catch((err) => console.log(err));
-    } catch (err) {
-      console.log(err);
-    }
+  useEffect(() => {
+    setRole(role);
+  }, [role, setRole]);
+
+  const handleGoogleAuth = () => {
+    setIsGglLoading(true);
+    auth
+      .signInWithPopup(googleProvider)
+      .then((res) => {
+        const email = res.user.email;
+        axios
+          .post(AUTH_IN_ENDPOINT, { email, role })
+          .then((res) => {
+            const { users, token } = res.data;
+            // storing token
+            if (remMe) {
+              const localData = JSON.parse(localStorage.getItem(COMPANY)) || {};
+              localStorage.setItem(COMPANY, JSON.stringify({ ...localData, token }));
+            } else {
+              const localData = JSON.parse(localStorage.getItem(COMPANY)) || {};
+              delete localData.token;
+              localStorage.setItem(COMPANY, JSON.stringify(localData));
+            }
+            // setting user
+            setUsers(users || []);
+            // back to home
+            navigate(HOME_ROUTE);
+            // resets
+            setIsGglLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsGglLoading(false);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsGglLoading(false);
+      });
   };
 
   const generateOtp = (e) => {
@@ -184,16 +216,20 @@ const Auth = () => {
             if (res.data.verified) {
               // OTP is verified
               axios
-                .post(AUTH_IN_ENDPOINT, { email })
+                .post(AUTH_IN_ENDPOINT, { email, role })
                 .then((res) => {
-                  const { user, token } = res.data;
+                  const { users, token } = res.data;
                   // storing token
                   if (remMe) {
                     const localData = JSON.parse(localStorage.getItem(COMPANY)) || {};
                     localStorage.setItem(COMPANY, JSON.stringify({ ...localData, token }));
+                  } else {
+                    const localData = JSON.parse(localStorage.getItem(COMPANY)) || {};
+                    delete localData.token;
+                    localStorage.setItem(COMPANY, JSON.stringify(localData));
                   }
                   // setting user
-                  setUser(user);
+                  setUsers(users || []);
                   // resets
                   setIsLoading(false);
                   setOtpErr("");
@@ -201,9 +237,14 @@ const Auth = () => {
                 })
                 .catch((err) => {
                   // resets
+                  console.log(err);
                   setIsLoading(false);
                   setOtpErr(err.response.data.message || "Something went wrong!");
                 });
+            } else {
+              // resets
+              setIsLoading(false);
+              setOtpErr("OTP is invalid. Try again.");
             }
           })
           .catch((err) => {
@@ -223,7 +264,7 @@ const Auth = () => {
   return (
     <Container disableGutters className={classes.container}>
       <Helmet>
-        <title>Login | {COMPANY}</title>
+        <title>Auth | User | {COMPANY}</title>
       </Helmet>
       <SpeedDial
         sx={{ position: "fixed", bottom: 0, right: 0, zIndex: 3, p: 2 }}
@@ -236,9 +277,9 @@ const Auth = () => {
       </SpeedDial>
       <Stack direction="row" className={classes.stack}>
         <Stack sx={{ position: "relative", height: "100vh", display: { xs: "none", sm: "flex" } }} justifyContent="flex-end" flex={2}>
-          <video
+        <video
             style={{ position: "absolute", zIndex: "-1", width: "100%", height: "100%", objectFit: "cover" }}
-            src={AUTH_MP4}
+            src={VIDEOS_AUTH_VENDOR_MP4}
             muted
             autoPlay
             loop
@@ -246,46 +287,46 @@ const Auth = () => {
           <Stack justifyContent="flex-end" sx={{ height: "100%", backgroundColor: "rgba(0, 0, 255, 0.4)" }}>
             <Stack p={2} spacing={2} sx={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
               <Typography color="white" variant="h4">
-                Shop. Discover. Delight. Welcome to {COMPANY}!
+                Unleash Your Business Potential, Sell with Us!
               </Typography>
               <List disablePadding>
                 <ListItem disableGutters disablePadding>
                   <ListItemIcon>
-                    <StarBorder sx={{color: "white"}} />
+                    <StarBorder sx={{ color: "white" }} />
                   </ListItemIcon>
-                  <ListItemText
-                    sx={{ color: "white" }}
-                    primary="Browse our curated collection of top-notch products across fashion, beauty, electronics, and more"
-                  />
+                  <ListItemText sx={{ color: "white" }} primary="Seamless experience for listing and selling your products." />
                 </ListItem>
                 <ListItem disableGutters disablePadding>
                   <ListItemIcon>
-                    <StarBorder sx={{color: "white"}} />
+                    <StarBorder sx={{ color: "white" }} />
                   </ListItemIcon>
-                  <ListItemText
-                    sx={{ color: "white" }}
-                    primary="With easy navigation and secure transactions, shopping has never been this convenient."
-                  />
+                  <ListItemText sx={{ color: "white" }} primary="Gain access to a diverse and expansive customer base." />
                 </ListItem>
                 <ListItem disableGutters disablePadding>
                   <ListItemIcon>
-                    <StarBorder sx={{color: "white"}} />
+                    <StarBorder sx={{ color: "white" }} />
                   </ListItemIcon>
-                  <ListItemText
-                    sx={{ color: "white" }}
-                    primary="Join our vibrant community of savvy shoppers and indulge in the thrill of finding your perfect buys."
-                  />
+                  <ListItemText sx={{ color: "white" }} primary="Effectively showcase your products and attract more customers." />
                 </ListItem>
                 <ListItem disableGutters disablePadding>
                   <ListItemIcon>
-                    <StarBorder sx={{color: "white"}} />
+                    <StarBorder sx={{ color: "white" }} />
                   </ListItemIcon>
-                  <ListItemText sx={{ color: "white" }} primary="Start your blissful shopping journey today!" />
+                  <ListItemText
+                    sx={{ color: "white" }}
+                    primary="Vibrant vendor community, where collaboration and support are encouraged."
+                  />
                 </ListItem>
               </List>
               <Stack direction="row" spacing={1}>
                 <Button onClick={() => navigate(HOME_ROUTE)} variant="contained" startIcon={<Home />}>
                   Home
+                </Button>
+                <Button onClick={() => navigate(AUTH_USER_ROUTE)} variant="contained" color="success" startIcon={<AccountCircle />}>
+                  User
+                </Button>
+                <Button onClick={() => navigate(AUTH_ADMIN_ROUTE)} variant="contained" color="error" startIcon={<AdminPanelSettings />}>
+                  Admin
                 </Button>
               </Stack>
             </Stack>
@@ -301,7 +342,10 @@ const Auth = () => {
             />
             <Stack sx={{ userSelect: "none", ml: 1 }}>
               <Typography variant="h5" align="left">
-                {COMPANY}
+                {COMPANY}{" "}
+                <Typography component="span" color="primary" variant="body2" sx={{ fontWeight: "bold" }}>
+                  for Vendors
+                </Typography>
               </Typography>
               <Typography variant="body1" align="left" gutterBottom>
                 {COMPANY2}
@@ -357,10 +401,9 @@ const Auth = () => {
             <Chip label="OR" />
           </Divider>
           <Stack justifyContent="center" direction="row">
-            <GoogleLogin
-              onSuccess={(res) => handleGoogleAuth(jwtDecode(res.credential).email)}
-              onError={() => console.log("Login Failed")}
-            />
+            <LoadingButton loading={isGglLoading} fullWidth variant="outlined" onClick={handleGoogleAuth} startIcon={<Google />}>
+              Sign In With Google
+            </LoadingButton>
           </Stack>
         </Stack>
       </Stack>
@@ -368,4 +411,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default AuthVendor;

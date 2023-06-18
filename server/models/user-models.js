@@ -12,7 +12,8 @@ const otpSchema = new mongoose.Schema(
 const userSchema = new mongoose.Schema(
     {
         name: { type: String },
-        email: { type: String, unique: true },
+        role: { type: String },
+        email: { type: String },
         contact: { type: String },
         address1: { type: String },
         address2: { type: String },
