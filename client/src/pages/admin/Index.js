@@ -23,7 +23,7 @@ import { ChevronLeft, LightMode, DarkMode, AdminPanelSettings, Menu } from "@mui
 import { AUTH_ADMIN_ROUTE } from "../../constants/routes";
 // contexts
 import AppContext from "../../contexts/AppContext";
-import DashboardContext from "../../contexts/DashboardContext";
+import AdminContext from "../../contexts/AdminContext";
 // components
 import Footer from "../../components/Footer";
 // pages
@@ -83,6 +83,18 @@ const Index = () => {
     setOpen(!open);
   };
 
+  const isProfileComplete = (user) =>
+    user &&
+    user.name &&
+    user.email &&
+    user.contact &&
+    user.address1 &&
+    user.city &&
+    user.state &&
+    user.country &&
+    user.zip &&
+    user.location?.coordinates?.length;
+
   useEffect(() => {
     const user = users.find((user) => user.role === "admin");
     if (user) setUser(user);
@@ -139,7 +151,7 @@ const Index = () => {
         <Divider />
         <List component="nav"></List>
       </Drawer>
-      <DashboardContext.Provider>
+      <AdminContext.Provider value={{ isProfileComplete }}>
         <Box
           component="main"
           sx={{
@@ -174,7 +186,7 @@ const Index = () => {
           )}
           <Footer />
         </Box>
-      </DashboardContext.Provider>
+      </AdminContext.Provider>
     </Box>
   );
 };

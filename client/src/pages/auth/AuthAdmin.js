@@ -44,7 +44,7 @@ import {
 import AppContext from "../../contexts/AppContext";
 // constants
 import { COMPANY, COMPANY2 } from "../../constants/variables";
-import { HOME_ROUTE, AUTH_USER_ROUTE, AUTH_VENDOR_ROUTE } from "../../constants/routes";
+import { HOME_ROUTE, AUTH_USER_ROUTE, AUTH_ADMIN_ROUTE, ADMIN_ROUTE } from "../../constants/routes";
 import { AUTH_IN_ENDPOINT, AUTH_OTP_GENERATE_ENDPOINT, AUTH_OTP_VERIFY_ENDPOINT } from "../../constants/endpoints";
 import { IMAGES_WEBSITE_LOGO_BLACK_PNG, IMAGES_WEBSITE_LOGO_WHITE_PNG } from "../../constants/images";
 import { VIDEOS_AUTH_ADMIN_MP4 } from "../../constants/videos";
@@ -148,7 +148,7 @@ const AuthAdmin = () => {
             // setting user
             setUsers(users);
             // back to home
-            navigate(HOME_ROUTE);
+            navigate(ADMIN_ROUTE);
             // resets
             setIsGglLoading(false);
           })
@@ -233,7 +233,7 @@ const AuthAdmin = () => {
                   // resets
                   setIsLoading(false);
                   setOtpErr("");
-                  navigate(HOME_ROUTE);
+                  navigate(ADMIN_ROUTE);
                 })
                 .catch((err) => {
                   // resets
@@ -325,7 +325,7 @@ const AuthAdmin = () => {
                 <Button onClick={() => navigate(AUTH_USER_ROUTE)} variant="contained" color="success" startIcon={<AccountCircle />}>
                   User
                 </Button>
-                <Button onClick={() => navigate(AUTH_VENDOR_ROUTE)} variant="contained" color="warning" startIcon={<LocalShipping />}>
+                <Button onClick={() => navigate(AUTH_ADMIN_ROUTE)} variant="contained" color="warning" startIcon={<LocalShipping />}>
                   Vendor
                 </Button>
               </Stack>

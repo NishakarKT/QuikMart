@@ -8,16 +8,15 @@ import Order from "./Order";
 import Footer from "../../components/Footer";
 // contexts
 import AppContext from "../../contexts/AppContext";
-import DashboardContext from "../../contexts/DashboardContext";
+import VendorContext from "../../contexts/VendorContext";
 // constants
-import { PROFILE_ROUTE, DASHBOARD_NEW_PRODUCTS_ROUTE, DASHBOARD_PRODUCTS_ROUTE } from "../../constants/routes";
+import { PROFILE_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PRODUCTS_ROUTE } from "../../constants/routes";
 // data
 const ITEMS_PER_PAGE = 10;
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, isProfileComplete } = useContext(AppContext);
-  const { orders } = useContext(DashboardContext);
+  const { user, orders, isProfileComplete } = useContext(VendorContext);
   const [pendingOrders, setPendingOrders] = useState([]);
   const [pastOrders, setPastOrders] = useState([]);
   const [pendingOrdersPage, setPendingOrdersPage] = useState(1);
@@ -56,7 +55,7 @@ const Dashboard = () => {
     >
       <Toolbar />
       {isProfileComplete(user) ?
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth="100%" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={3}>
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
@@ -77,7 +76,7 @@ const Dashboard = () => {
                 <Typography component="h2" variant="h6" color="primary" gutterBottom>Sales Today</Typography>
                 <Typography component="p" variant="h4">3,024.00</Typography>
                 <Typography color="text.secondary" sx={{ flex: 1 }}>on {new Date().toLocaleDateString()}</Typography>
-                <Link sx={{ cursor: "pointer", mb: 1 }} onClick={() => navigate(DASHBOARD_NEW_PRODUCTS_ROUTE)}>Create a Product/Service</Link>
+                <Link sx={{ cursor: "pointer", mb: 1 }} onClick={() => navigate(VENDOR_NEW_PRODUCTS_ROUTE)}>Create a Product/Service</Link>
                 <Button variant="contained">View Transactions</Button>
               </Paper>
             </Grid>
@@ -108,7 +107,7 @@ const Dashboard = () => {
                   <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
                     <Typography component="p" variant="h4" align="center" sx={{ color: "grey" }}>No Pending Orders!</Typography>
                     <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>You haven't recieved orders recently. Go to your products!</Typography>
-                    <Button onClick={() => navigate(DASHBOARD_PRODUCTS_ROUTE)} variant="contained">Go To Products</Button>
+                    <Button onClick={() => navigate(VENDOR_PRODUCTS_ROUTE)} variant="contained">Go To Products</Button>
                   </Stack>}
               </Paper>
             </Grid>
@@ -139,7 +138,7 @@ const Dashboard = () => {
                   <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
                     <Typography component="p" variant="h4" align="center" sx={{ color: "grey" }}>No Past Orders!</Typography>
                     <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>You haven't recieved orders in the past. Go to your products!</Typography>
-                    <Button onClick={() => navigate(DASHBOARD_PRODUCTS_ROUTE)} variant="contained">Go To Products</Button>
+                    <Button onClick={() => navigate(VENDOR_PRODUCTS_ROUTE)} variant="contained">Go To Products</Button>
                   </Stack>}
               </Paper>
             </Grid>

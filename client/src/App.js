@@ -2,7 +2,7 @@ import React, { useState, lazy, useEffect, Suspense } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 // contexts
 import AppContext from "./contexts/AppContext";
 // constants
@@ -17,7 +17,7 @@ import Loader from "./components/Loader";
 // pages
 const Auth = lazy(() => import("./pages/auth/Index"));
 const Home = lazy(() => import("./pages/home/Index"));
-const Dashboard = lazy(() => import("./pages/dashboard/Index"));
+const Vendor = lazy(() => import("./pages/vendor/Index"));
 const Admin = lazy(() => import("./pages/admin/Index"));
 
 const App = () => {
@@ -58,18 +58,6 @@ const App = () => {
 
   const theme = createTheme({ palette: { mode } });
 
-  const isProfileComplete = (user) =>
-    user &&
-    user.name &&
-    user.email &&
-    user.contact &&
-    user.address1 &&
-    user.city &&
-    user.state &&
-    user.country &&
-    user.zip &&
-    user.location?.coordinates?.length;
-
   const handleMode = (mode) => {
     const localData = JSON.parse(localStorage.getItem(COMPANY)) || {};
     localStorage.setItem(COMPANY, JSON.stringify({ ...localData, mode }));
@@ -85,11 +73,11 @@ const App = () => {
         <title>{COMPANY}</title>
       </Helmet>
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-        <AppContext.Provider value={{ users, setUsers, role, setRole, mode, handleMode, category, setCategory, isProfileComplete }}>
+        <AppContext.Provider value={{ users, setUsers, role, setRole, mode, handleMode, category, setCategory }}>
           <Suspense fallback={<Loader />}>
             <Routes>
               <Route path={"/admin/*"} element={<Admin />} />
-              <Route path={"/dashboard/*"} element={<Dashboard />} />
+              <Route path={"/vendor/*"} element={<Vendor />} />
               <Route path={"/auth/*"} element={<Auth />} />
               <Route path={"/*"} element={<Home />} />
             </Routes>

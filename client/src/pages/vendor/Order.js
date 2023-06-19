@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 // contexts
-import DashboardContext from "../../contexts/DashboardContext";
+import VendorContext from "../../contexts/VendorContext";
 // constants
 import { PRODUCT_CANCEL_ORDERS_ENDPOINT, PRODUCT_ACCEPT_ORDERS_ENDPOINT } from "../../constants/endpoints"
 // mui
@@ -9,7 +9,7 @@ import { Stack, Grid, Box, Collapse, TableCell, TableRow, Typography, Button, Li
 import { Close, CheckCircle, Cancel } from '@mui/icons-material';
 
 const Order = ({ index, order, isPast }) => {
-    const { setOrders } = useContext(DashboardContext);
+    const { setOrders } = useContext(VendorContext);
     const [total, setTotal] = useState(0);
     const [open, setOpen] = useState(false);
 

@@ -89,6 +89,7 @@ const Navbar = () => {
     localStorage.setItem(COMPANY, JSON.stringify(localData));
     setUsers((users) => users.filter((user) => user.role !== role));
     closeMenus();
+    navigate(HOME_ROUTE);
   };
 
   const handleQuery = (e) => {

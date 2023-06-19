@@ -23,7 +23,6 @@ const data = [
 
 export default function Chart() {
     const theme = useTheme();
-
     return (
         <React.Fragment>
             <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -61,11 +60,11 @@ export default function Chart() {
                         </Label>
                     </YAxis>
                     <Line
-                        isAnimationActive={false}
+                        isAnimationActive={true}
                         type="monotone"
                         dataKey="amount"
                         stroke={theme.palette.primary.main}
-                        dot={false}
+                        strokeWidth={2}
                     />
                 </LineChart>
             </ResponsiveContainer>

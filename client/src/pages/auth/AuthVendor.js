@@ -44,7 +44,7 @@ import {
 import AppContext from "../../contexts/AppContext";
 // constants
 import { COMPANY, COMPANY2 } from "../../constants/variables";
-import { HOME_ROUTE, AUTH_ADMIN_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
+import { HOME_ROUTE, AUTH_ADMIN_ROUTE, AUTH_USER_ROUTE, VENDOR_ROUTE } from "../../constants/routes";
 import { AUTH_IN_ENDPOINT, AUTH_OTP_GENERATE_ENDPOINT, AUTH_OTP_VERIFY_ENDPOINT } from "../../constants/endpoints";
 import { IMAGES_WEBSITE_LOGO_BLACK_PNG, IMAGES_WEBSITE_LOGO_WHITE_PNG } from "../../constants/images";
 import { VIDEOS_AUTH_VENDOR_MP4 } from "../../constants/videos";
@@ -148,7 +148,7 @@ const AuthVendor = () => {
             // setting user
             setUsers(users || []);
             // back to home
-            navigate(HOME_ROUTE);
+            navigate(VENDOR_ROUTE);
             // resets
             setIsGglLoading(false);
           })
@@ -233,7 +233,7 @@ const AuthVendor = () => {
                   // resets
                   setIsLoading(false);
                   setOtpErr("");
-                  navigate(HOME_ROUTE);
+                  navigate(VENDOR_ROUTE);
                 })
                 .catch((err) => {
                   // resets
