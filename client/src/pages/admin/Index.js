@@ -1,6 +1,6 @@
 import React, { useState, useContext, lazy, useEffect } from "react";
 import axios from "axios";
-import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 // mui
 import { styled } from "@mui/material/styles";
 import {
@@ -24,7 +24,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
-import AddIcon from "@mui/icons-material/Add";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -34,9 +33,10 @@ import AppContext from "../../contexts/AppContext";
 import AdminContext from "../../contexts/AdminContext";
 // constants
 import { PRODUCT_GET_ORDERS_ENDPOINT } from "../../constants/endpoints";
-import { HOME_ROUTE, ADMIN_ROUTE, ADMIN_PRODUCTS_ROUTE, ADMIN_NEW_PRODUCTS_ROUTE } from "../../constants/routes";
+import { HOME_ROUTE, ADMIN_ROUTE, ADMIN_PRODUCTS_ROUTE } from "../../constants/routes";
 // pages
 const Dashboard = lazy(() => import("./Dashboard"));
+const NewProducts = lazy(() => import("./NewProducts"));
 const Products = lazy(() => import("./Products"));
 const Profile = lazy(() => import("./Profile"));
 
@@ -97,25 +97,24 @@ const Index = () => {
     setOpen(!open);
   };
 
-  const isProfileComplete = (user) => user.email
-    // user &&
-    // user.name &&
-    // user.email &&
-    // user.contact &&
-    // user.address1 &&
-    // user.city &&
-    // user.state &&
-    // user.country &&
-    // user.zip &&
-    // user.location?.coordinates?.length;
+  const isProfileComplete = (user) => user.email;
+  // user &&
+  // user.name &&
+  // user.email &&
+  // user.contact &&
+  // user.address1 &&
+  // user.city &&
+  // user.state &&
+  // user.country &&
+  // user.zip &&
+  // user.location?.coordinates?.length;
 
   useEffect(() => {
     const user = users.find((user) => user.role === "admin");
-    setUser(user);
     if (user && user._id) {
       axios
-        .get(PRODUCT_GET_ORDERS_ENDPOINT, { params: { to: user._id } })
-        .then((res) => setOrders(res.data.data))
+        .get(PRODUCT_GET_ORDERS_ENDPOINT, { params: {} })
+        .then((res) => console.log(res.data.data))
         .catch((err) => console.log(err));
     }
   }, [users]);
@@ -201,6 +200,7 @@ const Index = () => {
       <AdminContext.Provider value={{ user, isProfileComplete, products, setProducts, orders, setOrders }}>
         <Routes>
           <Route exact path="/products/*" element={<Products />} />
+          <Route exact path="/new-products/*" element={<NewProducts />} />
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/*" element={<Dashboard />} />
         </Routes>

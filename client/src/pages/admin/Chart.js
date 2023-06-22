@@ -1,73 +1,71 @@
-import React from "react";
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from "recharts";
+import React, { useState, useEffect } from "react";
+import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, CartesianGrid, Legend } from "recharts";
 // mui
 import { Typography } from "@mui/material";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 
-// Generate Sales Data
-function createData(time, amount) {
-    return { time, amount };
-}
+const Chart = ({ chartData }) => {
+  const theme = useTheme();
+  const [data, setData] = useState([]);
 
-const data = [
-    createData('00:00', 0),
-    createData('03:00', 300),
-    createData('06:00', 600),
-    createData('09:00', 800),
-    createData('12:00', 1500),
-    createData('15:00', 2000),
-    createData('18:00', 2400),
-    createData('21:00', 2400),
-    createData('24:00', undefined),
-];
+  useEffect(() => {
+    if (chartData.length) setData(chartData);
+    else setData([]);
+  }, [chartData, setData]);
 
-export default function Chart() {
-    const theme = useTheme();
-    return (
-        <React.Fragment>
-            <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                Today
-            </Typography>
-            <ResponsiveContainer>
-                <LineChart
-                    data={data}
-                    margin={{
-                        top: 16,
-                        right: 16,
-                        bottom: 0,
-                        left: 24,
-                    }}
-                >
-                    <XAxis
-                        dataKey="time"
-                        stroke={theme.palette.text.secondary}
-                        style={theme.typography.body2}
-                    />
-                    <YAxis
-                        stroke={theme.palette.text.secondary}
-                        style={theme.typography.body2}
-                    >
-                        <Label
-                            angle={270}
-                            position="left"
-                            style={{
-                                textAnchor: 'middle',
-                                fill: theme.palette.text.primary,
-                                ...theme.typography.body1,
-                            }}
-                        >
-                            Sales ($)
-                        </Label>
-                    </YAxis>
-                    <Line
-                        isAnimationActive={true}
-                        type="monotone"
-                        dataKey="amount"
-                        stroke={theme.palette.primary.main}
-                        strokeWidth={2}
-                    />
-                </LineChart>
-            </ResponsiveContainer>
-        </React.Fragment>
-    );
-}
+  return (
+    <React.Fragment>
+      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+        Insights
+      </Typography>
+      <ResponsiveContainer>
+        <LineChart
+          data={data}
+          margin={{
+            top: 16,
+            right: 16,
+            bottom: 0,
+            left: 24,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" stroke={theme.palette.text.secondary} style={theme.typography.body2} />
+          <YAxis stroke={theme.palette.text.secondary} style={theme.typography.body2}>
+            <Label
+              angle={270}
+              position="left"
+              style={{
+                textAnchor: "middle",
+                fill: theme.palette.text.primary,
+                ...theme.typography.body1,
+              }}
+            >
+              Sales
+            </Label>
+            <Tooltip />
+          </YAxis>
+          <Tooltip />
+          <Legend />
+          <Line
+            isAnimationActive={true}
+            type="monotone"
+            dataKey="amount"
+            stroke={theme.palette.primary.main}
+            strokeWidth={2}
+            activeDot={{ r: 4 }}
+          />
+          <Line
+            isAnimationActive={true}
+            type="monotone"
+            dataKey="quantity"
+            stroke={theme.palette.secondary.main}
+            strokeWidth={2}
+            activeDot={{ r: 4 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </React.Fragment>
+  );
+};
+
+export default Chart;
