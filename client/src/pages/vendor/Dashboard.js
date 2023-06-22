@@ -7,10 +7,9 @@ import Chart from "./Chart";
 import Order from "./Order";
 import Footer from "../../components/Footer";
 // contexts
-import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
 // constants
-import { PROFILE_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PRODUCTS_ROUTE } from "../../constants/routes";
+import { AUTH_VENDOR_ROUTE, PROFILE_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PRODUCTS_ROUTE } from "../../constants/routes";
 // data
 const ITEMS_PER_PAGE = 10;
 
@@ -21,6 +20,10 @@ const Dashboard = () => {
   const [pastOrders, setPastOrders] = useState([]);
   const [pendingOrdersPage, setPendingOrdersPage] = useState(1);
   const [pastOrdersPage, setPastOrdersPage] = useState(1);
+
+  useEffect(() => {
+    if (!user) navigate(AUTH_VENDOR_ROUTE);
+  }, [user, navigate]);
 
   useEffect(() => {
     if (orders?.length) {
@@ -41,7 +44,7 @@ const Dashboard = () => {
   };
 
   return (
-    <Box
+    user ? <Box
       component="main"
       sx={{
         backgroundColor: (theme) =>
@@ -150,7 +153,7 @@ const Dashboard = () => {
           <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">Update Profile</Button>
         </Stack>}
       <Footer />
-    </Box>
+    </Box> : null
   )
 }
 

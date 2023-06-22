@@ -140,11 +140,11 @@ const Profile = () => {
   return (
     <>
       <Helmet>
-        <title>Profile | {COMPANY}</title>
+        <title>Profile | User | {COMPANY}</title>
       </Helmet>
       {user ? (
-        <Container component="main" sx={{ my: 10 }}>
-          <Grid container>
+        <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
+        <Grid container>
             <Grid item xs={12} md={8} mb={{ xs: 5, md: 0 }}>
               <Typography component="h1" variant="h4">
                 Profile

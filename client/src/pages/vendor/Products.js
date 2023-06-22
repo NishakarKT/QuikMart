@@ -6,7 +6,7 @@ import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
 // constants
 import { PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT } from "../../constants/endpoints";
-import { VENDOR_NEW_PRODUCTS_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
+import { VENDOR_NEW_PRODUCTS_ROUTE, AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
 // mui
 import {
   Stack,
@@ -41,7 +41,8 @@ const Products = () => {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    try {
+    if (!user) navigate(AUTH_VENDOR_ROUTE);
+    else if (user._id) {
       axios
         .get(PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT, { params: { owner: user._id } })
         .then((res) => {
@@ -52,10 +53,8 @@ const Products = () => {
           }
         })
         .catch((err) => console.log(err));
-    } catch (err) {
-      console.log(err);
     }
-  }, [user, setProducts]);
+  }, [user, setProducts, navigate]);
 
   const handlePage = (page) => {
     setPage(page);
@@ -65,7 +64,7 @@ const Products = () => {
   const handleSearch = (productId) => setProduct(products.find((product) => product._id === productId));
 
   return (
-    <Box
+    user ? <Box
       ref={containerRef}
       component="main"
       sx={{
@@ -191,7 +190,7 @@ const Products = () => {
         )}
       </Paper>
       <Footer />
-    </Box>
+    </Box> : <></>
   );
 };
 

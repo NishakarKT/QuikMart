@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
@@ -17,7 +17,6 @@ import {
   NativeSelect,
   Box,
   Toolbar,
-  Container,
   Switch,
   FormGroup,
   Paper,
@@ -28,7 +27,7 @@ import { Close, Add, SyncAlt } from "@mui/icons-material";
 // contexts
 import VendorContext from "../../contexts/VendorContext";
 // constants
-import { PROFILE_ROUTE } from "../../constants/routes";
+import { AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
 import { PRODUCT_NEW_PRODUCT_ENDPOINT, FILE_NEW_FILES_ENDPOINT } from "../../constants/endpoints";
 import { categories, currencies } from "../../constants/data";
 // components
@@ -52,6 +51,10 @@ const NewProducts = () => {
   const { user, isProfileComplete } = useContext(VendorContext);
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!user) navigate(AUTH_VENDOR_ROUTE);
+  }, [user, navigate]);
 
   const handleNewProduct = (e) => {
     e.preventDefault();
@@ -109,7 +112,7 @@ const NewProducts = () => {
   };
 
   return (
-    <Box
+    user ? <Box
       component="main"
       sx={{
         backgroundColor: (theme) => (mode === "dark" ? theme.palette.grey[900] : theme.palette.grey[100]),
@@ -278,7 +281,7 @@ const NewProducts = () => {
         )}
       </Paper>
       <Footer />
-    </Box>
+    </Box> : <></>
   );
 };
 
