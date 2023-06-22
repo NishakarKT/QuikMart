@@ -97,7 +97,7 @@ const Index = () => {
 
   useEffect(() => {
     const user = users.find((user) => user.role === "admin");
-    if (user) setUser(user);
+    setUser(user);
   }, [users]);
 
   return (

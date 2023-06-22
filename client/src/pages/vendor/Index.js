@@ -1,6 +1,6 @@
 import React, { useState, useContext, lazy, useEffect } from "react";
 import axios from "axios";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 // mui
 import { styled } from "@mui/material/styles";
 import {
@@ -34,11 +34,12 @@ import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
 // constants
 import { PRODUCT_GET_ORDERS_ENDPOINT } from "../../constants/endpoints";
-import { HOME_ROUTE, VENDOR_ROUTE, VENDOR_PRODUCTS_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE } from "../../constants/routes";
+import { HOME_ROUTE, VENDOR_ROUTE, VENDOR_PRODUCTS_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
 // pages
 const Dashboard = lazy(() => import("./Dashboard"));
 const NewProducts = lazy(() => import("./NewProducts"));
 const Products = lazy(() => import("./Products"));
+const Profile = lazy(() => import("./Profile"));
 
 const drawerWidth = 240;
 
@@ -111,9 +112,8 @@ const Index = () => {
 
   useEffect(() => {
     const user = users.find((user) => user.role === "vendor");
-    if (user) {
-      console.log(user);
-      setUser(user);
+    setUser(user);
+    if (user && user._id) {
       axios
         .get(PRODUCT_GET_ORDERS_ENDPOINT, { params: { to: user._id } })
         .then((res) => setOrders(res.data.data))
@@ -212,6 +212,7 @@ const Index = () => {
         <Routes>
           <Route exact path="/products/*" element={<Products />} />
           <Route exact path="/new-products/*" element={<NewProducts />} />
+          <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/*" element={<Dashboard />} />
         </Routes>
       </VendorContext.Provider>

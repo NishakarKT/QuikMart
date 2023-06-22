@@ -2,7 +2,7 @@ import React, { Fragment, useState, useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 // contexts
-import AppContext from "../../contexts/AppContext";
+import HomeContext from "../../contexts/HomeContext";
 // components
 import ProductCard from "../../components/ProductCard";
 // constants
@@ -14,7 +14,7 @@ const ITEMS_PER_PAGE = 8;
 
 const Search = () => {
     const { query } = useParams();
-    const { products } = useContext(AppContext);
+    const { products } = useContext(HomeContext);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [page, setPage] = useState(1);
 

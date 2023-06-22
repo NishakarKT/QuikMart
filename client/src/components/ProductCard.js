@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 // contexts
-import AppContext from "../contexts/AppContext";
 import HomeContext from "../contexts/HomeContext";
 // constants
 import { PRODUCT_ADD_TO_WISHLIST_ENDPOINT, PRODUCT_ADD_TO_CART_ENDPOINT, PRODUCT_REMOVE_FROM_WISHLIST_ENDPOINT, PRODUCT_REMOVE_FROM_CART_ENDPOINT } from "../constants/endpoints";
@@ -18,8 +17,7 @@ import { UPLOAD_URL } from "../constants/urls";
 const truncateStr = (str, max) => str && str.length > max ? `${str.substring(0, max)}...` : str;
 
 const ProductCard = ({ product, sx }) => {
-    const { user } = useContext(AppContext);
-    const { wishlist, setWishlist, cart, setCart, setProduct } = useContext(HomeContext);
+    const { user, wishlist, setWishlist, cart, setCart, setProduct } = useContext(HomeContext);
     const [productInWishlist, setProductInWishlist] = useState(false);
     const [productInCart, setProductInCart] = useState(false);
 
