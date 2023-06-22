@@ -96,14 +96,14 @@ const Wishlist = () => {
               </>
             ) : (
               <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
-                <Typography component="p" variant="h4" align="center" color="red">
+                <Typography component="p" variant="h4" align="center" color="text.secondary">
                   An Empty Wishlist!
                 </Typography>
                 <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
                   You haven't added any products/services to your wishlist. Add one today!
                 </Typography>
                 <Button onClick={() => navigate(HOME_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
-                  Explore Products/Services
+                  Explore Products
                 </Button>
               </Stack>
             )}

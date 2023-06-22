@@ -240,10 +240,10 @@ const Cart = () => {
             </>
           ) : (
             <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
-              <Typography component="p" variant="h4" align="center" sx={{ color: "grey" }}>
+              <Typography color="text.secondary" component="p" variant="h4" align="center">
                 No Order Yet!
               </Typography>
-              <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
+              <Typography color="text.secondary" component="p" variant="body1" align="center">
                 You haven't careted any order. Add one from the cart!
               </Typography>
             </Stack>
@@ -310,14 +310,14 @@ const Cart = () => {
             </>
           ) : (
             <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
-              <Typography component="p" variant="h4" align="center" sx={{ color: "grey" }}>
+              <Typography color="text.secondary" component="p" variant="h4" align="center">
                 An Empty Cart!
               </Typography>
-              <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
+              <Typography color="text.secondary" component="p" variant="body1" align="center">
                 You haven't added any products/services to your cart. Add one today!
               </Typography>
               <Button onClick={() => navigate(HOME_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
-                Explore Products/services
+                Explore Products
               </Button>
             </Stack>
           )}

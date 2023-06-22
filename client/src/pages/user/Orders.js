@@ -96,10 +96,10 @@ const Orders = () => {
           </>
         ) : (
           <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
-            <Typography component="p" variant="h4" align="center" sx={{ color: "grey" }}>
+            <Typography component="p" variant="h4" align="center" color="text.secondary">
               No Pending Orders!
             </Typography>
-            <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
+            <Typography component="p" variant="body1" align="center" color="text.secondary">
               You haven't ordered recently. Order from the cart!
             </Typography>
             <Button onClick={() => navigate(CART_ROUTE)} variant="contained">
@@ -141,10 +141,10 @@ const Orders = () => {
           </>
         ) : (
           <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
-            <Typography component="p" variant="h4" align="center" sx={{ color: "grey" }}>
+            <Typography component="p" variant="h4" align="center" color="text.secondary">
               No Past Orders!
             </Typography>
-            <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
+            <Typography component="p" variant="body1" align="center" color="text.secondary">
               You haven't ordered in the past. Order from the cart!
             </Typography>
             <Button onClick={() => navigate(CART_ROUTE)} variant="contained">
