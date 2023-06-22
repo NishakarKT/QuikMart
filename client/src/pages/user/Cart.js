@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 // contexts
-import HomeContext from "../../contexts/HomeContext";
+import UserContext from "../../contexts/UserContext";
 // constants
 import { COMPANY } from "../../constants/variables";
 import { WISHLIST_ROUTE, HOME_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
@@ -36,7 +36,7 @@ const ITEMS_PER_PAGE = 8;
 
 const Cart = () => {
   let total = Number(0);
-  const { user, setWishlist, cart, setCart, setOrders } = useContext(HomeContext);
+  const { user, setWishlist, cart, setCart, setOrders } = useContext(UserContext);
   const navigate = useNavigate();
   const [orderPage, setOrderPage] = useState(1);
   const [cartPage, setCartPage] = useState(1);

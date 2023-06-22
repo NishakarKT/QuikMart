@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 // mui
 import { Stack, Typography, Slider, Button } from "@mui/material";
 // contexts
-import HomeContext from "../contexts/HomeContext";
+import HomeContext from "../contexts/UserContext";
 // data
 const locationMarks = [{ value: 0, label: "0" }, { value: 10000, label: "10 KM" }, { value: 50000, label: "50 KM" }, { value: 100000, label: "100 KM" }];
 

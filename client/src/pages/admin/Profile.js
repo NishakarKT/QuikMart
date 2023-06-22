@@ -3,14 +3,15 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 // contexts
-import HomeContext from "../../contexts/HomeContext";
+import VendorContext from "../../contexts/VendorContext";
 // constants
+import { products } from "../../constants/data";
 import { UPLOAD_URL } from "../../constants/urls";
 import { COMPANY } from "../../constants/variables";
-import { AUTH_USER_ROUTE } from "../../constants/routes";
+import { AUTH_USER_ROUTE, AUTH_VENDOR_ROUTE, HISTORY_ROUTE } from "../../constants/routes";
 import { USER_ENDPOINT, FILE_NEW_FILE_ENDPOINT } from "../../constants/endpoints";
 // mui
-import { Stack, Box, Grid, Container, Button, TextField, Typography, CardMedia } from "@mui/material";
+import { Stack, Box, Grid, Container, Button, TextField, Typography, List, ListItem, ListItemText, Link, CardMedia } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { SyncAlt, Edit, AddLocation } from "@mui/icons-material";
 // utils
@@ -19,7 +20,7 @@ import { getLocation } from "../../utils";
 const Profile = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
-  const { user, setUser } = useContext(HomeContext);
+  const { user, setUser } = useContext(VendorContext);
   const profilePicRef = useRef(null);
   const coverPicRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,9 +31,9 @@ const Profile = () => {
   const [locationErr, setLocationErr] = useState(false);
 
   useEffect(() => {
-    if (!user) navigate(AUTH_USER_ROUTE);
+    if (!user) navigate(AUTH_VENDOR_ROUTE);
     else if (user.location) setLocation(user.location.coordinates || []);
-  }, [user, setLocation]);
+  }, [user, navigate]);
 
   const handleEdit = () => {
     setIsEditable(true);
@@ -140,11 +141,11 @@ const Profile = () => {
   return (
     <>
       <Helmet>
-        <title>Profile | User | {COMPANY}</title>
+        <title>Profile | Vendor | {COMPANY}</title>
       </Helmet>
       {user ? (
         <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
-        <Grid container>
+          <Grid container>
             <Grid item xs={12} md={8} mb={{ xs: 5, md: 0 }}>
               <Typography component="h1" variant="h4">
                 Profile
@@ -327,6 +328,22 @@ const Profile = () => {
                 src={profilePic ? URL.createObjectURL(profilePic) : UPLOAD_URL + user.profilePic}
                 alt=""
               />
+              <Typography variant="h6" gutterBottom>
+                Past Orders
+              </Typography>
+              <List disablePadding>
+                {products.slice(0, 5).map((product, index) => (
+                  <ListItem key={product.title} sx={{ py: 1, px: 0 }}>
+                    <ListItemText primary={index + 1 + ". " + product.title} secondary={product.subtitle} />
+                    <Typography variant="body2">{product.price}</Typography>
+                  </ListItem>
+                ))}
+                <ListItem sx={{ py: 1, px: 0 }}>
+                  <Link onClick={() => navigate(HISTORY_ROUTE)} underline="hover" sx={{ cursor: "pointer", marginLeft: "auto" }}>
+                    View More
+                  </Link>
+                </ListItem>
+              </List>
             </Grid>
           </Grid>
         </Container>

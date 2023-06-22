@@ -16,7 +16,7 @@ const Order = ({ index, order, isPast }) => {
     useEffect(() => {
         if (order?.products?.length) {
             let total = 0;
-            order.products.forEach(product => total += Number(product.price || 0));
+            order.products.forEach(product => total += (Number(product.quantity || 0) * Number(product.price || 0)));
             setTotal(total);
         } else
             setTotal(0);
@@ -28,12 +28,7 @@ const Order = ({ index, order, isPast }) => {
                 axios.patch(PRODUCT_CANCEL_ORDERS_ENDPOINT, { _id: orderId })
                     .then(res => {
                         alert("Order cancelled!");
-                        setOrders(orders => {
-                            const idx = orders.findIndex(order => order._id === orderId);
-                            if (idx !== -1)
-                                orders[idx] = { ...orders[idx], status: "cancelled" };
-                            return orders;
-                        });
+                        setOrders(orders => orders.map(order => order._id === orderId ? {...order, status: "cancelled"} : order));
                     })
                     .catch(err => console.log(err))
             } catch (err) { console.log(err); };
@@ -45,12 +40,7 @@ const Order = ({ index, order, isPast }) => {
                 axios.patch(PRODUCT_ACCEPT_ORDERS_ENDPOINT, { _id: orderId })
                     .then(res => {
                         alert("Order accepted!");
-                        setOrders(orders => {
-                            const idx = orders.findIndex(order => order._id === orderId);
-                            if (idx !== -1)
-                                orders[idx] = { ...orders[idx], status: "accepted" };
-                            return orders;
-                        });
+                        setOrders(orders => orders.map(order => order._id === orderId ? {...order, status: "accepted"} : order));
                     })
                     .catch(err => console.log(err))
             } catch (err) { console.log(err); };

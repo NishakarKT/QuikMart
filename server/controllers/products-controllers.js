@@ -94,7 +94,7 @@ export const getOrders = async (req, res) => {
         if (!orders || !orders.length)
             throw "couldn't fetch the orders";
         else
-            res.status(201).send({ data: orders, message: "fetched orders" });
+            res.status(201).send({ data: orders.reverse(), message: "fetched orders" });
     }
     catch (err) { res.status(500).send({ message: err.message }); };
 }

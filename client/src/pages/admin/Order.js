@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 // contexts
-import HomeContext from "../../contexts/HomeContext";
+import VendorContext from "../../contexts/VendorContext";
 // constants
-import { PRODUCT_CANCEL_ORDERS_ENDPOINT } from "../../constants/endpoints"
+import { PRODUCT_CANCEL_ORDERS_ENDPOINT, PRODUCT_ACCEPT_ORDERS_ENDPOINT } from "../../constants/endpoints"
 // mui
 import { Stack, Grid, Box, Collapse, TableCell, TableRow, Typography, Button, List, ListItem, ListItemText } from "@mui/material";
 import { Close, CheckCircle, Cancel } from '@mui/icons-material';
 
 const Order = ({ index, order, isPast }) => {
-    const { setOrders } = useContext(HomeContext);
+    const { setOrders } = useContext(VendorContext);
     const [total, setTotal] = useState(0);
     const [open, setOpen] = useState(false);
 
@@ -39,12 +39,29 @@ const Order = ({ index, order, isPast }) => {
             } catch (err) { console.log(err); };
     };
 
+    const acceptOrder = orderId => {
+        if (window.confirm("Are you sure you want to accept this order?"))
+            try {
+                axios.patch(PRODUCT_ACCEPT_ORDERS_ENDPOINT, { _id: orderId })
+                    .then(res => {
+                        alert("Order accepted!");
+                        setOrders(orders => {
+                            const idx = orders.findIndex(order => order._id === orderId);
+                            if (idx !== -1)
+                                orders[idx] = { ...orders[idx], status: "accepted" };
+                            return orders;
+                        });
+                    })
+                    .catch(err => console.log(err))
+            } catch (err) { console.log(err); };
+    };
+
     return (
         <React.Fragment>
             <TableRow onClick={() => setOpen(open => !open)} sx={{ '& > *': { borderBottom: 'unset' }, cursor: "pointer", "&::hover": { backgroundColor: "rgba(0, 0, 0, 0.5)" } }}>
                 <TableCell align="center">{index + 1}</TableCell>
                 <TableCell>{(new Date(order.createdAt)).toLocaleString()}</TableCell>
-                <TableCell>{order.toName}</TableCell>
+                <TableCell>{order.fromName}</TableCell>
                 <TableCell align="center">{total}</TableCell>
                 {isPast ? <TableCell align="center">{order.status === "accepted" ? <CheckCircle color="success" /> : <Cancel color="error" />}</TableCell> : null}
             </TableRow>
@@ -53,10 +70,13 @@ const Order = ({ index, order, isPast }) => {
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1 }}>
                             <Stack flex={2} p={2} style={{ width: "100%", overflowX: "hidden", overflowY: "auto" }}>
-                                <Grid item xs={12} md={8} mb={{ xs: 5, md: 0 }}>
+                                <Grid item xs={12} mb={{ xs: 5, md: 0 }}>
                                     <Stack spacing={2} direction="row" alignItems="center" justifyContent="space-between" sx={{ display: "flex", mt: 2 }}>
                                         <Typography component="h1" variant="h4" gutterBottom>Order Details</Typography>
-                                        {!isPast ? <Button onClick={() => cancelOrder(order._id)} sx={{ height: "fit-content" }} color="error" type="submit" variant="contained" startIcon={<Close />}>Cancel</Button> : null}
+                                        {!isPast ? <Stack direction="row" spacing={1}>
+                                            <Button onClick={() => cancelOrder(order._id)} sx={{ height: "fit-content" }} color="error" type="submit" variant="contained" startIcon={<Close />}>Cancel</Button>
+                                            <Button onClick={() => acceptOrder(order._id)} sx={{ height: "fit-content" }} color="success" type="submit" variant="contained" startIcon={<CheckCircle />}>Accept</Button>
+                                        </Stack> : null}
                                     </Stack>
                                     <Stack>
                                         <Typography variant="h6" gutterBottom>Your Order</Typography>

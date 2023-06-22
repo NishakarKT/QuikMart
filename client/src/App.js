@@ -16,7 +16,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Loader from "./components/Loader";
 // pages
 const Auth = lazy(() => import("./pages/auth/Index"));
-const Home = lazy(() => import("./pages/home/Index"));
+const Home = lazy(() => import("./pages/user/Index"));
 const Vendor = lazy(() => import("./pages/vendor/Index"));
 const Admin = lazy(() => import("./pages/admin/Index"));
 

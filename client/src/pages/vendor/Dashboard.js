@@ -27,7 +27,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (orders?.length) {
-      console.log(orders);
       setPendingOrders(orders.filter(order => order.status === "pending"));
       setPastOrders(orders.filter(order => order.status !== "pending"));
     }

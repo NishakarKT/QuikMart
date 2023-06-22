@@ -1,7 +1,7 @@
 import React, { lazy, useCallback, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 // mui
 import { makeStyles } from "@mui/styles";
 import { Container, Drawer } from "@mui/material";
@@ -24,7 +24,7 @@ import { SpeedDial, SpeedDialIcon, SpeedDialAction } from "@mui/material";
 import { LightMode, DarkMode } from "@mui/icons-material";
 // contexts
 import AppContext from "../../contexts/AppContext";
-import HomeContext from "../../contexts/HomeContext";
+import UserContext from "../../contexts/UserContext";
 // // utils
 // import { getLocation } from "../../utils";
 // pages
@@ -151,7 +151,7 @@ const Index = () => {
         {/* <SpeedDialAction onClick={() => setLocationRangeOpen(true)} icon={<LocationSearching />} tooltipTitle={"Location Range"} />
         <SpeedDialAction onClick={() => setCategoryOpen(true)} icon={<Category />} tooltipTitle={"Categories"} /> */}
       </SpeedDial>
-      <HomeContext.Provider
+      <UserContext.Provider
         value={{
           user,
           product,
@@ -190,7 +190,7 @@ const Index = () => {
         /> */}
         {/* <SelectCategoryDialog category={category} setCategory={setCategory} categoryOpen={categoryOpen} setCategoryOpen={setCategoryOpen} /> */}
         <Footer />
-      </HomeContext.Provider>
+      </UserContext.Provider>
     </Container>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 // contexts
-import HomeContext from "../contexts/HomeContext";
+import HomeContext from "../contexts/UserContext";
 // constants
 import { PRODUCT_ADD_TO_WISHLIST_ENDPOINT, PRODUCT_ADD_TO_CART_ENDPOINT, PRODUCT_REMOVE_FROM_WISHLIST_ENDPOINT, PRODUCT_REMOVE_FROM_CART_ENDPOINT } from "../constants/endpoints";
 // mui

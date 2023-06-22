@@ -1,10 +1,9 @@
-import React, { useState, useContext, useEffect, lazy } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import React, { useState, useContext, lazy, useEffect } from "react";
+import axios from "axios";
+import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 // mui
 import { styled } from "@mui/material/styles";
 import {
-  Stack,
-  Button,
   CssBaseline,
   Drawer as MuiDrawer,
   Box,
@@ -17,17 +16,29 @@ import {
   SpeedDial,
   SpeedDialIcon,
   SpeedDialAction,
+  colors,
 } from "@mui/material";
-import { ChevronLeft, LightMode, DarkMode, AdminPanelSettings, Menu } from "@mui/icons-material";
-// constants
-import { AUTH_ADMIN_ROUTE } from "../../constants/routes";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import HomeIcon from "@mui/icons-material/Home";
+import AddIcon from "@mui/icons-material/Add";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 // contexts
 import AppContext from "../../contexts/AppContext";
 import AdminContext from "../../contexts/AdminContext";
-// components
-import Footer from "../../components/Footer";
+// constants
+import { PRODUCT_GET_ORDERS_ENDPOINT } from "../../constants/endpoints";
+import { HOME_ROUTE, ADMIN_ROUTE, ADMIN_PRODUCTS_ROUTE, ADMIN_NEW_PRODUCTS_ROUTE } from "../../constants/routes";
 // pages
 const Dashboard = lazy(() => import("./Dashboard"));
+const Products = lazy(() => import("./Products"));
+const Profile = lazy(() => import("./Profile"));
 
 const drawerWidth = 240;
 
@@ -75,29 +86,38 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
 
 const Index = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const location = useLocation();
   const [user, setUser] = useState({});
+  const [open, setOpen] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [products, setProducts] = useState([]);
   const { users, mode, handleMode } = useContext(AppContext);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const isProfileComplete = (user) =>
-    user &&
-    user.name &&
-    user.email &&
-    user.contact &&
-    user.address1 &&
-    user.city &&
-    user.state &&
-    user.country &&
-    user.zip &&
-    user.location?.coordinates?.length;
+  const isProfileComplete = (user) => user.email
+    // user &&
+    // user.name &&
+    // user.email &&
+    // user.contact &&
+    // user.address1 &&
+    // user.city &&
+    // user.state &&
+    // user.country &&
+    // user.zip &&
+    // user.location?.coordinates?.length;
 
   useEffect(() => {
     const user = users.find((user) => user.role === "admin");
     setUser(user);
+    if (user && user._id) {
+      axios
+        .get(PRODUCT_GET_ORDERS_ENDPOINT, { params: { to: user._id } })
+        .then((res) => setOrders(res.data.data))
+        .catch((err) => console.log(err));
+    }
   }, [users]);
 
   return (
@@ -109,8 +129,10 @@ const Index = () => {
         direction={"up"}
         ariaLabel="SpeedDial playground example"
       >
-        {mode !== "light" ? <SpeedDialAction onClick={() => handleMode("light")} icon={<LightMode />} tooltipTitle={"Light Mode"} /> : null}
-        {mode !== "dark" ? <SpeedDialAction onClick={() => handleMode("dark")} icon={<DarkMode />} tooltipTitle={"Dark Mode"} /> : null}
+        {mode !== "light" ? (
+          <SpeedDialAction onClick={() => handleMode("light")} icon={<LightModeIcon />} tooltipTitle={"Light Mode"} />
+        ) : null}
+        {mode !== "dark" ? <SpeedDialAction onClick={() => handleMode("dark")} icon={<DarkModeIcon />} tooltipTitle={"Dark Mode"} /> : null}
       </SpeedDial>
       <AppBar position="absolute" open={open}>
         <Toolbar
@@ -128,7 +150,7 @@ const Index = () => {
               ...(open && { display: "none" }),
             }}
           >
-            <Menu />
+            <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
             Dashboard
@@ -145,47 +167,43 @@ const Index = () => {
           }}
         >
           <IconButton onClick={toggleDrawer}>
-            <ChevronLeft />
+            <ChevronLeftIcon />
           </IconButton>
         </Toolbar>
         <Divider />
-        <List component="nav"></List>
+        <List component="nav">
+          <ListItemButton
+            sx={{ backgroundColor: location.pathname === ADMIN_ROUTE ? colors.grey[300] : "" }}
+            onClick={() => navigate(ADMIN_ROUTE)}
+          >
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+          </ListItemButton>
+          <ListItemButton
+            sx={{ backgroundColor: location.pathname === ADMIN_PRODUCTS_ROUTE ? colors.grey[300] : "" }}
+            onClick={() => navigate(ADMIN_PRODUCTS_ROUTE)}
+          >
+            <ListItemIcon>
+              <PrecisionManufacturingIcon />
+            </ListItemIcon>
+            <ListItemText primary="Products" />
+          </ListItemButton>
+          <ListItemButton onClick={() => navigate(HOME_ROUTE)}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Back To Home" />
+          </ListItemButton>
+        </List>
       </Drawer>
-      <AdminContext.Provider value={{ isProfileComplete }}>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) => (theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900]),
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-          }}
-        >
-          <Toolbar />
-          {user.email ? (
-            <Routes>
-              <Route exact path="/*" element={<Dashboard />} />
-            </Routes>
-          ) : (
-            <Stack sx={{ width: "100%" }} py={16} spacing={2} alignItems="center" justifyContent="center">
-              <Typography component="p" variant="h4" align="center" color="error">
-                Unauthorized Access!
-              </Typography>
-              <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
-                You are not authorized to access this page.
-              </Typography>
-              <Button
-                startIcon={<AdminPanelSettings />}
-                onClick={() => navigate(AUTH_ADMIN_ROUTE)}
-                sx={{ width: "fit-content" }}
-                variant="contained"
-              >
-                Sign In As Admin
-              </Button>
-            </Stack>
-          )}
-          <Footer />
-        </Box>
+      <AdminContext.Provider value={{ user, isProfileComplete, products, setProducts, orders, setOrders }}>
+        <Routes>
+          <Route exact path="/products/*" element={<Products />} />
+          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/*" element={<Dashboard />} />
+        </Routes>
       </AdminContext.Provider>
     </Box>
   );

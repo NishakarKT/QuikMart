@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 // components
 import ProductCard from "../../components/ProductCard";
 // contexts
-import HomeContext from "../../contexts/HomeContext";
+import UserContext from "../../contexts/UserContext";
 // constants
 import { COMPANY } from "../../constants/variables";
 import { CART_ROUTE, HOME_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
@@ -19,7 +19,7 @@ const ITEMS_PER_PAGE = 8;
 
 const Wishlist = () => {
   const navigate = useNavigate();
-  const { user, setCart, wishlist, setWishlist } = useContext(HomeContext);
+  const { user, setCart, wishlist, setWishlist } = useContext(UserContext);
   const [page, setPage] = useState(1);
 
   useEffect(() => {

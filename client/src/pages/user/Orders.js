@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 // contexts
-import HomeContext from "../../contexts/HomeContext";
+import UserContext from "../../contexts/UserContext";
 // constants
 import { COMPANY } from "../../constants/variables";
 import { CART_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
@@ -29,7 +29,7 @@ const ITEMS_PER_PAGE = 8;
 
 const Orders = () => {
   const navigate = useNavigate();
-  const { user, orders } = useContext(HomeContext);
+  const { user, orders } = useContext(UserContext);
   const [pendingOrdersPage, setPendingOrdersPage] = useState(1);
   const [pastOrdersPage, setPastOrdersPage] = useState(1);
   const [pendingOrders, setPendingOrders] = useState([]);
@@ -40,7 +40,7 @@ const Orders = () => {
   }, [user, navigate]);
 
   useEffect(() => {
-    if (orders?.length) {
+    if (orders.length) {
       setPendingOrders(orders.filter((order) => order.status === "pending"));
       setPastOrders(orders.filter((order) => order.status !== "pending"));
     }

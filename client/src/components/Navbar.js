@@ -7,7 +7,7 @@ import { IMAGES_WEBSITE_LOGO_WHITE_PNG } from "../constants/images";
 import { UPLOAD_URL } from "../constants/urls";
 // contexts
 import AppContext from "../contexts/AppContext";
-import HomeContext from "../contexts/HomeContext";
+import HomeContext from "../contexts/UserContext";
 // mui
 import {
   Stack,

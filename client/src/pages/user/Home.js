@@ -5,7 +5,7 @@ import { Carousel } from "react-responsive-carousel";
 import { COMPANY } from "../../constants/variables";
 import { UPLOAD_URL } from "../../constants/urls";
 // contexts
-import HomeContext from "../../contexts/HomeContext";
+import UserContext from "../../contexts/UserContext";
 // mui
 import { Toolbar, Container, Typography, Stack, Avatar, Box, Button } from "@mui/material";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
@@ -18,7 +18,7 @@ import { truncateStr } from "../../utils";
 const MAX_PRODUCT_CARD_WIDTH = 500;
 
 const Home = () => {
-  const { products, setProduct } = useContext(HomeContext);
+  const { products, setProduct } = useContext(UserContext);
   const [count, setCount] = useState(Math.ceil(window.innerWidth / MAX_PRODUCT_CARD_WIDTH));
 
   useEffect(() => {
