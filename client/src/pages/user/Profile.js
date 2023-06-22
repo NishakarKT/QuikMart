@@ -144,7 +144,7 @@ const Profile = () => {
       </Helmet>
       {user ? (
         <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
-        <Grid container>
+          <Grid container>
             <Grid item xs={12} md={8} mb={{ xs: 5, md: 0 }}>
               <Typography component="h1" variant="h4">
                 Profile

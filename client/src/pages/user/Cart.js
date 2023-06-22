@@ -17,7 +17,6 @@ import {
 import {
   Stack,
   Button,
-  Toolbar,
   Container,
   Pagination,
   Typography,
@@ -169,7 +168,6 @@ const Cart = () => {
       <Helmet>
         <title>Cart | {COMPANY}</title>
       </Helmet>
-      <Toolbar />
       {user ? (
         <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
           <Stack direction="row" justifyContent="space-between" mb={2}>

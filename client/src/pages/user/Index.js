@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { Routes, Route } from "react-router-dom";
 // mui
 import { makeStyles } from "@mui/styles";
-import { Container, Drawer } from "@mui/material";
+import { Container, Drawer, Toolbar } from "@mui/material";
 // constants
 import { COMPANY } from "../../constants/variables";
 import {
@@ -171,6 +171,7 @@ const Index = () => {
         }}
       >
         <Navbar />
+        <Toolbar />
         <Routes>
           <Route exact path="/search/:query" element={<Search />} />
           <Route exact path="/orders" element={<Orders />} />

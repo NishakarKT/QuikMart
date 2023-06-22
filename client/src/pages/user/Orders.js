@@ -10,7 +10,6 @@ import { CART_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
 import {
   Stack,
   Button,
-  Toolbar,
   Container,
   Pagination,
   Typography,
@@ -61,98 +60,101 @@ const Orders = () => {
       <Helmet>
         <title>Orders | {COMPANY}</title>
       </Helmet>
-      <Toolbar />
-      {user ? <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Typography component="h2" variant="h5">
-            Pending Orders
-          </Typography>
-        </Stack>
-        {pendingOrders.length ? (
-          <>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Sl No.</TableCell>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Owner</TableCell>
-                    <TableCell align="center">Price</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {pendingOrders.slice((pendingOrdersPage - 1) * ITEMS_PER_PAGE, pendingOrdersPage * ITEMS_PER_PAGE).map((order, index) => (
-                    <Order key={order._id} index={index} order={order} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Pagination
-              sx={{ display: "block", width: "fit-content", margin: "24px auto" }}
-              onChange={(e, value) => handlePendingOrdersPage(value)}
-              count={Math.ceil((pendingOrders.length || 1) / ITEMS_PER_PAGE)}
-              color="primary"
-            />
-          </>
-        ) : (
-          <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
-            <Typography component="p" variant="h4" align="center" color="text.secondary">
-              No Pending Orders!
+      {user ? (
+        <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
+          <Stack direction="row" justifyContent="space-between" mb={2}>
+            <Typography component="h2" variant="h5">
+              Pending Orders
             </Typography>
-            <Typography component="p" variant="body1" align="center" color="text.secondary">
-              You haven't ordered recently. Order from the cart!
-            </Typography>
-            <Button onClick={() => navigate(CART_ROUTE)} variant="contained">
-              Go To Cart
-            </Button>
           </Stack>
-        )}
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Typography component="h2" variant="h5">
-            Past Orders
-          </Typography>
-        </Stack>
-        {pastOrders.length ? (
-          <>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Sl No.</TableCell>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Owner</TableCell>
-                    <TableCell align="center">Price</TableCell>
-                    <TableCell align="center">Accepted</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {pastOrders.slice((pastOrdersPage - 1) * ITEMS_PER_PAGE, pastOrdersPage * ITEMS_PER_PAGE).map((order, index) => (
-                    <Order key={order._id} index={index} order={order} isPast />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Pagination
-              sx={{ display: "block", width: "fit-content", margin: "24px auto" }}
-              onChange={(e, value) => handlePastOrdersPage(value)}
-              count={Math.ceil((pastOrders.length || 1) / ITEMS_PER_PAGE)}
-              color="primary"
-            />
-          </>
-        ) : (
-          <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
-            <Typography component="p" variant="h4" align="center" color="text.secondary">
-              No Past Orders!
+          {pendingOrders.length ? (
+            <>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Sl No.</TableCell>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Owner</TableCell>
+                      <TableCell align="center">Price</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {pendingOrders
+                      .slice((pendingOrdersPage - 1) * ITEMS_PER_PAGE, pendingOrdersPage * ITEMS_PER_PAGE)
+                      .map((order, index) => (
+                        <Order key={order._id} index={index} order={order} />
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Pagination
+                sx={{ display: "block", width: "fit-content", margin: "24px auto" }}
+                onChange={(e, value) => handlePendingOrdersPage(value)}
+                count={Math.ceil((pendingOrders.length || 1) / ITEMS_PER_PAGE)}
+                color="primary"
+              />
+            </>
+          ) : (
+            <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
+              <Typography component="p" variant="h4" align="center" color="text.secondary">
+                No Pending Orders!
+              </Typography>
+              <Typography component="p" variant="body1" align="center" color="text.secondary">
+                You haven't ordered recently. Order from the cart!
+              </Typography>
+              <Button onClick={() => navigate(CART_ROUTE)} variant="contained">
+                Go To Cart
+              </Button>
+            </Stack>
+          )}
+          <Stack direction="row" justifyContent="space-between" mb={2}>
+            <Typography component="h2" variant="h5">
+              Past Orders
             </Typography>
-            <Typography component="p" variant="body1" align="center" color="text.secondary">
-              You haven't ordered in the past. Order from the cart!
-            </Typography>
-            <Button onClick={() => navigate(CART_ROUTE)} variant="contained">
-              Go To Cart
-            </Button>
           </Stack>
-        )}
-      </Container> : null}
+          {pastOrders.length ? (
+            <>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Sl No.</TableCell>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Owner</TableCell>
+                      <TableCell align="center">Price</TableCell>
+                      <TableCell align="center">Accepted</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {pastOrders.slice((pastOrdersPage - 1) * ITEMS_PER_PAGE, pastOrdersPage * ITEMS_PER_PAGE).map((order, index) => (
+                      <Order key={order._id} index={index} order={order} isPast />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Pagination
+                sx={{ display: "block", width: "fit-content", margin: "24px auto" }}
+                onChange={(e, value) => handlePastOrdersPage(value)}
+                count={Math.ceil((pastOrders.length || 1) / ITEMS_PER_PAGE)}
+                color="primary"
+              />
+            </>
+          ) : (
+            <Stack py={4} spacing={2} alignItems="center" justifyContent="center">
+              <Typography component="p" variant="h4" align="center" color="text.secondary">
+                No Past Orders!
+              </Typography>
+              <Typography component="p" variant="body1" align="center" color="text.secondary">
+                You haven't ordered in the past. Order from the cart!
+              </Typography>
+              <Button onClick={() => navigate(CART_ROUTE)} variant="contained">
+                Go To Cart
+              </Button>
+            </Stack>
+          )}
+        </Container>
+      ) : null}
     </>
   );
 };

@@ -8,10 +8,10 @@ import VendorContext from "../../contexts/VendorContext";
 import { products } from "../../constants/data";
 import { UPLOAD_URL } from "../../constants/urls";
 import { COMPANY } from "../../constants/variables";
-import { AUTH_USER_ROUTE, AUTH_VENDOR_ROUTE, HISTORY_ROUTE } from "../../constants/routes";
+import { AUTH_VENDOR_ROUTE, HISTORY_ROUTE } from "../../constants/routes";
 import { USER_ENDPOINT, FILE_NEW_FILE_ENDPOINT } from "../../constants/endpoints";
 // mui
-import { Stack, Box, Grid, Container, Button, TextField, Typography, List, ListItem, ListItemText, Link, CardMedia } from "@mui/material";
+import { Toolbar, Stack, Box, Grid, Container, Button, TextField, Typography, List, ListItem, ListItemText, Link, CardMedia } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { SyncAlt, Edit, AddLocation } from "@mui/icons-material";
 // utils
@@ -145,6 +145,7 @@ const Profile = () => {
       </Helmet>
       {user ? (
         <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
+          <Toolbar />
           <Grid container>
             <Grid item xs={12} md={8} mb={{ xs: 5, md: 0 }}>
               <Typography component="h1" variant="h4">

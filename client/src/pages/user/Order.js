@@ -16,7 +16,7 @@ const Order = ({ index, order, isPast }) => {
   useEffect(() => {
     if (order?.products?.length) {
       let total = 0;
-      order.products.forEach((product) => (total += (Number(product.quantity || 0) * Number(product.price || 0))));
+      order.products.forEach((product) => (total += Number(product.quantity || 0) * Number(product.price || 0)));
       setTotal(total);
     } else setTotal(0);
   }, [order]);
