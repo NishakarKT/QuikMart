@@ -15,9 +15,9 @@ import {
 } from "../../constants/endpoints";
 // mui
 import {
+  Box,
   Stack,
   Button,
-  Container,
   Pagination,
   Typography,
   Paper,
@@ -169,7 +169,7 @@ const Cart = () => {
         <title>Cart | {COMPANY}</title>
       </Helmet>
       {user ? (
-        <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
+        <Box p={2}>
           <Stack direction="row" justifyContent="space-between" mb={2}>
             <Typography component="h2" variant="h5">
               My Order
@@ -319,7 +319,7 @@ const Cart = () => {
               </Button>
             </Stack>
           )}
-        </Container>
+        </Box>
       ) : null}
     </>
   );

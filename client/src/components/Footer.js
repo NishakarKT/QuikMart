@@ -62,7 +62,7 @@ const Footer = () => {
       </Stack>
       <Divider />
       <Grid container>
-        <Grid item xs={12} md={6} sx={{ pl: { xs: 1, md: 2 } }}>
+        <Grid item xs={12} md={9} sx={{ pl: { xs: 1, md: 2 } }}>
           <Typography gutterBottom variant="h5">
             About Us
           </Typography>
@@ -78,7 +78,7 @@ const Footer = () => {
             {COMPANY}.
           </Typography>
         </Grid>
-        <Grid item xs={6} md={3}>
+        <Grid item xs={12} md={3}>
           <Stack>
             <Typography gutterBottom variant="h5" sx={{ ml: { xs: 1, md: 2 } }}>
               Lost ?
@@ -101,32 +101,11 @@ const Footer = () => {
             </Stack>
           </Stack>
         </Grid>
-        <Grid item xs={6} md={3}>
-          <Stack>
-            <Typography gutterBottom variant="h5" sx={{ ml: { xs: 1, md: 2 } }}>
-              Quick Links
-            </Typography>
-            <Stack
-              onClick={() => navigate(HOME_ROUTE)}
-              direction="row"
-              alignItems="center"
-              sx={{
-                ml: { xs: 0, md: 1 },
-                p: 1,
-                borderRadius: "5px",
-                cursor: "pointer",
-                transition: "all 0.2s",
-                "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
-              }}
-            >
-              <Home sx={{ mr: 1 }} />
-              <Typography>Home</Typography>
-            </Stack>
-          </Stack>
-        </Grid>
       </Grid>
       <Divider />
-      <Typography align="center">Copyright © {COMPANY} {new Date().getFullYear()}</Typography>
+      <Typography align="center">
+        Copyright © {COMPANY} {new Date().getFullYear()}
+      </Typography>
     </Stack>
   );
 };

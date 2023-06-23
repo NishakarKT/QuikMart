@@ -28,13 +28,13 @@ import { Close, Add, SyncAlt } from "@mui/icons-material";
 import AdminContext from "../../contexts/AdminContext";
 // constants
 import { AUTH_ADMIN_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
-import { PRODUCT_NEW_PRODUCT_ENDPOINT, FILE_NEW_FILES_ENDPOINT } from "../../constants/endpoints";
+import { ADMIN_NEW_DOCUMENT_ENDPOINT, FILE_NEW_FILES_ENDPOINT } from "../../constants/endpoints";
 import { categories, currencies } from "../../constants/data";
 // components
 import Footer from "../../components/Footer";
 // vars
-const product = {
-  title: "Sample Product",
+const document = {
+  title: "Sample Document",
   category: categories[0],
   desc: "A good description attracts more customers!",
   price: 99,
@@ -43,7 +43,7 @@ const product = {
   files: [],
 };
 
-const NewProducts = () => {
+const NewDocuments = () => {
   const formRef = useRef(null);
   const filesRef = useRef(null);
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ const NewProducts = () => {
     if (!user) navigate(AUTH_ADMIN_ROUTE);
   }, [user, navigate]);
 
-  const handleNewProduct = (e) => {
+  const handleNewDocument = (e) => {
     e.preventDefault();
     const form = e.target;
     const data = {},
@@ -74,7 +74,7 @@ const NewProducts = () => {
     try {
       setIsLoading(true);
       axios
-        .post(PRODUCT_NEW_PRODUCT_ENDPOINT, data)
+        .post(ADMIN_NEW_DOCUMENT_ENDPOINT, data)
         .then((res) => {
           if (updatedFiles.length) {
             try {
@@ -155,7 +155,7 @@ const NewProducts = () => {
                 <Stack flex={2} sx={{ width: "100%", overflowX: "hidden", overflowY: "auto" }}>
                   <Grid item xs={12} mb={{ xs: 5, md: 0 }}>
                     <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                      New Product
+                      New Document
                     </Typography>
                     <Stack
                       display={{ xs: "flex", md: "none" }}
@@ -186,10 +186,10 @@ const NewProducts = () => {
                         ))}
                       </Carousel>
                     </Stack>
-                    <form onSubmit={handleNewProduct} ref={formRef}>
+                    <form onSubmit={handleNewDocument} ref={formRef}>
                       <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
-                          <TextField required name="title" label="Title" fullWidth variant="standard" defaultValue={product["title"]} />
+                          <TextField required name="title" label="Title" fullWidth variant="standard" defaultValue={document["title"]} />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           <FormControl fullWidth>
@@ -198,7 +198,7 @@ const NewProducts = () => {
                             </InputLabel>
                             <NativeSelect defaultValue={categories[0]} inputProps={{ name: "category", id: "uncontrolled-native" }}>
                               {categories.map((category) => (
-                                <option key={"Dashboard_NewProduct_category_" + category.title} value={category.title}>
+                                <option key={"Dashboard_NewDocument_category_" + category.title} value={category.title}>
                                   {category.title}
                                 </option>
                               ))}
@@ -214,7 +214,7 @@ const NewProducts = () => {
                             label="Description"
                             name="desc"
                             rows={5}
-                            defaultValue={product["desc"]}
+                            defaultValue={document["desc"]}
                           />
                         </Grid>
                         <Grid item xs={12} sm={3}>
@@ -224,7 +224,7 @@ const NewProducts = () => {
                             label="Price"
                             fullWidth
                             variant="standard"
-                            defaultValue={product["price"]}
+                            defaultValue={document["price"]}
                             type="number"
                           />
                         </Grid>
@@ -238,7 +238,7 @@ const NewProducts = () => {
                               inputProps={{ name: "currency", id: "uncontrolled-native" }}
                             >
                               {Object.keys(currencies).map((currency) => (
-                                <option key={"Dashboard_NewProduct_currency_" + currency} value={currency}>
+                                <option key={"Dashboard_NewDocument_currency_" + currency} value={currency}>
                                   {currencies[currency]}
                                 </option>
                               ))}
@@ -246,12 +246,12 @@ const NewProducts = () => {
                           </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={3}>
-                          <TextField required name="deal" label="Deal" fullWidth variant="standard" defaultValue={product["deal"]} />
+                          <TextField required name="deal" label="Deal" fullWidth variant="standard" defaultValue={document["deal"]} />
                         </Grid>
                         <Grid item xs={12} sm={3}>
                           <FormGroup>
                             <FormControlLabel
-                              control={<Switch sx={{ m: 1 }} defaultChecked={product["availability"] === "true"} name="availability" />}
+                              control={<Switch sx={{ m: 1 }} defaultChecked={document["availability"] === "true"} name="availability" />}
                               label={"Availability"}
                             />
                           </FormGroup>
@@ -275,7 +275,7 @@ const NewProducts = () => {
             Profile Incomplete!
           </Typography>
           <Typography component="p" variant="body1" align="center" color="text.secondary">
-            Update your profile with all the necessary details to become a product/service provider!
+            Update your profile with all the necessary details to become a document/service provider!
           </Typography>
           <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
             Update Profile
@@ -287,4 +287,4 @@ const NewProducts = () => {
   );
 };
 
-export default NewProducts;
+export default NewDocuments;

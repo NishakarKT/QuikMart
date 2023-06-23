@@ -11,7 +11,7 @@ import { COMPANY } from "../../constants/variables";
 import { CART_ROUTE, HOME_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
 import { PRODUCT_EMPTY_WISHLIST_ENDPOINT, PRODUCT_WISHLIST_TO_CART_ENDPOINT } from "../../constants/endpoints";
 // mui
-import { Container, Grid, Stack, Button, Pagination, Typography } from "@mui/material";
+import { Box, Grid, Stack, Button, Pagination, Typography } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 //  variables
@@ -68,8 +68,8 @@ const Wishlist = () => {
         <title>Wishlist | {COMPANY}</title>
       </Helmet>
       {user ? (
-        <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
-          <Stack pt={9}>
+        <Box p={2}>
+          <Stack>
             {wishlist.length ? (
               <>
                 <Stack justifyContent="flex-end" direction="row" spacing={1} px={1}>
@@ -108,7 +108,7 @@ const Wishlist = () => {
               </Stack>
             )}
           </Stack>
-        </Container>
+        </Box>
       ) : null}
     </>
   );

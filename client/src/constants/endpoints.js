@@ -6,6 +6,12 @@ export const AUTH_OTP_GENERATE_ENDPOINT = BASE + "/auth/otp-generate";
 export const AUTH_OTP_VERIFY_ENDPOINT = BASE + "/auth/otp-verify";
 // user endpoints
 export const USER_ENDPOINT = BASE + "/user";
+// admin endpoints
+export const ADMIN_GET_COLLECTIONS_ENDPOINT = BASE + "/admin/get-collections";
+export const ADMIN_GET_DOCUMENTS_ENDPOINT = BASE + "/admin/get-documents";
+export const ADMIN_REMOVE_DOCUMENTS_ENDPOINT = BASE + "/admin/remove-documents";
+export const ADMIN_NEW_DOCUMENT_ENDPOINT = BASE + "/admin/new-document";
+export const ADMIN_EDIT_DOCUMENT_ENDPOINT = BASE + "/admin/edit-document";
 // product endpoints
 export const PRODUCT_REMOVE_PRODUCTS_ENDPOINT = BASE + "/product/remove-products";
 export const PRODUCTS_GET_WISHLIST_ENDPOINT = BASE + "/product/get-wishlist";

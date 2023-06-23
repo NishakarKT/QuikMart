@@ -5,6 +5,7 @@ import { upload } from "./services/file-services.js";
 import * as miscControllers from "./controllers/misc-controllers.js";
 import * as authControllers from "./controllers/auth-controllers.js";
 import * as userControllers from "./controllers/user-controllers.js";
+import * as adminControllers from "./controllers/admin-controllers.js";
 import * as productsControllers from "./controllers/products-controllers.js";
 import * as fileControllers from "./controllers/file-controllers.js";
 
@@ -21,6 +22,11 @@ Router.post("/auth/otp-verify", authControllers.otp_verify);
 Router.get("/user", userControllers.getUser);
 Router.patch("/user", userControllers.editUser);
 Router.delete("/user", userControllers.removeUser);
+// Admin Routes
+Router.get("/admin/get-collections", adminControllers.getCollections);
+Router.get("/admin/get-documents", adminControllers.getDocuments);
+Router.delete("/admin/remove-documents", adminControllers.removeDocuments);
+Router.patch("/admin/edit-document", adminControllers.editDocument);
 // Products Routes
 Router.delete("/product/remove-products", productsControllers.removeProducts);
 Router.get("/product/get-products-by-query", productsControllers.getProductsByQuery);

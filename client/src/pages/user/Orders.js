@@ -8,9 +8,9 @@ import { COMPANY } from "../../constants/variables";
 import { CART_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
 // mui
 import {
+  Box,
   Stack,
   Button,
-  Container,
   Pagination,
   Typography,
   Paper,
@@ -61,7 +61,7 @@ const Orders = () => {
         <title>Orders | {COMPANY}</title>
       </Helmet>
       {user ? (
-        <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
+        <Box p={2}>
           <Stack direction="row" justifyContent="space-between" mb={2}>
             <Typography component="h2" variant="h5">
               Pending Orders
@@ -153,7 +153,7 @@ const Orders = () => {
               </Button>
             </Stack>
           )}
-        </Container>
+        </Box>
       ) : null}
     </>
   );

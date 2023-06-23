@@ -1,5 +1,6 @@
 import React, { useState, useContext, lazy, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 // mui
 import { styled } from "@mui/material/styles";
 import {
@@ -32,9 +33,10 @@ import AppContext from "../../contexts/AppContext";
 import AdminContext from "../../contexts/AdminContext";
 // constants
 import { HOME_ROUTE, ADMIN_ROUTE, ADMIN_NEW_ROUTE } from "../../constants/routes";
+import { ADMIN_GET_COLLECTIONS_ENDPOINT, ADMIN_GET_DOCUMENTS_ENDPOINT } from "../../constants/endpoints";
 // pages
-const NewProducts = lazy(() => import("./NewProducts"));
-const Products = lazy(() => import("./Products"));
+const NewDocument = lazy(() => import("./NewDocument"));
+const Documents = lazy(() => import("./Documents"));
 
 const drawerWidth = 240;
 
@@ -85,29 +87,49 @@ const Index = () => {
   const location = useLocation();
   const [user, setUser] = useState({});
   const [open, setOpen] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [collection, setCollection] = useState("");
+  const [collections, setCollections] = useState([]);
+  const [documents, setDocuments] = useState([]);
   const { users, mode, handleMode } = useContext(AppContext);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const isProfileComplete = (user) => user.email
-    // user &&
-    // user.name &&
-    // user.email &&
-    // user.contact &&
-    // user.address1 &&
-    // user.city &&
-    // user.state &&
-    // user.country &&
-    // user.zip &&
-    // user.location?.coordinates?.length;
+  const isProfileComplete = (user) => user.email;
+  // user &&
+  // user.name &&
+  // user.email &&
+  // user.contact &&
+  // user.address1 &&
+  // user.city &&
+  // user.state &&
+  // user.country &&
+  // user.zip &&
+  // user.location?.coordinates?.length;
 
   useEffect(() => {
     const user = users.find((user) => user.role === "admin");
     setUser(user);
+    if (user._id) {
+      axios
+        .get(ADMIN_GET_COLLECTIONS_ENDPOINT, { params: { _id: user._id } })
+        .then((res) => {
+          if (res.data.data.length) {
+            setCollection(res.data.data[0].name);
+            setCollections(res.data.data.map((item) => item.name));
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   }, [users]);
+
+  useEffect(() => {
+    axios
+      .get(ADMIN_GET_DOCUMENTS_ENDPOINT, { params: { name: collection } })
+      .then((res) => setDocuments(res.data.data))
+      .catch((err) => console.log(err));
+  }, [collection]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -135,7 +157,7 @@ const Index = () => {
             aria-label="open drawer"
             onClick={toggleDrawer}
             sx={{
-              display: {xs: "none", sm: "block"},
+              display: { xs: "none", sm: "block" },
               marginRight: "36px",
               ...(open && { display: "none" }),
             }}
@@ -169,7 +191,7 @@ const Index = () => {
             <ListItemIcon>
               <PrecisionManufacturingIcon />
             </ListItemIcon>
-            <ListItemText primary="Products" />
+            <ListItemText primary="Documents" />
           </ListItemButton>
           <ListItemButton
             sx={{ backgroundColor: location.pathname === ADMIN_NEW_ROUTE ? colors.grey[300] : "" }}
@@ -178,7 +200,7 @@ const Index = () => {
             <ListItemIcon>
               <AddIcon />
             </ListItemIcon>
-            <ListItemText primary="New Products" />
+            <ListItemText primary="New Document" />
           </ListItemButton>
           <ListItemButton onClick={() => navigate(HOME_ROUTE)}>
             <ListItemIcon>
@@ -188,10 +210,12 @@ const Index = () => {
           </ListItemButton>
         </List>
       </Drawer>
-      <AdminContext.Provider value={{ user, isProfileComplete, products, setProducts }}>
+      <AdminContext.Provider
+        value={{ user, isProfileComplete, documents, setDocuments, collection, setCollection, collections, setCollections }}
+      >
         <Routes>
-          <Route exact path="/new/*" element={<NewProducts />} />
-          <Route exact path="/*" element={<Products />} />
+          <Route exact path="/new/*" element={<NewDocument />} />
+          <Route exact path="/*" element={<Documents />} />
         </Routes>
       </AdminContext.Provider>
     </Box>

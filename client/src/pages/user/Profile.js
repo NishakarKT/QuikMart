@@ -10,7 +10,7 @@ import { COMPANY } from "../../constants/variables";
 import { AUTH_USER_ROUTE } from "../../constants/routes";
 import { USER_ENDPOINT, FILE_NEW_FILE_ENDPOINT } from "../../constants/endpoints";
 // mui
-import { Stack, Box, Grid, Container, Button, TextField, Typography, CardMedia } from "@mui/material";
+import { Stack, Box, Grid, Button, TextField, Typography, CardMedia } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { SyncAlt, Edit, AddLocation } from "@mui/icons-material";
 // utils
@@ -143,7 +143,7 @@ const Profile = () => {
         <title>Profile | User | {COMPANY}</title>
       </Helmet>
       {user ? (
-        <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
+        <Box p={2}>
           <Grid container>
             <Grid item xs={12} md={8} mb={{ xs: 5, md: 0 }}>
               <Typography component="h1" variant="h4">
@@ -329,7 +329,7 @@ const Profile = () => {
               />
             </Grid>
           </Grid>
-        </Container>
+        </Box>
       ) : null}
     </>
   );

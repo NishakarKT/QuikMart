@@ -10,7 +10,6 @@ import UserContext from "../../contexts/UserContext";
 import { Container, Typography, Stack, Avatar, Box, Button } from "@mui/material";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 // components
-import LocationRangeSearch from "../../components/LocationRangeSearch";
 import ProductCard from "../../components/ProductCard";
 // utils
 import { truncateStr } from "../../utils";
@@ -28,7 +27,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Container disableGutters sx={{ maxWidth: "100% !important", overflowX: "hidden", backgroundColor: "primary" }}>
+    <>
       <Helmet>
         <title>Home | {COMPANY}</title>
       </Helmet>
@@ -105,9 +104,16 @@ const Home = () => {
           </Carousel>
         </React.Fragment>
       ) : (
-        <LocationRangeSearch />
+        <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
+          <Typography color="text.secondary" component="p" variant="h4" align="center">
+            No Products Yet!
+          </Typography>
+          <Typography color="text.secondary" component="p" variant="body1" align="center">
+            There haven't been added any products yet. Try again after sometime!
+          </Typography>
+        </Stack>
       )}
-    </Container>
+    </>
   );
 };
 

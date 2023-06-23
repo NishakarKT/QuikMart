@@ -37,7 +37,7 @@ const Order = ({ index, order, isPast }) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <TableRow
         onClick={() => setOpen((open) => !open)}
         sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer", "&::hover": { backgroundColor: "rgba(0, 0, 0, 0.5)" } }}
@@ -106,7 +106,7 @@ const Order = ({ index, order, isPast }) => {
           </Collapse>
         </TableCell>
       </TableRow>
-    </React.Fragment>
+    </>
   );
 };
 

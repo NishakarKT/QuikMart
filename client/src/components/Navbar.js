@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // constants
-import { COMPANY } from "../constants/variables";
-import { AUTH_ROUTE, CART_ROUTE, HOME_ROUTE, PROFILE_ROUTE, SEARCH_ROUTE, WISHLIST_ROUTE, ORDERS_ROUTE } from "../constants/routes";
+import { COMPANY, COMPANY2 } from "../constants/variables";
+import { AUTH_ROUTE, CART_ROUTE, HOME_ROUTE, PROFILE_ROUTE, WISHLIST_ROUTE, ORDERS_ROUTE } from "../constants/routes";
 import { IMAGES_WEBSITE_LOGO_WHITE_PNG } from "../constants/images";
 import { UPLOAD_URL } from "../constants/urls";
 // contexts
@@ -32,7 +32,7 @@ import { Search, MoreVert, Login, Logout, Favorite, ShoppingCart, AccountCircle,
 const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
-  const { users, setUsers, role, category } = useContext(AppContext);
+  const { users, setUsers, role } = useContext(AppContext);
   const { wishlist, cart, orders, products } = useContext(HomeContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
@@ -96,7 +96,7 @@ const Navbar = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const query = formData.get("query");
-    navigate(SEARCH_ROUTE + "/" + query);
+    console.log(query)
   };
 
   useEffect(() => {
@@ -119,7 +119,7 @@ const Navbar = () => {
               {COMPANY}
             </Typography>
             <Typography variant="h6" noWrap component="div" sx={{ display: { xs: "none", sm: "block" }, fontSize: "12px" }}>
-              {category}
+              {COMPANY2}
             </Typography>
           </Stack>
           <form style={{ flex: "1" }} onSubmit={(e) => handleQuery(e)}>

@@ -4,7 +4,6 @@ export const ORDERS_ROUTE = "/orders";
 export const CART_ROUTE = "/cart";
 export const WISHLIST_ROUTE = "/wishlist";
 export const CHECKOUT_ROUTE = "/checkout";
-export const SEARCH_ROUTE = "/search";
 export const HISTORY_ROUTE = "/history";
 export const PROFILE_ROUTE = "/profile";
 // vendor Routes

@@ -3,8 +3,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { Routes, Route } from "react-router-dom";
 // mui
-import { makeStyles } from "@mui/styles";
-import { Container, Drawer, Toolbar } from "@mui/material";
+import { Drawer, Toolbar } from "@mui/material";
 // constants
 import { COMPANY } from "../../constants/variables";
 import {
@@ -33,17 +32,8 @@ const Orders = lazy(() => import("./Orders"));
 const Cart = lazy(() => import("./Cart"));
 const WishList = lazy(() => import("./WishList"));
 const Profile = lazy(() => import("./Profile"));
-const Search = lazy(() => import("./Search"));
-// styles
-const useStyles = makeStyles({
-  container: {
-    maxWidth: "100% !important",
-    overflowX: "hidden",
-  },
-});
 
 const Index = () => {
-  const classes = useStyles();
   const [user, setUser] = useState({});
   const { users, mode, handleMode, category, setCategory } = useContext(AppContext);
   const [product, setProduct] = useState(null);
@@ -136,7 +126,7 @@ const Index = () => {
   const handleLocationRange = () => getProducts(locationRange[0], locationRange[1]);
 
   return (
-    <Container disableGutters className={classes.container}>
+    <>
       <Helmet>
         <title>Home | {COMPANY}</title>
       </Helmet>
@@ -173,7 +163,6 @@ const Index = () => {
         <Navbar />
         <Toolbar />
         <Routes>
-          <Route exact path="/search/:query" element={<Search />} />
           <Route exact path="/orders" element={<Orders />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="wishlist" element={<WishList />} />
@@ -192,7 +181,7 @@ const Index = () => {
         {/* <SelectCategoryDialog category={category} setCategory={setCategory} categoryOpen={categoryOpen} setCategoryOpen={setCategoryOpen} /> */}
         <Footer />
       </UserContext.Provider>
-    </Container>
+    </>
   );
 };
 

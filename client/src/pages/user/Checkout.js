@@ -6,7 +6,7 @@ import { products } from "../../constants/data";
 import { COMPANY } from "../../constants/variables";
 import { HOME_ROUTE } from "../../constants/routes";
 // mui
-import { Box, Grid, Container, Button, TextField, Typography, List, ListItem, ListItemText, Link } from "@mui/material";
+import { Box, Grid, Button, TextField, Typography, List, ListItem, ListItemText, Link } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -21,7 +21,7 @@ const WishList = () => {
   const clearOrder = () => {};
 
   return (
-    <Container component="main" sx={{ my: 10 }}>
+    <>
       <Helmet>
         <title>WishList | {COMPANY}</title>
       </Helmet>
@@ -123,7 +123,7 @@ const WishList = () => {
           )}
         </Grid>
       </Grid>
-    </Container>
+    </>
   );
 };
 
