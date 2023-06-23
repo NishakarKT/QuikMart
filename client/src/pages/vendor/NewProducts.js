@@ -112,61 +112,27 @@ const NewProducts = () => {
   };
 
   return (
-    user ? <Box
+    <Box
       component="main"
       sx={{
-        backgroundColor: (theme) => (mode === "dark" ? theme.palette.grey[900] : theme.palette.grey[100]),
+        backgroundColor: (theme) => (theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900]),
         flexGrow: 1,
         height: "100vh",
         overflow: "auto",
       }}
     >
       <Toolbar />
-      <Paper
-        sx={{
-          p: 2,
-          m: 2,
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {isProfileComplete(user) ? (
-          <Stack direction="row">
-            <Stack
-              flex={{ xs: 0, md: 1 }}
-              justifyContent="center"
-              sx={{ position: "relative", backgroundColor: mode === "dark" ? "black" : "lightgray" }}
-            >
-              <input ref={filesRef} accept="image/*" onChange={handleFiles} name="files" type="file" multiple hidden />
-              <Fab
-                onClick={() => filesRef.current?.click()}
-                sx={{ position: "absolute", bottom: 16, right: 16 }}
-                color="primary"
-                aria-label="add"
-              >
-                <Add />
-              </Fab>
-              <Carousel stopOnHover={false} showStatus={false} showThumbs={false}>
-                {files.map((file) => (
-                  <div key={URL.createObjectURL(file)} style={{ position: "relative" }}>
-                    <Fab onClick={() => handleDelete(file)} sx={{ position: "absolute", top: 8, right: 8 }} size="small" color="error">
-                      <Close fontSize="medium" />
-                    </Fab>
-                    <img style={{ width: "100%" }} src={URL.createObjectURL(file)} alt="" loading="lazy" />
-                  </div>
-                ))}
-              </Carousel>
-            </Stack>
-            <Stack flex={2} p={2} style={{ width: "100%", overflowX: "hidden", overflowY: "auto" }}>
-              <Grid item xs={12} md={8} mb={{ xs: 5, md: 0 }}>
-                <Typography component="h1" variant="h4" gutterBottom>
-                  New Product
-                </Typography>
+      {isProfileComplete(user) ? (
+        <Grid container spacing={2} sx={{ p: 2 }}>
+          <Grid item xs={12}>
+            <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+              <Stack direction="row" spacing={2}>
                 <Stack
-                  display={{ xs: "flex", md: "none" }}
+                  flex={{ xs: 0, md: 1 }}
                   justifyContent="center"
-                  sx={{ position: "relative", backgroundColor: mode === "dark" ? "black" : "lightgray", minHeight: "200px", mb: 2 }}
+                  sx={{ position: "relative", backgroundColor: mode === "dark" ? "black" : "lightgray" }}
                 >
+                  <input ref={filesRef} accept="image/*" onChange={handleFiles} name="files" type="file" multiple hidden />
                   <Fab
                     onClick={() => filesRef.current?.click()}
                     sx={{ position: "absolute", bottom: 16, right: 16 }}
@@ -186,102 +152,138 @@ const NewProducts = () => {
                     ))}
                   </Carousel>
                 </Stack>
-                <form onSubmit={handleNewProduct} ref={formRef}>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6}>
-                      <TextField required name="title" label="Title" fullWidth variant="standard" defaultValue={product["title"]} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth>
-                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                          Category
-                        </InputLabel>
-                        <NativeSelect defaultValue={categories[0]} inputProps={{ name: "category", id: "uncontrolled-native" }}>
-                          {categories.map((category) => (
-                            <option key={"Dashboard_NewProduct_category_" + category.title} value={category.title}>
-                              {category.title}
-                            </option>
-                          ))}
-                        </NativeSelect>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        required
-                        multiline
-                        fullWidth
-                        placeholder="A good description attracts more customers!"
-                        label="Description"
-                        name="desc"
-                        rows={5}
-                        defaultValue={product["desc"]}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                      <TextField
-                        required
-                        name="price"
-                        label="Price"
-                        fullWidth
-                        variant="standard"
-                        defaultValue={product["price"]}
-                        type="number"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                      <FormControl fullWidth>
-                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                          Currency
-                        </InputLabel>
-                        <NativeSelect
-                          defaultValue={Object.keys(currencies)[Object.keys(currencies).findIndex((currency) => currency === "INR")]}
-                          inputProps={{ name: "currency", id: "uncontrolled-native" }}
-                        >
-                          {Object.keys(currencies).map((currency) => (
-                            <option key={"Dashboard_NewProduct_currency_" + currency} value={currency}>
-                              {currencies[currency]}
-                            </option>
-                          ))}
-                        </NativeSelect>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                      <TextField required name="deal" label="Deal" fullWidth variant="standard" defaultValue={product["deal"]} />
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                      <FormGroup>
-                        <FormControlLabel
-                          control={<Switch sx={{ m: 1 }} defaultChecked={product["availability"] === "true"} name="availability" />}
-                          label={"Availability"}
-                        />
-                      </FormGroup>
-                    </Grid>
+                <Stack flex={2} sx={{ width: "100%", overflowX: "hidden", overflowY: "auto" }}>
+                  <Grid item xs={12} mb={{ xs: 5, md: 0 }}>
+                    <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                      New Product
+                    </Typography>
+                    <Stack
+                      display={{ xs: "flex", md: "none" }}
+                      justifyContent="center"
+                      sx={{ position: "relative", backgroundColor: mode === "dark" ? "black" : "lightgray", minHeight: "200px", mb: 2 }}
+                    >
+                      <Fab
+                        onClick={() => filesRef.current?.click()}
+                        sx={{ position: "absolute", bottom: 16, right: 16 }}
+                        color="primary"
+                        aria-label="add"
+                      >
+                        <Add />
+                      </Fab>
+                      <Carousel stopOnHover={false} showStatus={false} showThumbs={false}>
+                        {files.map((file) => (
+                          <div key={URL.createObjectURL(file)} style={{ position: "relative" }}>
+                            <Fab
+                              onClick={() => handleDelete(file)}
+                              sx={{ position: "absolute", top: 8, right: 8 }}
+                              size="small"
+                              color="error"
+                            >
+                              <Close fontSize="medium" />
+                            </Fab>
+                            <img style={{ width: "100%" }} src={URL.createObjectURL(file)} alt="" loading="lazy" />
+                          </div>
+                        ))}
+                      </Carousel>
+                    </Stack>
+                    <form onSubmit={handleNewProduct} ref={formRef}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                          <TextField required name="title" label="Title" fullWidth variant="standard" defaultValue={product["title"]} />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <FormControl fullWidth>
+                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                              Category
+                            </InputLabel>
+                            <NativeSelect defaultValue={categories[0]} inputProps={{ name: "category", id: "uncontrolled-native" }}>
+                              {categories.map((category) => (
+                                <option key={"Dashboard_NewProduct_category_" + category.title} value={category.title}>
+                                  {category.title}
+                                </option>
+                              ))}
+                            </NativeSelect>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            required
+                            multiline
+                            fullWidth
+                            placeholder="A good description attracts more customers!"
+                            label="Description"
+                            name="desc"
+                            rows={5}
+                            defaultValue={product["desc"]}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <TextField
+                            required
+                            name="price"
+                            label="Price"
+                            fullWidth
+                            variant="standard"
+                            defaultValue={product["price"]}
+                            type="number"
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <FormControl fullWidth>
+                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                              Currency
+                            </InputLabel>
+                            <NativeSelect
+                              defaultValue={Object.keys(currencies)[Object.keys(currencies).findIndex((currency) => currency === "INR")]}
+                              inputProps={{ name: "currency", id: "uncontrolled-native" }}
+                            >
+                              {Object.keys(currencies).map((currency) => (
+                                <option key={"Dashboard_NewProduct_currency_" + currency} value={currency}>
+                                  {currencies[currency]}
+                                </option>
+                              ))}
+                            </NativeSelect>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <TextField required name="deal" label="Deal" fullWidth variant="standard" defaultValue={product["deal"]} />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <FormGroup>
+                            <FormControlLabel
+                              control={<Switch sx={{ m: 1 }} defaultChecked={product["availability"] === "true"} name="availability" />}
+                              label={"Availability"}
+                            />
+                          </FormGroup>
+                        </Grid>
+                      </Grid>
+                      <Stack spacing={2} direction="row" justifyContent={"space-between"} sx={{ display: "flex", mt: 2 }}>
+                        <LoadingButton loading={isLoading} type="submit" variant="contained" startIcon={<SyncAlt />}>
+                          Upload
+                        </LoadingButton>
+                      </Stack>
+                    </form>
                   </Grid>
-                  <Stack spacing={2} direction="row" justifyContent={"space-between"} sx={{ display: "flex", mt: 2 }}>
-                    <LoadingButton loading={isLoading} type="submit" variant="contained" startIcon={<SyncAlt />}>
-                      Upload
-                    </LoadingButton>
-                  </Stack>
-                </form>
-              </Grid>
-            </Stack>
-          </Stack>
-        ) : (
-          <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
-            <Typography component="p" variant="h4" align="center" color="error">
-              Profile Incomplete!
-            </Typography>
-            <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
-              Update your profile with all the necessary details to become a product/service provider!
-            </Typography>
-            <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
-              Update Profile
-            </Button>
-          </Stack>
-        )}
-      </Paper>
+                </Stack>
+              </Stack>
+            </Paper>
+          </Grid>
+        </Grid>
+      ) : (
+        <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
+          <Typography component="p" variant="h4" align="center" color="error">
+            Profile Incomplete!
+          </Typography>
+          <Typography component="p" variant="body1" align="center" color="text.secondary">
+            Update your profile with all the necessary details to become a product/service provider!
+          </Typography>
+          <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
+            Update Profile
+          </Button>
+        </Stack>
+      )}
       <Footer />
-    </Box> : <></>
+    </Box>
   );
 };
 

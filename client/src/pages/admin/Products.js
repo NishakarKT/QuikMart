@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // contexts
 import AppContext from "../../contexts/AppContext";
-import VendorContext from "../../contexts/VendorContext";
+import AdminContext from "../../contexts/AdminContext";
 // constants
 import { PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT } from "../../constants/endpoints";
-import { VENDOR_NEW_PRODUCTS_ROUTE, AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
+import { ADMIN_NEW_PRODUCTS_ROUTE, AUTH_ADMIN_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
 // mui
 import {
   Stack,
@@ -36,12 +36,12 @@ const Products = () => {
   const navigate = useNavigate();
   const containerRef = useRef(null);
   const { mode } = useContext(AppContext);
-  const { user, isProfileComplete, products, setProducts } = useContext(VendorContext);
+  const { user, isProfileComplete, products, setProducts } = useContext(AdminContext);
   const [page, setPage] = useState(1);
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    if (!user) navigate(AUTH_VENDOR_ROUTE);
+    if (!user) navigate(AUTH_ADMIN_ROUTE);
     else if (user._id) {
       axios
         .get(PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT, { params: { owner: user._id } })
@@ -169,7 +169,7 @@ const Products = () => {
                 <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
                   You haven't added any products/services. Add one to attract customers!
                 </Typography>
-                <Button onClick={() => navigate(VENDOR_NEW_PRODUCTS_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
+                <Button onClick={() => navigate(ADMIN_NEW_PRODUCTS_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
                   Create a Product/Service
                 </Button>
               </Stack>

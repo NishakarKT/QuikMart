@@ -27,13 +27,14 @@ import HomeIcon from "@mui/icons-material/Home";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 // contexts
 import AppContext from "../../contexts/AppContext";
 import AdminContext from "../../contexts/AdminContext";
 // constants
 import { PRODUCT_GET_ORDERS_ENDPOINT } from "../../constants/endpoints";
-import { HOME_ROUTE, ADMIN_ROUTE, ADMIN_PRODUCTS_ROUTE } from "../../constants/routes";
+import { HOME_ROUTE, ADMIN_ROUTE, ADMIN_PRODUCTS_ROUTE, ADMIN_PROFILE_ROUTE } from "../../constants/routes";
 // pages
 const Dashboard = lazy(() => import("./Dashboard"));
 const NewProducts = lazy(() => import("./NewProducts"));
@@ -188,6 +189,15 @@ const Index = () => {
               <PrecisionManufacturingIcon />
             </ListItemIcon>
             <ListItemText primary="Products" />
+          </ListItemButton>
+          <ListItemButton
+            sx={{ backgroundColor: location.pathname === ADMIN_PROFILE_ROUTE ? colors.grey[300] : "" }}
+            onClick={() => navigate(ADMIN_PROFILE_ROUTE)}
+          >
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
           </ListItemButton>
           <ListItemButton onClick={() => navigate(HOME_ROUTE)}>
             <ListItemIcon>

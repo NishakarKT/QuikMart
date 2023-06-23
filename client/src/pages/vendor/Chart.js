@@ -14,7 +14,7 @@ const Chart = ({ chartData }) => {
   }, [chartData, setData]);
 
   return (
-    <React.Fragment>
+    <>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
         Insights
       </Typography>
@@ -64,7 +64,7 @@ const Chart = ({ chartData }) => {
           />
         </LineChart>
       </ResponsiveContainer>
-    </React.Fragment>
+    </>
   );
 };
 

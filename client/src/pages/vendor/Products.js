@@ -9,6 +9,7 @@ import { PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT } from "../../constants/endpoint
 import { VENDOR_NEW_PRODUCTS_ROUTE, AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
 // mui
 import {
+  Grid,
   Stack,
   Autocomplete,
   Button,
@@ -23,7 +24,6 @@ import {
   Typography,
   Paper,
   Toolbar,
-  Container,
   TextField,
 } from "@mui/material";
 // components
@@ -64,77 +64,46 @@ const Products = () => {
   const handleSearch = (productId) => setProduct(products.find((product) => product._id === productId));
 
   return (
-    user ? <Box
-      ref={containerRef}
+    <Box
       component="main"
       sx={{
-        backgroundColor: (theme) => (mode === "dark" ? theme.palette.grey[900] : theme.palette.grey[100]),
+        backgroundColor: (theme) => (theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900]),
         flexGrow: 1,
         height: "100vh",
-        scrollBehavior: "smooth",
         overflow: "auto",
       }}
     >
       <Toolbar />
-      <Paper
-        sx={{
-          p: 2,
-          m: 2,
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {isProfileComplete(user) ? (
-          <>
-            <Stack direction={"row"} alignItems="center">
-              <Typography component="h1" variant="h4" sx={{ mr: 2 }}>
-                Products
+      {isProfileComplete(user) ? (
+        <Grid container spacing={2} sx={{ p: 2 }}>
+          {/* <Grid item xs={12}>
+            <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+              <Stack direction={"row"} alignItems="flex-end">
+                <Typography component="h1" variant="h5" sx={{ mr: 2 }}>
+                  Products
+                </Typography>
+                <Autocomplete
+                  autoHighlight
+                  fullWidth
+                  disablePortal
+                  onChange={(e, value) => handleSearch(value._id)}
+                  flex={1}
+                  options={products.map((product) => ({ label: product.title, _id: product._id }))}
+                  renderInput={(params) => (
+                    <TextField {...params} placeholder="Type to search among your products" variant="standard" label="Search Product" />
+                  )}
+                />
+              </Stack>
+            </Paper>
+          </Grid> */}
+          <Grid item xs={12}>
+            <Paper sx={{ p: 2, pb: 0, display: "flex", flexDirection: "column" }}>
+              <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                Your Products
               </Typography>
-              <Autocomplete
-                autoHighlight
-                fullWidth
-                disablePortal
-                onChange={(e, value) => handleSearch(value._id)}
-                flex={1}
-                options={products.map((product) => ({ label: product.title, _id: product._id }))}
-                renderInput={(params) => (
-                  <TextField {...params} placeholder="Type to search among your products" variant="standard" label="Search Product" />
-                )}
-              />
-            </Stack>
-            {product ? (
-              <React.Fragment>
-                <Typography p={2} pt={0} component="h2" variant="h5">
-                  Search Results
-                </Typography>
-                <Container sx={{ px: "16px !important" }}>
-                  <TableContainer sx={{ mb: 2 }} component={Paper}>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell align="center">Sl No.</TableCell>
-                          <TableCell align="center">Title</TableCell>
-                          <TableCell align="center">Category</TableCell>
-                          <TableCell align="center">Price</TableCell>
-                          <TableCell align="center">Currency</TableCell>
-                          <TableCell align="center">Availability</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        <Product index={0} product={product} setProducts={setProducts} />
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Container>
-              </React.Fragment>
-            ) : null}
-            {products.length ? (
-              <React.Fragment>
-                <Typography p={2} pt={0} component="h2" variant="h5">
-                  Your Products
-                </Typography>
-                <Container sx={{ px: "16px !important" }}>
-                  <TableContainer component={Paper}>
+              {products.length ? (
+                <>
+                  <TableContainer>
                     <Table>
                       <TableHead>
                         <TableRow>
@@ -159,38 +128,64 @@ const Products = () => {
                     count={Math.ceil((products.length || 1) / ITEMS_PER_PAGE)}
                     color="primary"
                   />
-                </Container>
-              </React.Fragment>
-            ) : (
-              <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
-                <Typography component="p" variant="h4" align="center" sx={{ color: "grey" }}>
-                  No Products/Services
+                </>
+              ) : (
+                <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
+                  <Typography component="p" variant="h6" align="center" color="error">
+                    No Products!
+                  </Typography>
+                  <Typography component="p" variant="body1" align="center" color="text.secondary">
+                    You haven't added any products/services. Add one to attract customers!
+                  </Typography>
+                  <Button onClick={() => navigate(VENDOR_NEW_PRODUCTS_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
+                    Create a Product
+                  </Button>
+                </Stack>
+              )}
+            </Paper>
+          </Grid>
+          {product ? (
+            <Grid item xs={12}>
+              <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                <Typography p={2} pt={0} component="h2" variant="h5">
+                  Search Results
                 </Typography>
-                <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
-                  You haven't added any products/services. Add one to attract customers!
-                </Typography>
-                <Button onClick={() => navigate(VENDOR_NEW_PRODUCTS_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
-                  Create a Product/Service
-                </Button>
-              </Stack>
-            )}
-          </>
-        ) : (
-          <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
-            <Typography component="p" variant="h4" align="center" color="error">
-              Profile Incomplete!
-            </Typography>
-            <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
-              Update your profile with all the necessary details to become a product/service provider!
-            </Typography>
-            <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
-              Update Profile
-            </Button>
-          </Stack>
-        )}
-      </Paper>
+                <TableContainer sx={{ mb: 2 }} component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">Sl No.</TableCell>
+                        <TableCell align="center">Title</TableCell>
+                        <TableCell align="center">Category</TableCell>
+                        <TableCell align="center">Price</TableCell>
+                        <TableCell align="center">Currency</TableCell>
+                        <TableCell align="center">Availability</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <Product index={0} product={product} setProducts={setProducts} />
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+            </Grid>
+          ) : null}
+        </Grid>
+      ) : (
+        <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
+          <Typography component="p" variant="h4" align="center" color="error">
+            Profile Incomplete!
+          </Typography>
+          <Typography component="p" variant="body1" align="center" color="text.secondary">
+            Update your profile with all the necessary details to become a product/service provider!
+          </Typography>
+          <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
+            Update Profile
+          </Button>
+        </Stack>
+      )}
       <Footer />
-    </Box> : <></>
+    </Box>
   );
 };
 

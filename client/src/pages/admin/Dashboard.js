@@ -5,10 +5,8 @@ import {
   Stack,
   Box,
   Toolbar,
-  Container,
   Grid,
   Paper,
-  Link,
   Button,
   Typography,
   Table,
@@ -24,15 +22,15 @@ import Chart from "./Chart";
 import Order from "./Order";
 import Footer from "../../components/Footer";
 // contexts
-import VendorContext from "../../contexts/VendorContext";
+import AdminContext from "../../contexts/AdminContext";
 // constants
-import { AUTH_VENDOR_ROUTE, PROFILE_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PRODUCTS_ROUTE } from "../../constants/routes";
+import { AUTH_ADMIN_ROUTE, PROFILE_ROUTE, ADMIN_NEW_PRODUCTS_ROUTE, ADMIN_PRODUCTS_ROUTE } from "../../constants/routes";
 // data
 const ITEMS_PER_PAGE = 5;
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, orders, isProfileComplete } = useContext(VendorContext);
+  const { user, orders, isProfileComplete } = useContext(AdminContext);
   const [chartData, setChartData] = useState([]);
   const [sales, setSales] = useState(0);
   const [pendingOrders, setPendingOrders] = useState([]);
@@ -41,7 +39,7 @@ const Dashboard = () => {
   const [pastOrdersPage, setPastOrdersPage] = useState(1);
 
   useEffect(() => {
-    if (!user) navigate(AUTH_VENDOR_ROUTE);
+    if (!user) navigate(AUTH_ADMIN_ROUTE);
   }, [user, navigate]);
 
   useEffect(() => {
@@ -97,8 +95,8 @@ const Dashboard = () => {
       }}
     >
       <Toolbar />
-      {isProfileComplete(user) ? (
-        <Container maxWidth="100%" sx={{ mt: 4, mb: 4 }}>
+      <Paper sx={{ p: 2, m: 2, display: "flex", flexDirection: "column" }}>
+        {isProfileComplete(user) ? (
           <Grid container spacing={3}>
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
@@ -125,7 +123,9 @@ const Dashboard = () => {
                 <Typography color="text.secondary" sx={{ flex: 1, mb: 1 }}>
                   on {new Date().toLocaleDateString()}
                 </Typography>
-                <Button variant="contained" onClick={() => navigate(VENDOR_NEW_PRODUCTS_ROUTE)}>Create a Product</Button>
+                <Button variant="contained" onClick={() => navigate(ADMIN_NEW_PRODUCTS_ROUTE)}>
+                  Create a Product
+                </Button>
               </Paper>
             </Grid>
             {/* Orders */}
@@ -172,7 +172,7 @@ const Dashboard = () => {
                     <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
                       You haven't recieved orders recently. Go to your products!
                     </Typography>
-                    <Button onClick={() => navigate(VENDOR_PRODUCTS_ROUTE)} variant="contained">
+                    <Button onClick={() => navigate(ADMIN_PRODUCTS_ROUTE)} variant="contained">
                       Go To Products
                     </Button>
                   </Stack>
@@ -221,7 +221,7 @@ const Dashboard = () => {
                     <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
                       You haven't recieved orders in the past. Go to your products!
                     </Typography>
-                    <Button onClick={() => navigate(VENDOR_PRODUCTS_ROUTE)} variant="contained">
+                    <Button onClick={() => navigate(ADMIN_PRODUCTS_ROUTE)} variant="contained">
                       Go To Products
                     </Button>
                   </Stack>
@@ -229,23 +229,25 @@ const Dashboard = () => {
               </Paper>
             </Grid>
           </Grid>
-        </Container>
-      ) : (
-        <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
-          <Typography component="p" variant="h4" align="center" color="error">
-            Profile Incomplete!
-          </Typography>
-          <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
-            Update your profile with all the necessary details to become a product/service provider!
-          </Typography>
-          <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
-            Update Profile
-          </Button>
-        </Stack>
-      )}
+        ) : (
+          <Stack py={16} spacing={2} alignItems="center" justifyContent="center">
+            <Typography component="p" variant="h4" align="center" color="error">
+              Profile Incomplete!
+            </Typography>
+            <Typography component="p" variant="body1" align="center" sx={{ color: "grey" }}>
+              Update your profile with all the necessary details to become a product/service provider!
+            </Typography>
+            <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
+              Update Profile
+            </Button>
+          </Stack>
+        )}
+      </Paper>
       <Footer />
     </Box>
-  ) : null;
+  ) : (
+    <></>
+  );
 };
 
 export default Dashboard;

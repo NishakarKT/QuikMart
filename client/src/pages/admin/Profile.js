@@ -3,15 +3,29 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 // contexts
-import VendorContext from "../../contexts/VendorContext";
+import AdminContext from "../../contexts/AdminContext";
 // constants
 import { products } from "../../constants/data";
 import { UPLOAD_URL } from "../../constants/urls";
 import { COMPANY } from "../../constants/variables";
-import { AUTH_VENDOR_ROUTE, HISTORY_ROUTE } from "../../constants/routes";
+import { AUTH_ADMIN_ROUTE, HISTORY_ROUTE } from "../../constants/routes";
 import { USER_ENDPOINT, FILE_NEW_FILE_ENDPOINT } from "../../constants/endpoints";
 // mui
-import { Toolbar, Stack, Box, Grid, Container, Button, TextField, Typography, List, ListItem, ListItemText, Link, CardMedia } from "@mui/material";
+import {
+  Paper,
+  Toolbar,
+  Stack,
+  Box,
+  Grid,
+  Button,
+  TextField,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Link,
+  CardMedia,
+} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { SyncAlt, Edit, AddLocation } from "@mui/icons-material";
 // utils
@@ -20,7 +34,7 @@ import { getLocation } from "../../utils";
 const Profile = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
-  const { user, setUser } = useContext(VendorContext);
+  const { user, setUser } = useContext(AdminContext);
   const profilePicRef = useRef(null);
   const coverPicRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +45,7 @@ const Profile = () => {
   const [locationErr, setLocationErr] = useState(false);
 
   useEffect(() => {
-    if (!user) navigate(AUTH_VENDOR_ROUTE);
+    if (!user) navigate(AUTH_ADMIN_ROUTE);
     else if (user.location) setLocation(user.location.coordinates || []);
   }, [user, navigate]);
 
@@ -141,10 +155,10 @@ const Profile = () => {
   return (
     <>
       <Helmet>
-        <title>Profile | Vendor | {COMPANY}</title>
+        <title>Profile | Admin | {COMPANY}</title>
       </Helmet>
       {user ? (
-        <Container sx={{ maxWidth: "100vw !important", pt: 2 }}>
+        <Paper sx={{ p: 2, m: 2, display: "flex", flexDirection: "column" }}>
           <Toolbar />
           <Grid container>
             <Grid item xs={12} md={8} mb={{ xs: 5, md: 0 }}>
@@ -347,7 +361,7 @@ const Profile = () => {
               </List>
             </Grid>
           </Grid>
-        </Container>
+        </Paper>
       ) : null}
     </>
   );

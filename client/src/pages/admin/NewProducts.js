@@ -25,9 +25,9 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Close, Add, SyncAlt } from "@mui/icons-material";
 // contexts
-import VendorContext from "../../contexts/VendorContext";
+import AdminContext from "../../contexts/AdminContext";
 // constants
-import { AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
+import { AUTH_ADMIN_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
 import { PRODUCT_NEW_PRODUCT_ENDPOINT, FILE_NEW_FILES_ENDPOINT } from "../../constants/endpoints";
 import { categories, currencies } from "../../constants/data";
 // components
@@ -48,12 +48,12 @@ const NewProducts = () => {
   const filesRef = useRef(null);
   const navigate = useNavigate();
   const { mode } = useContext(AppContext);
-  const { user, isProfileComplete } = useContext(VendorContext);
+  const { user, isProfileComplete } = useContext(AdminContext);
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!user) navigate(AUTH_VENDOR_ROUTE);
+    if (!user) navigate(AUTH_ADMIN_ROUTE);
   }, [user, navigate]);
 
   const handleNewProduct = (e) => {

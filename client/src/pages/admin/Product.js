@@ -3,7 +3,7 @@ import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
 // contexts
 import AppContext from "../../contexts/AppContext";
-import VendorContext from "../../contexts/VendorContext";
+import AdminContext from "../../contexts/AdminContext";
 // constants
 import { categories, currencies } from "../../constants/data";
 import { UPLOAD_URL } from "../../constants/urls";
@@ -16,7 +16,7 @@ import { Close, SyncAlt, Add, CheckCircle, Cancel } from '@mui/icons-material';
 const Product = ({ index, product, setProducts }) => {
     const [open, setOpen] = useState(false);
     const { mode } = useContext(AppContext)
-    const { user } = useContext(VendorContext);
+    const { user } = useContext(AdminContext);
     const [isAvailable, setIsAvailable] = useState(product["availability"] === "true");
     const [isLoading, setIsLoading] = useState(false);
     const [oldFiles, setOldFiles] = useState([]);

@@ -1,6 +1,6 @@
 import React, { useState, useContext, lazy, useEffect } from "react";
 import axios from "axios";
-import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 // mui
 import { styled } from "@mui/material/styles";
 import {
@@ -28,13 +28,14 @@ import AddIcon from "@mui/icons-material/Add";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 // contexts
 import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
 // constants
 import { PRODUCT_GET_ORDERS_ENDPOINT } from "../../constants/endpoints";
-import { HOME_ROUTE, VENDOR_ROUTE, VENDOR_PRODUCTS_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, AUTH_USER_ROUTE } from "../../constants/routes";
+import { HOME_ROUTE, VENDOR_ROUTE, VENDOR_PRODUCTS_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PROFILE_ROUTE } from "../../constants/routes";
 // pages
 const Dashboard = lazy(() => import("./Dashboard"));
 const NewProducts = lazy(() => import("./NewProducts"));
@@ -147,6 +148,7 @@ const Index = () => {
             aria-label="open drawer"
             onClick={toggleDrawer}
             sx={{
+              display: {xs: "none", sm: "block"},
               marginRight: "36px",
               ...(open && { display: "none" }),
             }}
@@ -199,6 +201,15 @@ const Index = () => {
               <AddIcon />
             </ListItemIcon>
             <ListItemText primary="New Products" />
+          </ListItemButton>
+          <ListItemButton
+            sx={{ backgroundColor: location.pathname === VENDOR_PROFILE_ROUTE ? colors.grey[300] : "" }}
+            onClick={() => navigate(VENDOR_PROFILE_ROUTE)}
+          >
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
           </ListItemButton>
           <ListItemButton onClick={() => navigate(HOME_ROUTE)}>
             <ListItemIcon>
