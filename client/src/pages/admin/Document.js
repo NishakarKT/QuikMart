@@ -60,14 +60,14 @@ const Document = ({ document, setDocuments }) => {
         onClick={() => setOpen((open) => !open)}
         sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer", "&::hover": { backgroundColor: "rgba(0, 0, 0, 0.5)" } }}
       >
-        {Object.keys(document).map((key) => (
+        {Object.keys(document).filter(key => typeof document[key] === "string").map((key) => (
           <TableCell key={key} align="left">
             {document[key]}
           </TableCell>
         ))}
       </TableRow>
       <TableRow>
-        <TableCell sx={{ p: 0 }} colSpan={6}>
+        <TableCell sx={{ p: 0 }} colSpan={16}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ p: 2 }}>
               <Stack flex={2} style={{ overflowX: "hidden", overflowY: "auto" }}>
@@ -77,9 +77,17 @@ const Document = ({ document, setDocuments }) => {
                   </Typography>
                   <form onSubmit={handleUpdate}>
                     <Grid container spacing={2}>
-                      {Object.keys(document).map((key) => (
-                        <Grid key={key} item xs={12} sm={6}>
-                          <TextField multiline name={key} label={key} fullWidth variant="outlined" defaultValue={document[key]} />
+                      {Object.keys(document).filter(key => typeof document[key] === "string").map((key) => (
+                        <Grid key={key} item xs={12} sm={6} md={4} lg={3}>
+                          <TextField
+                            multiline
+                            maxRows={4}
+                            name={key}
+                            label={key}
+                            fullWidth
+                            variant="outlined"
+                            defaultValue={document[key]}
+                          />
                         </Grid>
                       ))}
                     </Grid>

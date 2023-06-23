@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 export const getCollections = async (req, res) => {
   const excludedCollections = ["wishlists", "carts", "otps", "orders", "images"];
@@ -39,6 +39,18 @@ export const editDocument = async (req, res) => {
   try {
     await mongoose.connection.db.collection(name).updateOne({ _id: mongoose.Types.ObjectId(_id) }, { $set: updates });
     res.status(200).send({ message: "edited document" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+export const newDocument = async (req, res) => {
+  const { name, data } = req.body;
+  try {
+    data.createdAt = new Date();
+    data.updatedAt = new Date();
+    await mongoose.connection.db.collection(name).insertOne(data);
+    res.status(200).send({ message: "created document" });
   } catch (err) {
     res.status(500).send({ message: err.message });
   }

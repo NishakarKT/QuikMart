@@ -99,17 +99,17 @@ const Index = () => {
     setOpen(!open);
   };
 
-  const isProfileComplete = (user) => user.email
-    // user &&
-    // user.name &&
-    // user.email &&
-    // user.contact &&
-    // user.address1 &&
-    // user.city &&
-    // user.state &&
-    // user.country &&
-    // user.zip &&
-    // user.location?.coordinates?.length;
+  const isProfileComplete = (user) => user && user.email;
+  // user &&
+  // user.name &&
+  // user.email &&
+  // user.contact &&
+  // user.address1 &&
+  // user.city &&
+  // user.state &&
+  // user.country &&
+  // user.zip &&
+  // user.location?.coordinates?.length;
 
   useEffect(() => {
     const user = users.find((user) => user.role === "vendor");
@@ -148,7 +148,7 @@ const Index = () => {
             aria-label="open drawer"
             onClick={toggleDrawer}
             sx={{
-              display: {xs: "none", sm: "block"},
+              display: { xs: "none", sm: "block" },
               marginRight: "36px",
               ...(open && { display: "none" }),
             }}

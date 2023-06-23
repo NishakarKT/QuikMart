@@ -138,7 +138,7 @@ const Product = ({ index, product, setProducts }) => {
         <TableCell align="center">{product.availability === "true" ? <CheckCircle color="success" /> : <Cancel color="error" />}</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell sx={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell sx={{ paddingBottom: 0, paddingTop: 0 }} colSpan={16}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Stack direction="row">

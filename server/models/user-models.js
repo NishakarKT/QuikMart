@@ -1,33 +1,34 @@
 import mongoose from "mongoose";
 
 const otpSchema = new mongoose.Schema(
-    {
-        token: { type: String, required: true },
-        email: { type: String, required: true },
-        hashedOtp: { type: String, required: true },
-    },
-    { timestamps: true }
+  {
+    token: { type: String, default: "", required: true },
+    email: { type: String, default: "", required: true },
+    hashedOtp: { type: String, default: "", required: true },
+  },
+  { timestamps: true }
 );
 
 const userSchema = new mongoose.Schema(
-    {
-        name: { type: String },
-        role: { type: String },
-        email: { type: String },
-        contact: { type: String },
-        address1: { type: String },
-        address2: { type: String },
-        city: { type: String },
-        state: { type: String },
-        country: { type: String },
-        zip: { type: String },
-        profilePic: { type: String },
-        coverPic: { type: String },
-        location: { type: { type: String }, coordinates: { type: [Number] } },
-    }, { timestamps: true }
+  {
+    name: { type: String, default: "" },
+    role: { type: String, default: "" },
+    email: { type: String, default: "" },
+    contact: { type: String, default: "" },
+    address1: { type: String, default: "" },
+    address2: { type: String, default: "" },
+    city: { type: String, default: "" },
+    state: { type: String, default: "" },
+    country: { type: String, default: "" },
+    zip: { type: String, default: "" },
+    profilePic: { type: String, default: "" },
+    coverPic: { type: String, default: "" },
+    location: { type: { type: String, default: "Point" }, coordinates: { type: [Number], default: [0, 0] } },
+  },
+  { timestamps: true }
 );
 
-userSchema.index({ location: '2dsphere' });
+userSchema.index({ location: "2dsphere" });
 
 export const Otp = new mongoose.model("otp", otpSchema);
 export const User = new mongoose.model("user", userSchema);

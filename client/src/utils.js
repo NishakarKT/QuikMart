@@ -1,5 +1,7 @@
 export const truncateStr = (str, n) => (str.length > n) ? str.substr(0, n - 1) + '...' : str;
 
+export const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+
 export const getLocation = () => new Promise((resolve, reject) => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {

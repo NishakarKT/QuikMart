@@ -66,7 +66,7 @@ const Order = ({ index, order, isPast }) => {
         ) : null}
       </TableRow>
       <TableRow sx={{ cursor: "pointer" }}>
-        <TableCell sx={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell sx={{ paddingBottom: 0, paddingTop: 0 }} colSpan={16}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Stack flex={2} p={2} style={{ width: "100%", overflowX: "hidden", overflowY: "auto" }}>

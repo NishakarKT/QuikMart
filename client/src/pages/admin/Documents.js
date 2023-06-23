@@ -79,7 +79,7 @@ const Documents = () => {
                 </Typography>
                 <Autocomplete
                   disablePortal
-                  sx={{ ml: "auto", minWidth: 200 }}
+                  sx={{ minWidth: 200 }}
                   options={collections}
                   value={collection}
                   onChange={(e, value) => setCollection(value)}

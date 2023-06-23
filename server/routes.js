@@ -27,6 +27,7 @@ Router.get("/admin/get-collections", adminControllers.getCollections);
 Router.get("/admin/get-documents", adminControllers.getDocuments);
 Router.delete("/admin/remove-documents", adminControllers.removeDocuments);
 Router.patch("/admin/edit-document", adminControllers.editDocument);
+Router.post("/admin/new-document", adminControllers.newDocument);
 // Products Routes
 Router.delete("/product/remove-products", productsControllers.removeProducts);
 Router.get("/product/get-products-by-query", productsControllers.getProductsByQuery);

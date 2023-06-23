@@ -96,7 +96,7 @@ const Index = () => {
     setOpen(!open);
   };
 
-  const isProfileComplete = (user) => user.email;
+  const isProfileComplete = (user) => user && user.email;
   // user &&
   // user.name &&
   // user.email &&
@@ -111,7 +111,7 @@ const Index = () => {
   useEffect(() => {
     const user = users.find((user) => user.role === "admin");
     setUser(user);
-    if (user._id) {
+    if (user && user._id) {
       axios
         .get(ADMIN_GET_COLLECTIONS_ENDPOINT, { params: { _id: user._id } })
         .then((res) => {
