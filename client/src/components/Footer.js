@@ -126,7 +126,7 @@ const Footer = () => {
         </Grid>
       </Grid>
       <Divider />
-      <Typography align="center">Copyright © {COMPANY} 2022</Typography>
+      <Typography align="center">Copyright © {COMPANY} {new Date().getFullYear()}</Typography>
     </Stack>
   );
 };

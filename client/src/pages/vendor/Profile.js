@@ -1,17 +1,13 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import axios from "axios";
-import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 // contexts
 import VendorContext from "../../contexts/VendorContext";
-import AppContext from "../../contexts/AppContext";
 // components
 import Footer from "../../components/Footer";
 // constants
-import { products } from "../../constants/data";
 import { UPLOAD_URL } from "../../constants/urls";
-import { COMPANY } from "../../constants/variables";
-import { AUTH_VENDOR_ROUTE, HISTORY_ROUTE } from "../../constants/routes";
+import { AUTH_VENDOR_ROUTE } from "../../constants/routes";
 import { USER_ENDPOINT, FILE_NEW_FILE_ENDPOINT } from "../../constants/endpoints";
 // mui
 import {
@@ -23,10 +19,6 @@ import {
   Button,
   TextField,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
-  Link,
   CardMedia,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -37,7 +29,6 @@ import { getLocation } from "../../utils";
 const Profile = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
-  const { mode } = useContext(AppContext);
   const { user, setUser } = useContext(VendorContext);
   const profilePicRef = useRef(null);
   const coverPicRef = useRef(null);

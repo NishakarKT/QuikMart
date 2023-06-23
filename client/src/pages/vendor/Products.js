@@ -11,7 +11,6 @@ import { VENDOR_NEW_PRODUCTS_ROUTE, AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../
 import {
   Grid,
   Stack,
-  Autocomplete,
   Button,
   Box,
   Pagination,
@@ -24,7 +23,6 @@ import {
   Typography,
   Paper,
   Toolbar,
-  TextField,
 } from "@mui/material";
 // components
 import Footer from "../../components/Footer";

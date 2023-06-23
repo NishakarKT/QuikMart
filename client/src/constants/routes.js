@@ -14,9 +14,7 @@ export const VENDOR_PRODUCTS_ROUTE = "/vendor/products";
 export const VENDOR_PROFILE_ROUTE = "/vendor/profile";
 // admin Routes
 export const ADMIN_ROUTE = "/admin";
-export const ADMIN_NEW_PRODUCTS_ROUTE = "/admin/new-products";
-export const ADMIN_PRODUCTS_ROUTE = "/admin/products";
-export const ADMIN_PROFILE_ROUTE = "/admin/profile";
+export const ADMIN_NEW_ROUTE = "/admin/new";
 // auth Routes
 export const AUTH_ROUTE = "/auth";
 export const AUTH_USER_ROUTE = "/auth/user";
