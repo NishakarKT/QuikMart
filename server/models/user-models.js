@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema(
     zip: { type: String, default: "" },
     profilePic: { type: String, default: "" },
     coverPic: { type: String, default: "" },
+    coins: {type: String, default: "0"},
     location: { type: { type: String, default: "Point" }, coordinates: { type: [Number], default: [0, 0] } },
   },
   { timestamps: true }

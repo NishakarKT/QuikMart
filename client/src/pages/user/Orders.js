@@ -74,7 +74,7 @@ const Orders = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell align="center">Sl No.</TableCell>
-                      <TableCell>Date</TableCell>
+                      <TableCell>Date / Time</TableCell>
                       <TableCell>Owner</TableCell>
                       <TableCell align="center">Price</TableCell>
                     </TableRow>
@@ -120,7 +120,7 @@ const Orders = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell align="center">Sl No.</TableCell>
-                      <TableCell>Date</TableCell>
+                      <TableCell>Date / Time</TableCell>
                       <TableCell>Owner</TableCell>
                       <TableCell align="center">Price</TableCell>
                       <TableCell align="center">Accepted</TableCell>

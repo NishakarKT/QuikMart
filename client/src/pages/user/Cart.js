@@ -12,6 +12,7 @@ import {
   PRODUCT_REMOVE_FROM_CART_ENDPOINT,
   PRODUCT_CART_TO_WISHLIST_ENDPOINT,
   PRODUCT_NEW_ORDERS_ENDPOINT,
+  USER_ENDPOINT,
 } from "../../constants/endpoints";
 // mui
 import {
@@ -32,19 +33,20 @@ import {
 import { CheckCircle, Cancel, AddCircle } from "@mui/icons-material";
 //  variables
 const ITEMS_PER_PAGE = 8;
+const COIN_FACTOR = 0.05;
 
 const Cart = () => {
-  let total = Number(0);
-  const { user, setWishlist, cart, setCart, setOrders } = useContext(UserContext);
   const navigate = useNavigate();
+  const { user, setUser, setWishlist, cart, setCart, setOrders } = useContext(UserContext);
   const [orderPage, setOrderPage] = useState(1);
   const [cartPage, setCartPage] = useState(1);
   const [order, setOrder] = useState([]);
-  cart.forEach((product) => (total = Number(total) + Number(product.price)));
 
   useEffect(() => {
     if (!user) navigate(AUTH_USER_ROUTE);
   }, [user, navigate]);
+
+  const generateQuikCoins = (total) => total * COIN_FACTOR;
 
   const handleOrderPage = (page) => {
     setOrderPage(page);
@@ -83,8 +85,23 @@ const Cart = () => {
         .post(PRODUCT_NEW_ORDERS_ENDPOINT, finalOrders)
         .then((res) => {
           setOrders((orders) => [...orders, ...finalOrders.map((order) => ({ ...order, createdAt: new Date().toISOString() }))]);
-          alert("Orders have been placed!");
-          clearOrder();
+          // generate QuikCoins
+          let total = 0;
+          Object.values(orders).forEach((orders) =>
+            orders.forEach((order) => (total += (Number(order.quantity) || 0) * (Number(order.price) || 0)))
+          );
+          const coins = (Number(user.coins) || 0) + generateQuikCoins(total);
+          axios
+            .patch(USER_ENDPOINT, { _id: user._id, edits: { coins } })
+            .then((res) => {
+              setUser((user) => ({ ...user, coins }));
+              alert("Orders have been placed! You earned " + coins + " coins");
+              clearOrder();
+            })
+            .catch((err) => {
+              alert("Orders have been placed!");
+              clearOrder();
+            });
         })
         .catch((err) => console.log(err));
     } catch (err) {

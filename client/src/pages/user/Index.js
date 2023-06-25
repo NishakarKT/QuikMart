@@ -75,7 +75,7 @@ const Index = () => {
   }, [getProducts]);
 
   useEffect(() => {
-    const user = users.find((user) => user.role === "admin");
+    const user = users.find((user) => user.role === "user");
     setUser(user);
   }, [users]);
 
@@ -144,6 +144,7 @@ const Index = () => {
       <UserContext.Provider
         value={{
           user,
+          setUser,
           product,
           setProduct,
           products,
