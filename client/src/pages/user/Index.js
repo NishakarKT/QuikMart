@@ -24,8 +24,10 @@ import { LightMode, DarkMode } from "@mui/icons-material";
 // contexts
 import AppContext from "../../contexts/AppContext";
 import UserContext from "../../contexts/UserContext";
-// // utils
-// import { getLocation } from "../../utils";
+// utils
+import { movingAverage } from "../../utils";
+// vars
+const COIN_VALUE_FACTOR = 0.001;
 // pages
 const Home = lazy(() => import("./Home"));
 const Orders = lazy(() => import("./Orders"));
@@ -109,7 +111,30 @@ const Index = () => {
         axios
           .get(PRODUCT_GET_ORDERS_ENDPOINT, { params: { from: user._id } })
           .then((res) => {
-            setOrders(res.data.data);
+            const orders = res.data.data;
+            const costs = {};
+            orders.forEach((order) => {
+              let total = 0;
+              const date = new Date(order.createdAt).toLocaleDateString();
+              order.products.forEach((product) => (total += Number(product.quantity || 0) * Number(product.price || 0)));
+              if (costs[date]) costs[date] += total;
+              else costs[date] = total;
+            });
+            // fill missing dates
+            const minDate = new Date(Math.min(...Object.keys(costs).map((c) => new Date(c)))).toLocaleDateString();
+            const maxDate = new Date(Math.max(...Object.keys(costs).map((c) => new Date(c)))).toLocaleDateString();
+            for (let d = new Date(minDate); d <= new Date(maxDate); d.setDate(d.getDate() + 1)) {
+              const date = new Date(d).toLocaleDateString();
+              if (!costs[date]) costs[date] = 0;
+            }
+            // calculate coin value ~ moving average ~ weekly
+            const ma = movingAverage(7, Object.values(costs));
+            if (ma.length) {
+              const coinValue = COIN_VALUE_FACTOR * ma[ma.length - 1];
+              setUser((user) => ({ ...user, coinValue }));
+            }
+            // console.log(movingAverage(7, Object.values(costs)));
+            setOrders(orders);
           })
           .catch((err) => console.log(err));
       } catch (err) {
