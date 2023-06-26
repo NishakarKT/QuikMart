@@ -43,6 +43,7 @@ const Index = () => {
   const [wishlist, setWishlist] = useState([]);
   const [cart, setCart] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [coinValue, setCoinValue] = useState(0);
   // const [categoryOpen, setCategoryOpen] = useState(false);
   // const [locationRangeOpen, setLocationRangeOpen] = useState(false);
   const [locationRange, setLocationRange] = useState([0, 40000]);
@@ -131,7 +132,7 @@ const Index = () => {
             const ma = movingAverage(7, Object.values(costs));
             if (ma.length) {
               const coinValue = COIN_VALUE_FACTOR * ma[ma.length - 1];
-              setUser((user) => ({ ...user, coinValue }));
+              setCoinValue(coinValue);
             }
             // console.log(movingAverage(7, Object.values(costs)));
             setOrders(orders);
@@ -147,6 +148,8 @@ const Index = () => {
     const category = JSON.parse(localStorage.getItem(COMPANY))?.category;
     if (category) setCategory(category);
   }, [setCategory]);
+
+  useEffect(() => setUser(user => ({...user, coinValue})), [coinValue]);
 
   const handleLocationRange = () => getProducts(locationRange[0], locationRange[1]);
 

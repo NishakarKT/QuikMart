@@ -18,6 +18,7 @@ import {
 import {
   Box,
   Stack,
+  Tooltip,
   Button,
   Pagination,
   Typography,
@@ -40,11 +41,18 @@ const Cart = () => {
   const { user, setUser, setWishlist, cart, setCart, setOrders } = useContext(UserContext);
   const [orderPage, setOrderPage] = useState(1);
   const [cartPage, setCartPage] = useState(1);
+  const [total, setTotal] = useState(0);
   const [order, setOrder] = useState([]);
 
   useEffect(() => {
     if (!user) navigate(AUTH_USER_ROUTE);
   }, [user, navigate]);
+
+  useEffect(() => {
+    let total = 0;
+    order.forEach((o) => (total += (Number(o.price) || 0) * Number(o.quantity) || 0));
+    setTotal(total);
+  }, [order]);
 
   const generateQuikCoins = (total) => total * COIN_FACTOR;
 
@@ -58,7 +66,7 @@ const Cart = () => {
     setTimeout(() => window.scrollTo(0, 0), 0);
   };
 
-  const placeOrder = () => {
+  const placeOrder = (coins = 0) => {
     const orders = {};
     order.forEach((product) => {
       const data = {
@@ -90,12 +98,13 @@ const Cart = () => {
           Object.values(orders).forEach((orders) =>
             orders.forEach((order) => (total += (Number(order.quantity) || 0) * (Number(order.price) || 0)))
           );
-          const coins = (Number(user.coins) || 0) + generateQuikCoins(total);
+          const generatedCoins = generateQuikCoins(total);
+          const updatedCoins = (Number(user.coins) || 0) + (coins ? -coins : generatedCoins);
           axios
-            .patch(USER_ENDPOINT, { _id: user._id, edits: { coins } })
+            .patch(USER_ENDPOINT, { _id: user._id, edits: { coins: updatedCoins } })
             .then((res) => {
-              setUser((user) => ({ ...user, coins }));
-              alert("Orders have been placed! You earned " + coins + " coins");
+              setUser((user) => ({ ...user, coins: updatedCoins }));
+              alert("Orders have been placed!" + (!coins ? "You earned " + generatedCoins + " coins" : ""));
               clearOrder();
             })
             .catch((err) => {
@@ -113,7 +122,7 @@ const Cart = () => {
     setOrder((order) => {
       const idx = order.findIndex((prod) => prod._id === product._id);
       if (idx !== -1) order[idx] = { ...order[idx], quantity: e.target.value };
-      return order;
+      return [...order];
     });
   };
 
@@ -195,7 +204,17 @@ const Cart = () => {
               <Button variant="outlined" color="error" onClick={() => clearOrder()}>
                 Empty Order
               </Button>
-              <Button disabled={!order.length} variant="contained" onClick={() => placeOrder()}>
+              {order.length && user && user.coinValue ? (
+                <Button
+                  disabled={Number(user.coins) < total / user.coinValue}
+                  color="warning"
+                  variant="contained"
+                  onClick={() => placeOrder(total / user.coinValue)}
+                >
+                  {Number(user.coins) < total / user.coinValue ? "Insufficient Coins" : "Use Coins"}
+                </Button>
+              ) : null}
+              <Button disabled={!order.length} color="success" variant="contained" onClick={() => placeOrder()}>
                 Place Order
               </Button>
             </Stack>
@@ -212,6 +231,7 @@ const Cart = () => {
                       <TableCell align="center">Price</TableCell>
                       <TableCell align="center">Currency</TableCell>
                       <TableCell align="center">Quantity</TableCell>
+                      <TableCell align="center">Total</TableCell>
                       <TableCell align="center">Remove</TableCell>
                     </TableRow>
                   </TableHead>
@@ -233,6 +253,7 @@ const Cart = () => {
                             inputProps={{ min: 1 }}
                           />
                         </TableCell>
+                        <TableCell align="center">{(Number(product.quantity) || 0) * (Number(product.price) || 0)}</TableCell>
                         <TableCell align="center">
                           <Cancel
                             sx={{ cursor: "pointer" }}
@@ -243,6 +264,30 @@ const Cart = () => {
                         </TableCell>
                       </TableRow>
                     ))}
+                    <TableRow>
+                      <TableCell colSpan={12} align="left">
+                        <Stack spacing={2} direction="row" alignItems="center" justifyContent="space-between">
+                          <Box>
+                            <Typography component="span">
+                              <Typography component="span" sx={{ color: "error.main" }}>
+                                Total:{" "}
+                              </Typography>
+                              {total}
+                            </Typography>
+                          </Box>
+                          {user.coinValue ? (
+                            <Box>
+                              <Typography component="span">
+                                <Typography component="span" sx={{ color: "warning.main" }}>
+                                  QuikCoins:{" "}
+                                </Typography>
+                                {(total / user.coinValue).toFixed(2)}
+                              </Typography>
+                            </Box>
+                          ) : null}
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
