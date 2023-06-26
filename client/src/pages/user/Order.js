@@ -21,20 +21,20 @@ const Order = ({ index, order, isPast }) => {
     } else setTotal(0);
   }, [order]);
 
-  const cancelOrder = (orderId) => {
-    if (window.confirm("Are you sure you want to cancel this order?"))
-      try {
-        axios
-          .patch(PRODUCT_CANCEL_ORDERS_ENDPOINT, { _id: orderId })
-          .then((res) => {
-            alert("Order cancelled!");
-            setOrders((orders) => orders.map((order) => (order._id === orderId ? { ...order, status: "cancelled" } : order)));
-          })
-          .catch((err) => console.log(err));
-      } catch (err) {
-        console.log(err);
-      }
-  };
+  // const cancelOrder = (orderId) => {
+  //   if (window.confirm("Are you sure you want to cancel this order?"))
+  //     try {
+  //       axios
+  //         .patch(PRODUCT_CANCEL_ORDERS_ENDPOINT, { _id: orderId })
+  //         .then((res) => {
+  //           alert("Order cancelled!");
+  //           setOrders((orders) => orders.map((order) => (order._id === orderId ? { ...order, status: "cancelled" } : order)));
+  //         })
+  //         .catch((err) => console.log(err));
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  // };
 
   return (
     <>
@@ -60,7 +60,7 @@ const Order = ({ index, order, isPast }) => {
                     <Typography component="h1" variant="h4" gutterBottom>
                       Order Details
                     </Typography>
-                    {!isPast ? (
+                    {/* {!isPast ? (
                       <Button
                         onClick={() => cancelOrder(order._id)}
                         sx={{ height: "fit-content" }}
@@ -71,7 +71,7 @@ const Order = ({ index, order, isPast }) => {
                       >
                         Cancel
                       </Button>
-                    ) : null}
+                    ) : null} */}
                   </Stack>
                   <Stack>
                     <Typography variant="h6" gutterBottom>
