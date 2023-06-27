@@ -18,7 +18,6 @@ import {
 import {
   Box,
   Stack,
-  Tooltip,
   Button,
   Pagination,
   Typography,
@@ -32,6 +31,7 @@ import {
   TextField,
 } from "@mui/material";
 import { CheckCircle, Cancel, AddCircle } from "@mui/icons-material";
+import { IMAGES_WEBSITE_LOGO_BLACK_PNG } from "../../constants/images";
 //  variables
 const ITEMS_PER_PAGE = 8;
 const COIN_FACTOR = 0.05;
@@ -43,6 +43,8 @@ const Cart = () => {
   const [cartPage, setCartPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [order, setOrder] = useState([]);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(false);
 
   useEffect(() => {
     if (!user) navigate(AUTH_USER_ROUTE);
@@ -55,6 +57,50 @@ const Cart = () => {
   }, [order]);
 
   const generateQuikCoins = (total) => total * COIN_FACTOR;
+
+  const openRazorpayPopup = ({coins, generatedCoins, updatedCoins, finalOrders}) => {
+    const options = {
+      key: "rzp_test_IAmcmWJGGwBS6X",
+      amount: total * 100, // Amount in paisa (e.g., 10000 = ₹100)
+      currency: "INR",
+      name: COMPANY,
+      description: "Purchase Description",
+      image: IMAGES_WEBSITE_LOGO_BLACK_PNG,
+      handler: (res) => {
+        axios
+          .post(PRODUCT_NEW_ORDERS_ENDPOINT, finalOrders)
+          .then((res) => {
+            setOrders((orders) => [...orders, ...finalOrders.map((order) => ({ ...order, createdAt: new Date().toISOString() }))]);
+            axios
+              .patch(USER_ENDPOINT, { _id: user._id, edits: { coins: updatedCoins } })
+              .then((res) => {
+                setUser((user) => ({ ...user, coins: updatedCoins }));
+                alert("Orders have been placed!" + (!coins ? "You earned " + generatedCoins + " coins" : ""));
+                clearOrder();
+              })
+              .catch((err) => {
+                alert("Orders have been placed!");
+                clearOrder();
+              });
+          })
+          .catch((err) => console.log(err));
+      },
+      prefill: {
+        name: user.name,
+        email: user.email,
+        contact: user.contact,
+      },
+      theme: {
+        color: "#1976d2",
+      },
+    };
+    if (window && window.Razorpay) {
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } else {
+      console.log("Razorpay script is not loaded.");
+    }
+  };
 
   const handleOrderPage = (page) => {
     setOrderPage(page);
@@ -88,34 +134,13 @@ const Cart = () => {
       status: "pending",
       products: orders[owner],
     }));
-    try {
-      axios
-        .post(PRODUCT_NEW_ORDERS_ENDPOINT, finalOrders)
-        .then((res) => {
-          setOrders((orders) => [...orders, ...finalOrders.map((order) => ({ ...order, createdAt: new Date().toISOString() }))]);
-          // generate QuikCoins
-          let total = 0;
-          Object.values(orders).forEach((orders) =>
-            orders.forEach((order) => (total += (Number(order.quantity) || 0) * (Number(order.price) || 0)))
-          );
-          const generatedCoins = generateQuikCoins(total);
-          const updatedCoins = (Number(user.coins) || 0) + (coins ? -coins : generatedCoins);
-          axios
-            .patch(USER_ENDPOINT, { _id: user._id, edits: { coins: updatedCoins } })
-            .then((res) => {
-              setUser((user) => ({ ...user, coins: updatedCoins }));
-              alert("Orders have been placed!" + (!coins ? "You earned " + generatedCoins + " coins" : ""));
-              clearOrder();
-            })
-            .catch((err) => {
-              alert("Orders have been placed!");
-              clearOrder();
-            });
-        })
-        .catch((err) => console.log(err));
-    } catch (err) {
-      console.log(err);
-    }
+    let total = 0;
+    Object.values(orders).forEach((orders) =>
+      orders.forEach((order) => (total += (Number(order.quantity) || 0) * (Number(order.price) || 0)))
+    );
+    const generatedCoins = generateQuikCoins(total);
+    const updatedCoins = (Number(user.coins) || 0) + (coins ? -coins : generatedCoins);
+    openRazorpayPopup({ total, coins, generatedCoins, updatedCoins, finalOrders });
   };
 
   const handleQuanitity = (e, product) => {

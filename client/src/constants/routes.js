@@ -11,6 +11,7 @@ export const VENDOR_ROUTE = "/vendor";
 export const VENDOR_NEW_PRODUCTS_ROUTE = "/vendor/new-products";
 export const VENDOR_PRODUCTS_ROUTE = "/vendor/products";
 export const VENDOR_PROFILE_ROUTE = "/vendor/profile";
+export const VENDOR_ANALYTICS_ROUTE = "/vendor/analytics";
 // admin Routes
 export const ADMIN_ROUTE = "/admin";
 export const ADMIN_NEW_ROUTE = "/admin/new";

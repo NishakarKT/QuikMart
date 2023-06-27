@@ -29,18 +29,20 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import InsightsIcon from "@mui/icons-material/Insights";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 // contexts
 import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
 // constants
 import { PRODUCT_GET_ORDERS_ENDPOINT } from "../../constants/endpoints";
-import { HOME_ROUTE, VENDOR_ROUTE, VENDOR_PRODUCTS_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PROFILE_ROUTE } from "../../constants/routes";
+import { HOME_ROUTE, VENDOR_ROUTE, VENDOR_PRODUCTS_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PROFILE_ROUTE, VENDOR_ANALYTICS_ROUTE } from "../../constants/routes";
 // pages
 const Dashboard = lazy(() => import("./Dashboard"));
 const NewProducts = lazy(() => import("./NewProducts"));
 const Products = lazy(() => import("./Products"));
 const Profile = lazy(() => import("./Profile"));
+const Analytics = lazy(() => import("./Analytics"));
 
 const drawerWidth = 240;
 
@@ -203,6 +205,15 @@ const Index = () => {
             <ListItemText primary="New Products" />
           </ListItemButton>
           <ListItemButton
+            sx={{ backgroundColor: location.pathname === VENDOR_ANALYTICS_ROUTE ? colors.grey[300] : "" }}
+            onClick={() => navigate(VENDOR_ANALYTICS_ROUTE)}
+          >
+            <ListItemIcon>
+              <InsightsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Analytics" />
+          </ListItemButton>
+          <ListItemButton
             sx={{ backgroundColor: location.pathname === VENDOR_PROFILE_ROUTE ? colors.grey[300] : "" }}
             onClick={() => navigate(VENDOR_PROFILE_ROUTE)}
           >
@@ -221,6 +232,7 @@ const Index = () => {
       </Drawer>
       <VendorContext.Provider value={{ user, isProfileComplete, products, setProducts, orders, setOrders }}>
         <Routes>
+          <Route exact path="/analytics/*" element={<Analytics />} />
           <Route exact path="/products/*" element={<Products />} />
           <Route exact path="/new-products/*" element={<NewProducts />} />
           <Route exact path="/profile" element={<Profile />} />

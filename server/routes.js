@@ -8,6 +8,7 @@ import * as userControllers from "./controllers/user-controllers.js";
 import * as adminControllers from "./controllers/admin-controllers.js";
 import * as productsControllers from "./controllers/products-controllers.js";
 import * as fileControllers from "./controllers/file-controllers.js";
+import * as analyticsControllers from "./controllers/analytics-controllers.js";
 
 const Router = express.Router();
 
@@ -22,6 +23,9 @@ Router.post("/auth/otp-verify", authControllers.otp_verify);
 Router.get("/user", userControllers.getUser);
 Router.patch("/user", userControllers.editUser);
 Router.delete("/user", userControllers.removeUser);
+// Analytics Routes
+Router.post("/analytics/new-analytics", analyticsControllers.newAnalytics);
+Router.get("/analytics/get-analytics", analyticsControllers.getAnalytics);
 // Admin Routes
 Router.get("/admin/get-collections", adminControllers.getCollections);
 Router.get("/admin/get-documents", adminControllers.getDocuments);
