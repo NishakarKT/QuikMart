@@ -7,8 +7,8 @@ export const AUTH_OTP_VERIFY_ENDPOINT = BASE + "/auth/otp-verify";
 // user endpoints
 export const USER_ENDPOINT = BASE + "/user";
 // analytics endpoints
-export const ANALYTICS_NEW_ANALYTICS_ENDPOINT = BASE + "/analytics/new-analytics";
-export const ANALYTICS_GET_ANALYTICS_ENDPOINT = BASE + "/analytics/get-analytics";
+export const ANALYTICS_NEW_ENDPOINT = BASE + "/analytics/new";
+export const ANALYTICS_GET_ENDPOINT = BASE + "/analytics/get";
 // admin endpoints
 export const ADMIN_GET_COLLECTIONS_ENDPOINT = BASE + "/admin/get-collections";
 export const ADMIN_GET_DOCUMENTS_ENDPOINT = BASE + "/admin/get-documents";

@@ -1,19 +1,15 @@
 import mongoose from "mongoose";
 
-// types
-// 1. view
-// 2. order
-// 3. cart
-// 4. wishlist
-
-const productAnalyticsSchema = new mongoose.Schema(
+const analyticsSchema = new mongoose.Schema(
   {
     type: { type: String },
+    action: { type: String },
     user: { type: String },
     vendor: { type: String },
     product: { type: String },
+    date: { type: String },
   },
   { timestamps: true }
 );
 
-export const ProductAnalyticsSchema = new mongoose.model("productAnalytics", productAnalyticsSchema);
+export const Analytics = new mongoose.model("analytics", analyticsSchema);

@@ -43,8 +43,6 @@ const Cart = () => {
   const [cartPage, setCartPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [order, setOrder] = useState([]);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState(false);
 
   useEffect(() => {
     if (!user) navigate(AUTH_USER_ROUTE);
@@ -58,7 +56,7 @@ const Cart = () => {
 
   const generateQuikCoins = (total) => total * COIN_FACTOR;
 
-  const openRazorpayPopup = ({coins, generatedCoins, updatedCoins, finalOrders}) => {
+  const openRazorpayPopup = ({ coins, generatedCoins, updatedCoins, finalOrders }) => {
     const options = {
       key: "rzp_test_IAmcmWJGGwBS6X",
       amount: total * 100, // Amount in paisa (e.g., 10000 = ₹100)

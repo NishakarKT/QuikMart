@@ -83,7 +83,7 @@ const Index = () => {
   }, [users]);
 
   useEffect(() => {
-    if (user) {
+    if (user && user._id) {
       try {
         axios
           .get(PRODUCTS_GET_WISHLIST_ENDPOINT, { params: { userId: user._id } })
@@ -149,7 +149,7 @@ const Index = () => {
     if (category) setCategory(category);
   }, [setCategory]);
 
-  useEffect(() => setUser(user => ({...user, coinValue})), [coinValue]);
+  useEffect(() => setUser((user) => (user && user._id ? { ...user, coinValue } : user)), [coinValue]);
 
   const handleLocationRange = () => getProducts(locationRange[0], locationRange[1]);
 

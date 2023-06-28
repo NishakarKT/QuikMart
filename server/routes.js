@@ -23,15 +23,15 @@ Router.post("/auth/otp-verify", authControllers.otp_verify);
 Router.get("/user", userControllers.getUser);
 Router.patch("/user", userControllers.editUser);
 Router.delete("/user", userControllers.removeUser);
-// Analytics Routes
-Router.post("/analytics/new-analytics", analyticsControllers.newAnalytics);
-Router.get("/analytics/get-analytics", analyticsControllers.getAnalytics);
 // Admin Routes
 Router.get("/admin/get-collections", adminControllers.getCollections);
 Router.get("/admin/get-documents", adminControllers.getDocuments);
 Router.delete("/admin/remove-documents", adminControllers.removeDocuments);
 Router.patch("/admin/edit-document", adminControllers.editDocument);
 Router.post("/admin/new-document", adminControllers.newDocument);
+// Analytics Routes
+Router.post("/analytics/new", analyticsControllers.newAnalytics);
+Router.get("/analytics/get", analyticsControllers.getAnalytics);
 // Products Routes
 Router.delete("/product/remove-products", productsControllers.removeProducts);
 Router.get("/product/get-products-by-query", productsControllers.getProductsByQuery);

@@ -1,31 +1,27 @@
-import { ProductAnalyticsSchema } from "../models/analytics-models.js";
+import { Analytics } from "../models/analytics-models.js";
 
 // products
 export const newAnalytics = async (req, res) => {
-  const { type, data } = req.body;
+  const data = req.body;
   try {
-    if (type === "product") {
-      const newAnalytics = new ProductAnalyticsSchema(data);
-      await newAnalytics.save();
-      res.status(200).send({ message: "created analytics" });
-    } else {
-      res.status(500).send({ message: "invalid type" });
-    }
+    const newAnalytics = new Analytics(data);
+    await newAnalytics.save();
+    return { message: "created analytics" };
   } catch (err) {
-    res.status(500).send({ message: err.message });
+    return { message: err.message };
   }
 };
 
 export const getAnalytics = async (req, res) => {
-  const { type, query } = req.query;
+  const { type, query } = req.body;
   try {
     if (type === "product") {
-      const analytics = await ProductAnalyticsSchema.find(query);
-      res.status(200).send({ data: analytics, message: "found analytics" });
+      const analytics = await Analytics.find(query);
+      return { data: analytics, message: "found analytics" };
     } else {
-      res.status(500).send({ message: "invalid type" });
+      return { message: "invalid type" };
     }
   } catch (err) {
-    res.status(500).send({ message: err.message });
+    return { message: err.message };
   }
 };
