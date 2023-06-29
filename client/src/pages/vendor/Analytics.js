@@ -1,30 +1,55 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 // mui
-import {
-  Stack,
-  Box,
-  Toolbar,
-  Grid,
-  Paper,
-  Button,
-  Typography,
-} from "@mui/material";
+import { Stack, Box, Toolbar, Grid, Paper, Button, Typography } from "@mui/material";
 // components
 import Chart from "./Chart";
 import Footer from "../../components/Footer";
+// constants
+import { ANALYTICS_GET_ENDPOINT } from "../../constants/endpoints";
+import { AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
 // contexts
 import VendorContext from "../../contexts/VendorContext";
-// constants
-import { AUTH_VENDOR_ROUTE, PROFILE_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE } from "../../constants/routes";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, orders, isProfileComplete } = useContext(VendorContext);
-  const [chartData, setChartData] = useState([]);
+  const { user, isProfileComplete } = useContext(VendorContext);
+  const [chartsData, setChartsData] = useState([]);
 
   useEffect(() => {
     if (!user) navigate(AUTH_VENDOR_ROUTE);
+    else {
+      axios
+        .get(ANALYTICS_GET_ENDPOINT, { params: { vendor: user._id, type: "product" } })
+        .then((res) => {
+          const analytics = res.data.data;
+          const productAnalytics = analytics.filter((analytic) => analytic.type === "product");
+          console.log(productAnalytics);
+          const chartsData = {};
+          productAnalytics
+            .filter((analytic, i, arr) => i === arr.findIndex((a) => a.action === analytic.action))
+            .map((analytic) => analytic.action)
+            .forEach((action) => {
+              const data = productAnalytics.filter((analytic) => analytic.action === action);
+              if (!chartsData[action]) {
+                data.forEach((item) => {
+                  if (!chartsData[action])
+                    chartsData[action] = [
+                      { x: new Date(item.createdAt).toLocaleString(), y1: 1 },
+                    ];
+                  else
+                    chartsData[action].push({
+                      x: new Date(item.createdAt).toLocaleString(),
+                      y1: chartsData[action].slice(-1)[0].y1 + 1,
+                    });
+                });
+              }
+              setChartsData(chartsData);
+            });
+        })
+        .catch((err) => console.log(err));
+    }
   }, [user, navigate]);
 
   return user ? (
@@ -40,19 +65,20 @@ const Dashboard = () => {
       <Toolbar />
       {isProfileComplete(user) ? (
         <Grid container spacing={2} sx={{ p: 2 }}>
-          {/* Chart */}
-          <Grid item xs={12}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                height: 240,
-              }}
-            >
-              <Chart chartData={chartData} />
-            </Paper>
-          </Grid>
+          {Object.keys(chartsData).map((action) => (
+            <Grid item xs={12} md={6} lg={4}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  height: 240,
+                }}
+              >
+                <Chart title={action} chartData={chartsData[action]} />
+              </Paper>
+            </Grid>
+          ))}
         </Grid>
       ) : (
         <Stack py={16} spacing={2} alignItems="center" justifyContent="center">

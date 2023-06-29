@@ -6,22 +6,18 @@ export const newAnalytics = async (req, res) => {
   try {
     const newAnalytics = new Analytics(data);
     await newAnalytics.save();
-    return { message: "created analytics" };
+    res.status(201).send({ message: "created analytics" });
   } catch (err) {
-    return { message: err.message };
+    res.status(500).send({ message: err.message });
   }
 };
 
 export const getAnalytics = async (req, res) => {
-  const { type, query } = req.body;
+  const query = req.query;
   try {
-    if (type === "product") {
-      const analytics = await Analytics.find(query);
-      return { data: analytics, message: "found analytics" };
-    } else {
-      return { message: "invalid type" };
-    }
+    const analytics = await Analytics.find(query);
+    res.status(200).send({ data: analytics, message: "found analytics" });
   } catch (err) {
-    return { message: err.message };
+    res.status(500).send({ message: err.message });
   }
 };

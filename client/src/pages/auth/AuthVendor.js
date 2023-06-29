@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import validator from "validator";
 import { Helmet } from "react-helmet";
@@ -114,13 +114,22 @@ const AuthVendor = () => {
   const role = "vendor";
   const classes = useStyles();
   const navigate = useNavigate();
-  const { setUsers, setRole, mode, handleMode } = useContext(AppContext);
+  const location = useLocation();
+  const { users, setUsers, setRole, mode, handleMode } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isGglLoading, setIsGglLoading] = useState(false);
   const [remMe, setRemMe] = useState(true);
   const [emailErr, setEmailErr] = useState("");
   const [otpErr, setOtpErr] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
+
+  useEffect(() => {
+    const user = users.find((user) => user.role === role) || {};
+    if (user.email) {
+      if (location.key) navigate(-1);
+      else navigate(VENDOR_ROUTE);
+    }
+  }, [users, role, navigate, location.key]);
 
   useEffect(() => {
     setRole(role);
@@ -277,7 +286,7 @@ const AuthVendor = () => {
       </SpeedDial>
       <Stack direction="row" className={classes.stack}>
         <Stack sx={{ position: "relative", height: "100vh", display: { xs: "none", sm: "flex" } }} justifyContent="flex-end" flex={2}>
-        <video
+          <video
             style={{ position: "absolute", zIndex: "-1", width: "100%", height: "100%", objectFit: "cover" }}
             src={VIDEOS_AUTH_VENDOR_MP4}
             muted

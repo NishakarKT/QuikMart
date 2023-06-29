@@ -4,23 +4,16 @@ import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, Car
 import { Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-const Chart = ({ chartData }) => {
+const Chart = ({ title, chartData }) => {
   const theme = useTheme();
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    if (chartData.length) setData(chartData);
-    else setData([]);
-  }, [chartData, setData]);
-
-  return (
+  return chartData.length ? (
     <>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
-        Insights
+        {title}
       </Typography>
       <ResponsiveContainer>
         <LineChart
-          data={data}
+          data={chartData}
           margin={{
             top: 16,
             right: 16,
@@ -29,7 +22,7 @@ const Chart = ({ chartData }) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" stroke={theme.palette.text.secondary} style={theme.typography.body2} />
+          <XAxis dataKey="x" stroke={theme.palette.text.secondary} style={theme.typography.body2} />
           <YAxis stroke={theme.palette.text.secondary} style={theme.typography.body2}>
             <Label
               angle={270}
@@ -46,25 +39,23 @@ const Chart = ({ chartData }) => {
           </YAxis>
           <Tooltip />
           <Legend />
-          <Line
-            isAnimationActive={true}
-            type="monotone"
-            dataKey="amount"
-            stroke={theme.palette.primary.main}
-            strokeWidth={2}
-            activeDot={{ r: 4 }}
-          />
-          <Line
-            isAnimationActive={true}
-            type="monotone"
-            dataKey="quantity"
-            stroke={theme.palette.secondary.main}
-            strokeWidth={2}
-            activeDot={{ r: 4 }}
-          />
+          {Object.keys(chartData[0])
+            .filter((key) => key !== "x")
+            .map((key) => (
+              <Line
+                isAnimationActive={true}
+                type="monotone"
+                dataKey={key}
+                stroke={theme.palette.primary.main}
+                strokeWidth={2}
+                activeDot={{ r: 4 }}
+              />
+            ))}
         </LineChart>
       </ResponsiveContainer>
     </>
+  ) : (
+    <></>
   );
 };
 

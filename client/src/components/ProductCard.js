@@ -44,7 +44,12 @@ const ProductCard = ({ product, sx }) => {
     if (!productInWishlist)
       try {
         axios
-          .post(PRODUCT_ADD_TO_WISHLIST_ENDPOINT, { userId: user._id, productId: product._id })
+          .post(PRODUCT_ADD_TO_WISHLIST_ENDPOINT, {
+            userId: user._id,
+            productId: product._id,
+            vendorId: product.owner,
+            date: new Date().toISOString(),
+          })
           .then((res) => setWishlist((wishlist) => [...wishlist, product]))
           .catch((err) => console.log(err));
       } catch (err) {
@@ -53,7 +58,12 @@ const ProductCard = ({ product, sx }) => {
     else
       try {
         axios
-          .patch(PRODUCT_REMOVE_FROM_WISHLIST_ENDPOINT, { userId: user._id, productId: product._id })
+          .patch(PRODUCT_REMOVE_FROM_WISHLIST_ENDPOINT, {
+            userId: user._id,
+            productId: product._id,
+            vendorId: product.owner,
+            date: new Date().toISOString(),
+          })
           .then((res) => setWishlist((wishlist) => wishlist.filter((prod) => prod._id !== product._id)))
           .catch((err) => console.log(err));
       } catch (err) {
