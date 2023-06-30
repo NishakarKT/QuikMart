@@ -58,6 +58,7 @@ const Index = () => {
         axios
           .get(PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT, { params: query })
           .then((res) => {
+            console.log(res.data.data);
             setProducts(res.data.data);
             // setLocationRangeOpen(false);
             window.scrollTo(0, 0);

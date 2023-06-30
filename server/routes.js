@@ -55,6 +55,8 @@ Router.get("/product/get-orders", productsControllers.getOrders);
 Router.delete("/product/remove-orders", productsControllers.removeOrders);
 Router.patch("/product/cancel-orders", productsControllers.cancelOrders);
 Router.patch("/product/accept-orders", productsControllers.acceptOrders);
+Router.patch("/product/new-rating", productsControllers.newRating);
+Router.post("/product/new-review", productsControllers.newReview);
 // File Routes
 Router.post("/file/new-file", upload.single("file"), fileControllers.newFile);
 Router.post("/file/new-files", upload.array("files"), fileControllers.newFiles);

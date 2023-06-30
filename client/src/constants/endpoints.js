@@ -38,6 +38,8 @@ export const PRODUCT_GET_ORDERS_ENDPOINT = BASE + "/product/get-orders";
 export const PRODUCT_REMOVE_ORDERS_ENDPOINT = BASE + "/product/remove-orders";
 export const PRODUCT_CANCEL_ORDERS_ENDPOINT = BASE + "/product/cancel-orders";
 export const PRODUCT_ACCEPT_ORDERS_ENDPOINT = BASE + "/product/accept-orders";
+export const PRODUCT_NEW_RATING_ENDPOINT = BASE + "/product/new-rating";
+export const PRODUCT_NEW_REVIEW_ENDPOINT = BASE + "/product/new-review";
 // file endpoints
 export const FILE_NEW_FILE_ENDPOINT = BASE + "/file/new-file";
 export const FILE_NEW_FILES_ENDPOINT = BASE + "/file/new-files";

@@ -9,10 +9,11 @@ import {
   PRODUCT_ADD_TO_CART_ENDPOINT,
   PRODUCT_REMOVE_FROM_WISHLIST_ENDPOINT,
   PRODUCT_REMOVE_FROM_CART_ENDPOINT,
+  PRODUCT_NEW_RATING_ENDPOINT,
   ANALYTICS_NEW_ENDPOINT,
 } from "../constants/endpoints";
 // mui
-import { Stack, Card, CardHeader, CardMedia, CardContent, Typography, Button, Avatar, Tooltip, IconButton } from "@mui/material";
+import { Stack, Card, CardHeader, CardMedia, CardContent, Typography, Button, Avatar, Tooltip, IconButton, Rating } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -105,6 +106,33 @@ const ProductCard = ({ product, sx }) => {
     }
   };
 
+  const handleRating = (rating) => {
+    if (!user) navigate(AUTH_USER_ROUTE);
+    else {
+      axios
+        .patch(PRODUCT_NEW_RATING_ENDPOINT, {
+          userId: user._id,
+          productId: product._id,
+          vendorId: product.owner,
+          date: new Date().toISOString(),
+          rating
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {});
+      // axios
+      //   .post(PRODUCT_NEW_RATING_ENDPOINT, {
+      //     userId: user._id,
+      //     productId: product._id,
+      //     vendorId: product.owner,
+      //     date: new Date().toISOString(),
+      //   })
+      //   .then((res) => setCart((cart) => [...cart, product]))
+      //   .catch((err) => console.log(err));
+    }
+  };
+
   return (
     <Card sx={{ ...sx, position: "relative" }}>
       <Tooltip title={productInWishlist ? "Remove From WishList" : "Add To WishList"}>
@@ -124,6 +152,17 @@ const ProductCard = ({ product, sx }) => {
           {productInWishlist ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
       </Tooltip>
+      <Rating
+        sx={{
+          position: "absolute",
+          left: 10,
+          top: 10,
+          zIndex: 1,
+        }}
+        defaultValue={product.rating}
+        onChange={(e, rating) => handleRating(rating)}
+        precision={0.5}
+      />
       <Stack sx={{ height: "100%" }}>
         <CardMedia
           onClick={() => setProduct(product)}

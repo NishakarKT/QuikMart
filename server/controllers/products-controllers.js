@@ -1,6 +1,6 @@
 import fs from "fs";
 import { User } from "../models/user-models.js";
-import { Product, Wishlist, Cart, Order } from "../models/product-models.js";
+import { Product, Wishlist, Cart, Order, Rating, Review } from "../models/product-models.js";
 import { Analytics } from "../models/analytics-models.js";
 
 export const addToCart = async (req, res) => {
@@ -18,7 +18,14 @@ export const addToCart = async (req, res) => {
 export const removeFromCart = async (req, res) => {
   const { userId, vendorId, productId, date } = req.body;
   try {
-    const newAnalytics = new Analytics({ type: "product", product: productId, user: userId, vendor: vendorId, date, action: "removeFromCart" });
+    const newAnalytics = new Analytics({
+      type: "product",
+      product: productId,
+      user: userId,
+      vendor: vendorId,
+      date,
+      action: "removeFromCart",
+    });
     await newAnalytics.save();
     await Cart.findOneAndUpdate({ product: productId }, { $pull: { users: userId } });
     res.status(200).send({ message: "removed from cart" });
@@ -30,7 +37,14 @@ export const removeFromCart = async (req, res) => {
 export const addToWishlist = async (req, res) => {
   const { userId, vendorId, productId, date } = req.body;
   try {
-    const newAnalytics = new Analytics({ type: "product", product: productId, user: userId, vendor: vendorId, date, action: "addToWishlist" });
+    const newAnalytics = new Analytics({
+      type: "product",
+      product: productId,
+      user: userId,
+      vendor: vendorId,
+      date,
+      action: "addToWishlist",
+    });
     await newAnalytics.save();
     await Wishlist.findOneAndUpdate({ product: productId }, { $addToSet: { users: userId } }, { upsert: true });
     res.status(200).send({ message: "added to wishlist" });
@@ -42,7 +56,14 @@ export const addToWishlist = async (req, res) => {
 export const removeFromWishlist = async (req, res) => {
   const { userId, vendorId, productId, date } = req.body;
   try {
-    const newAnalytics = new Analytics({ type: "product", product: productId, user: userId, vendor: vendorId, date, action: "removeFromWishlist" });
+    const newAnalytics = new Analytics({
+      type: "product",
+      product: productId,
+      user: userId,
+      vendor: vendorId,
+      date,
+      action: "removeFromWishlist",
+    });
     await newAnalytics.save();
     await Wishlist.findOneAndUpdate({ product: productId }, { $pull: { users: userId } });
     res.status(200).send({ message: "removed from wishlist" });
@@ -129,9 +150,23 @@ export const getOrders = async (req, res) => {
 export const getProductsByQuery = async (req, res) => {
   const query = req.query;
   try {
-    const products = await Product.find(query);
+    let products = (await Product.find(query)).map((product) => ({...product._doc}));
+    // ratings
+    const ratings = await Rating.find({ product: { $in: products.map((product) => product._id) } });
+    products = products.map((product) => {
+      const productRatings = ratings.filter((rating) => rating.product === product._id.toString());
+      product["rating"] = productRatings.reduce((acc, rating) => acc + Number(rating.rating), 0) / productRatings.length;
+      return product;
+    });
+    // reviews
+    const reviews = await Review.find({ product: { $in: products.map((product) => product._id) } });
+    products = products.map((product) => {
+      product["reviews"] = reviews.filter((review) => review.product === product._id.toString()).reverse();
+      return product;
+    });
     res.status(200).send({ data: products, message: "found products" });
   } catch (err) {
+    console.log(err.message);
     res.status(500).send({ message: err.message });
   }
 };
@@ -208,6 +243,34 @@ export const editProducts = async (req, res) => {
   try {
     const product = await Product.findOneAndUpdate({ _id }, edits, { new: true });
     res.status(204).send({ product, message: "updated" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+export const newRating = async (req, res) => {
+  const { userId, productId, vendorId, date, rating } = req.body;
+  try {
+    const existingRating = await Rating.findOne({ user: userId, product: productId });
+    if (existingRating) {
+      const newRating = await Rating.findOneAndUpdate({ user: userId, product: productId }, { rating }, { new: true });
+      res.status(201).send({ data: newRating, message: "updated rating" });
+    } else {
+      const newRatingDoc = new Rating({ user: userId, product: productId, vendor: vendorId, date, rating });
+      const newRating = await newRatingDoc.save();
+      res.status(201).send({ data: newRating, message: "created rating" });
+    }
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+export const newReview = async (req, res) => {
+  const { userId, productId, vendorId, date, reviewData } = req.body;
+  try {
+    const newReview = new Review(reviewData);
+    const review = await newReview.save();
+    res.status(201).send({ data: review, message: "created review" });
   } catch (err) {
     res.status(500).send({ message: err.message });
   }
