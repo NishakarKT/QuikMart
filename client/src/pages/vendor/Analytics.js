@@ -8,7 +8,7 @@ import Chart from "./Chart";
 import Footer from "../../components/Footer";
 // constants
 import { ANALYTICS_GET_ENDPOINT } from "../../constants/endpoints";
-import { AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
+import { AUTH_VENDOR_ROUTE, VENDOR_PROFILE_ROUTE } from "../../constants/routes";
 // contexts
 import VendorContext from "../../contexts/VendorContext";
 
@@ -86,9 +86,9 @@ const Dashboard = () => {
             Profile Incomplete!
           </Typography>
           <Typography component="p" variant="body1" align="center" color="text.secondary">
-            Update your profile with all the necessary details to become a product/service provider!
+            Update your profile with all the necessary details to become a vendor!
           </Typography>
-          <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
+          <Button onClick={() => navigate(VENDOR_PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
             Update Profile
           </Button>
         </Stack>

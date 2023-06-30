@@ -44,7 +44,7 @@ const Home = () => {
             autoPlay
             infiniteLoop
           >
-            {products.map((product) => (
+            {products.slice(0, 5).map((product) => (
               <Box
                 key={product._id}
                 onClick={() => setProduct(product)}
@@ -52,7 +52,9 @@ const Home = () => {
               >
                 <img
                   style={{ width: "100%", height: "100vh", objectFit: "cover", filter: "brightness(0.25)" }}
-                  src={product.files.length ? UPLOAD_URL + product.files[0] : ""}
+                  src={
+                    product.files.length ? (product.files[0].startsWith("https://") ? product.files[0] : UPLOAD_URL + product.files[0]) : ""
+                  }
                   alt={product.title}
                   loading="lazy"
                 />
@@ -93,7 +95,7 @@ const Home = () => {
           </Carousel>
           <Carousel showStatus={false} showIndicators={false} stopOnHover={false} showThumbs={false} autoFocus autoPlay infiniteLoop>
             {products
-              .filter((product, index) => index % count === 0)
+              .slice(0, 10)
               .map((product, index) => (
                 <Stack key={product._id} justifyContent="center" direction="row" p={2} mx={3} spacing={2}>
                   {products.slice(index, index + count).map((product, index) => (

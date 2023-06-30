@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 import Router from "./routes.js";
 import { fileURLToPath } from "url";
+// import "./testData.js";
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 

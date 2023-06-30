@@ -6,7 +6,7 @@ import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
 // constants
 import { PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT } from "../../constants/endpoints";
-import { VENDOR_NEW_PRODUCTS_ROUTE, AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
+import { VENDOR_NEW_PRODUCTS_ROUTE, AUTH_VENDOR_ROUTE, VENDOR_PROFILE_ROUTE } from "../../constants/routes";
 // mui
 import {
   Grid,
@@ -74,26 +74,6 @@ const Products = () => {
       <Toolbar />
       {isProfileComplete(user) ? (
         <Grid container spacing={2} sx={{ p: 2 }}>
-          {/* <Grid item xs={12}>
-            <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-              <Stack direction={"row"} alignItems="flex-end">
-                <Typography component="h1" variant="h5" sx={{ mr: 2 }}>
-                  Products
-                </Typography>
-                <Autocomplete
-                  autoHighlight
-                  fullWidth
-                  disablePortal
-                  onChange={(e, value) => handleSearch(value._id)}
-                  flex={1}
-                  options={products.map((product) => ({ label: product.title, _id: product._id }))}
-                  renderInput={(params) => (
-                    <TextField {...params} placeholder="Type to search among your products" variant="standard" label="Search Product" />
-                  )}
-                />
-              </Stack>
-            </Paper>
-          </Grid> */}
           <Grid item xs={12}>
             <Paper sx={{ p: 2, pb: 0, display: "flex", flexDirection: "column" }}>
               <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -175,9 +155,9 @@ const Products = () => {
             Profile Incomplete!
           </Typography>
           <Typography component="p" variant="body1" align="center" color="text.secondary">
-            Update your profile with all the necessary details to become a product/service provider!
+            Update your profile with all the necessary details to become a vendor!
           </Typography>
-          <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
+          <Button onClick={() => navigate(VENDOR_PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
             Update Profile
           </Button>
         </Stack>

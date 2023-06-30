@@ -36,7 +36,14 @@ import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
 // constants
 import { PRODUCT_GET_ORDERS_ENDPOINT } from "../../constants/endpoints";
-import { HOME_ROUTE, VENDOR_ROUTE, VENDOR_PRODUCTS_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PROFILE_ROUTE, VENDOR_ANALYTICS_ROUTE } from "../../constants/routes";
+import {
+  HOME_ROUTE,
+  VENDOR_ROUTE,
+  VENDOR_PRODUCTS_ROUTE,
+  VENDOR_NEW_PRODUCTS_ROUTE,
+  VENDOR_PROFILE_ROUTE,
+  VENDOR_ANALYTICS_ROUTE,
+} from "../../constants/routes";
 // pages
 const Dashboard = lazy(() => import("./Dashboard"));
 const NewProducts = lazy(() => import("./NewProducts"));
@@ -101,28 +108,28 @@ const Index = () => {
     setOpen(!open);
   };
 
-  const isProfileComplete = (user) => user && user.email;
-  // user &&
-  // user.name &&
-  // user.email &&
-  // user.contact &&
-  // user.address1 &&
-  // user.city &&
-  // user.state &&
-  // user.country &&
-  // user.zip &&
-  // user.location?.coordinates?.length;
+  const isProfileComplete = (user) =>
+    user &&
+    user.name &&
+    user.email
+    // user.contact &&
+    // user.address1 &&
+    // user.city &&
+    // user.state &&
+    // user.country &&
+    // user.zip &&
+    // user.location?.coordinates?.length;
 
-  useEffect(() => {
-    const user = users.find((user) => user.role === "vendor");
-    setUser(user);
-    if (user && user._id) {
-      axios
-        .get(PRODUCT_GET_ORDERS_ENDPOINT, { params: { to: user._id } })
-        .then((res) => setOrders(res.data.data))
-        .catch((err) => console.log(err));
-    }
-  }, [users]);
+    useEffect(() => {
+      const user = users.find((user) => user.role === "vendor");
+      setUser(user);
+      if (user && user._id) {
+        axios
+          .get(PRODUCT_GET_ORDERS_ENDPOINT, { params: { to: user._id } })
+          .then((res) => setOrders(res.data.data))
+          .catch((err) => console.log(err));
+      }
+    }, [users]);
 
   return (
     <Box sx={{ display: "flex" }}>

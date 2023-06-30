@@ -115,7 +115,7 @@ const ProductCard = ({ product, sx }) => {
           productId: product._id,
           vendorId: product.owner,
           date: new Date().toISOString(),
-          rating
+          rating,
         })
         .then((res) => {
           console.log(res);
@@ -169,7 +169,7 @@ const ProductCard = ({ product, sx }) => {
           sx={{ cursor: "pointer" }}
           component="img"
           height="194"
-          image={product.files.length ? UPLOAD_URL + product.files[0] : ""}
+          image={product.files.length ? (product.files[0].startsWith("https://") ? product.files[0] : UPLOAD_URL + product.files[0]) : ""}
           alt=""
           loading="lazy"
         />

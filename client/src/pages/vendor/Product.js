@@ -46,7 +46,7 @@ const Product = ({ index, product, setProducts }) => {
     formData.forEach((value, key) => (data[key] = value));
     data["availability"] = isAvailable.toString();
     const updatedFiles = newFiles.map(
-      (file, index) => new File([file], user.email + "_" + now + "_" + index + "." + file.name.split(".").at(-1), { type: file.type })
+      (file, index) => new File([file], user.role + "." + user.email + "." + now + "." + index + "." + file.name.split(".").at(-1), { type: file.type })
     );
     data["files"] = [...oldFiles, ...updatedFiles.map((file) => file.name)];
     data["deletedFiles"] = product.files.filter((file) => !data["files"].includes(file));

@@ -24,7 +24,7 @@ import Footer from "../../components/Footer";
 // contexts
 import VendorContext from "../../contexts/VendorContext";
 // constants
-import { AUTH_VENDOR_ROUTE, PROFILE_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PRODUCTS_ROUTE } from "../../constants/routes";
+import { AUTH_VENDOR_ROUTE, VENDOR_NEW_PRODUCTS_ROUTE, VENDOR_PRODUCTS_ROUTE, VENDOR_PROFILE_ROUTE } from "../../constants/routes";
 // data
 const ITEMS_PER_PAGE = 5;
 
@@ -234,9 +234,9 @@ const Dashboard = () => {
             Profile Incomplete!
           </Typography>
           <Typography component="p" variant="body1" align="center" color="text.secondary">
-            Update your profile with all the necessary details to become a product/service provider!
+            Update your profile with all the necessary details to become a vendor!
           </Typography>
-          <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
+          <Button onClick={() => navigate(VENDOR_PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
             Update Profile
           </Button>
         </Stack>

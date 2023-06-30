@@ -132,20 +132,26 @@ const Product = () => {
   };
 
   return product ? (
-    <Stack direction="row">
+    <Stack direction="row" sx={{ height: "75vh" }}>
       <Stack flex={{ xs: 0, sm: 1 }}>
         <Carousel showThumbs={false} stopOnHover={false} autoPlay infiniteLoop>
           {product.files.map((file) => (
-            <img key={file} style={{ width: "100%", height: "100vh", objectFit: "cover" }} src={UPLOAD_URL + file} alt="" loading="lazy" />
+            <img
+              key={file}
+              style={{ width: "100%", height: "75vh", objectFit: "cover" }}
+              src={file.startsWith("https://") ? file : UPLOAD_URL + file}
+              alt=""
+              loading="lazy"
+            />
           ))}
         </Carousel>
       </Stack>
-      <Stack flex={2} style={{ width: "100%", height: "100vh", overflowX: "hidden", overflowY: "auto" }}>
+      <Stack flex={2} style={{ width: "100%", height: "75vh", overflowX: "hidden", overflowY: "auto" }}>
         <Card
           elevation={0}
           sx={{
             overflowY: "auto",
-            height: "100vh",
+            height: "75vh",
             overflowX: "hidden",
             "&::-webkit-scrollbar": { width: "5px" },
             "&::-webkit-scrollbar-thumb": { backgroundColor: "lightgray" },
@@ -176,7 +182,7 @@ const Product = () => {
                 <img
                   key={file}
                   style={{ width: "100%", height: "300px", objectFit: "cover" }}
-                  src={UPLOAD_URL + file}
+                  src={file.startsWith("https://") ? file : UPLOAD_URL + file}
                   alt=""
                   loading="lazy"
                 />

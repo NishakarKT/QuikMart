@@ -48,7 +48,7 @@ const Profile = () => {
         formData = new FormData(formRef.current);
       if (profilePic) {
         const picData = new FormData();
-        const fileName = user.email + ".profile." + profilePic.name.split(".").at(-1);
+        const fileName = user.role + "." + user.email + ".profile." + profilePic.name.split(".").at(-1);
         edits["profilePic"] = fileName;
         picData.append("file", profilePic, fileName);
         try {
@@ -69,7 +69,7 @@ const Profile = () => {
       }
       if (coverPic) {
         const picData = new FormData();
-        const fileName = user.email + ".cover." + coverPic.name.split(".").at(-1);
+        const fileName = user.role + "." + user.email + ".cover." + coverPic.name.split(".").at(-1);
         edits["coverPic"] = fileName;
         picData.append("file", coverPic, fileName);
         try {
@@ -142,7 +142,7 @@ const Profile = () => {
       <Helmet>
         <title>Profile | User | {COMPANY}</title>
       </Helmet>
-      {user ? (
+      {user && user.email ? (
         <Box p={2}>
           <Grid container>
             <Grid item xs={12} md={8} mb={{ xs: 5, md: 0 }}>

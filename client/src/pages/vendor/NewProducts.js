@@ -27,7 +27,7 @@ import { Close, Add, SyncAlt } from "@mui/icons-material";
 // contexts
 import VendorContext from "../../contexts/VendorContext";
 // constants
-import { AUTH_VENDOR_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
+import { AUTH_VENDOR_ROUTE, VENDOR_PROFILE_ROUTE } from "../../constants/routes";
 import { PRODUCT_NEW_PRODUCT_ENDPOINT, FILE_NEW_FILES_ENDPOINT } from "../../constants/endpoints";
 import { categories, currencies } from "../../constants/data";
 // components
@@ -64,7 +64,7 @@ const NewProducts = () => {
     const now = Date.now();
     formData.forEach((value, key) => (data[key] = value));
     const updatedFiles = files.map(
-      (file, index) => new File([file], user.email + "_" + now + "_" + index + "." + file.name.split(".").at(-1), { type: file.type })
+      (file, index) => new File([file], user.role + "." + user.email + "." + now + "." + index + "." + file.name.split(".").at(-1), { type: file.type })
     );
     data["files"] = updatedFiles.map((file) => file.name);
     data["owner"] = user._id;
@@ -275,9 +275,9 @@ const NewProducts = () => {
             Profile Incomplete!
           </Typography>
           <Typography component="p" variant="body1" align="center" color="text.secondary">
-            Update your profile with all the necessary details to become a product/service provider!
+            Update your profile with all the necessary details to become a vendor!
           </Typography>
-          <Button onClick={() => navigate(PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
+          <Button onClick={() => navigate(VENDOR_PROFILE_ROUTE)} sx={{ width: "fit-content" }} variant="contained">
             Update Profile
           </Button>
         </Stack>

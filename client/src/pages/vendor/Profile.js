@@ -10,17 +10,7 @@ import { UPLOAD_URL } from "../../constants/urls";
 import { AUTH_VENDOR_ROUTE } from "../../constants/routes";
 import { USER_ENDPOINT, FILE_NEW_FILE_ENDPOINT } from "../../constants/endpoints";
 // mui
-import {
-  Toolbar,
-  Stack,
-  Box,
-  Grid,
-  Paper,
-  Button,
-  TextField,
-  Typography,
-  CardMedia,
-} from "@mui/material";
+import { Toolbar, Stack, Box, Grid, Paper, Button, TextField, Typography, CardMedia } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { SyncAlt, Edit, AddLocation } from "@mui/icons-material";
 // utils
@@ -79,7 +69,7 @@ const Profile = () => {
       }
       if (coverPic) {
         const picData = new FormData();
-        const fileName = user.email + ".cover." + coverPic.name.split(".").at(-1);
+        const fileName = user.role + "." + user.email + ".cover." + coverPic.name.split(".").at(-1);
         edits["coverPic"] = fileName;
         picData.append("file", coverPic, fileName);
         try {
@@ -147,7 +137,7 @@ const Profile = () => {
     setLocation(location);
   };
 
-  return (
+  return user && user.email ? (
     <Box
       component="main"
       sx={{
@@ -349,6 +339,8 @@ const Profile = () => {
       </Grid>
       <Footer />
     </Box>
+  ) : (
+    <></>
   );
 };
 
