@@ -37,7 +37,7 @@ const Dashboard = () => {
               const data = productAnalytics.filter((analytic) => analytic.action === action);
               if (!chartsData[action]) {
                 data.forEach((item) => {
-                  if (!chartsData[action]) chartsData[action] = [{ x: new Date(item.createdAt).toLocaleString(), y1: 1 }];
+                  if (!chartsData[action]) chartsData[action] = [{ date: new Date(item.createdAt).toLocaleString(), y1: 1 }];
                   else
                     chartsData[action].push({
                       x: new Date(item.createdAt).toLocaleString(),

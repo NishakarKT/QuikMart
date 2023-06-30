@@ -60,52 +60,78 @@ const Cart = () => {
   const generateQuikCoins = (total) => total * COIN_FACTOR;
 
   const openRazorpayPopup = ({ coins, generatedCoins, updatedCoins, finalOrders }) => {
-    const options = {
-      key: "rzp_test_IAmcmWJGGwBS6X",
-      amount: total * 100, // Amount in paisa (e.g., 10000 = ₹100)
-      currency: "INR",
-      name: COMPANY,
-      description: "Purchase Description",
-      image: IMAGES_WEBSITE_LOGO_BLACK_PNG,
-      handler: (res) => {
-        setIsLoading(true);
-        axios
-          .post(PRODUCT_NEW_ORDERS_ENDPOINT, finalOrders)
-          .then((res) => {
-            setOrders((orders) => [...orders, ...finalOrders.map((order) => ({ ...order, createdAt: new Date().toISOString() }))]);
-            axios
-              .patch(USER_ENDPOINT, { _id: user._id, edits: { coins: updatedCoins } })
-              .then((res) => {
-                setUser((user) => ({ ...user, coins: updatedCoins }));
-                alert("Orders have been placed!" + (!coins ? "You earned " + generatedCoins + " coins" : ""));
-                clearOrder();
-                setIsLoading(false);
-              })
-              .catch((err) => {
-                alert("Orders have been placed!");
-                clearOrder();
-                setIsLoading(false);
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-            setIsLoading(false);
-          });
-      },
-      prefill: {
-        name: user.name,
-        email: user.email,
-        contact: user.contact,
-      },
-      theme: {
-        color: "#1976d2",
-      },
-    };
-    if (window && window.Razorpay) {
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
+    if (!coins) {
+      const options = {
+        key: "rzp_test_IAmcmWJGGwBS6X",
+        amount: total * 100, // Amount in paisa (e.g., 10000 = ₹100)
+        currency: "INR",
+        name: COMPANY,
+        description: "Purchase Description",
+        image: IMAGES_WEBSITE_LOGO_BLACK_PNG,
+        handler: (res) => {
+          setIsLoading(true);
+          axios
+            .post(PRODUCT_NEW_ORDERS_ENDPOINT, finalOrders)
+            .then((res) => {
+              setOrders((orders) => [...orders, ...finalOrders.map((order) => ({ ...order, createdAt: new Date().toISOString() }))]);
+              axios
+                .patch(USER_ENDPOINT, { _id: user._id, edits: { coins: updatedCoins } })
+                .then((res) => {
+                  setUser((user) => ({ ...user, coins: updatedCoins }));
+                  alert("Orders have been placed!" + (!coins ? "You earned " + generatedCoins + " coins" : ""));
+                  clearOrder();
+                  setIsLoading(false);
+                })
+                .catch((err) => {
+                  alert("Orders have been placed!");
+                  clearOrder();
+                  setIsLoading(false);
+                });
+            })
+            .catch((err) => {
+              console.log(err);
+              setIsLoading(false);
+            });
+        },
+        prefill: {
+          name: user.name,
+          email: user.email,
+          contact: user.contact,
+        },
+        theme: {
+          color: "#1976d2",
+        },
+      };
+      if (window && window.Razorpay) {
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+      } else {
+        console.log("Razorpay script is not loaded.");
+      }
     } else {
-      console.log("Razorpay script is not loaded.");
+      setIsLoading(true);
+      axios
+        .post(PRODUCT_NEW_ORDERS_ENDPOINT, finalOrders)
+        .then((res) => {
+          setOrders((orders) => [...orders, ...finalOrders.map((order) => ({ ...order, createdAt: new Date().toISOString() }))]);
+          axios
+            .patch(USER_ENDPOINT, { _id: user._id, edits: { coins: updatedCoins } })
+            .then((res) => {
+              setUser((user) => ({ ...user, coins: updatedCoins }));
+              alert("Orders have been placed!" + (!coins ? "You earned " + generatedCoins + " coins" : ""));
+              clearOrder();
+              setIsLoading(false);
+            })
+            .catch((err) => {
+              alert("Orders have been placed!");
+              clearOrder();
+              setIsLoading(false);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     }
   };
 

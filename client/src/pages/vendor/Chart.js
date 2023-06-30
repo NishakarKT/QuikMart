@@ -6,7 +6,6 @@ import { useTheme } from "@mui/material/styles";
 
 const Chart = ({ title, chartData }) => {
   const theme = useTheme();
-  console.log(chartData)
   return chartData.length ? (
     <>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
