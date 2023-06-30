@@ -15,9 +15,10 @@
 # Important Links:
 
 1. Repo Link: https://github.com/NishakarKT/QuikMartt
-2. Video Demonstration & Screenshots:
-3. Hosted Link (Frontend): https://quikmartt.netlify.app/
-4. Hosted Link (Backend): https://quikmartt.onrender.com/
+2. Video Demonstration: https://drive.google.com/file/d/1CTCDKwz36hJOBGNJ1hQGBUO67RlHL1KD/view?usp=sharing
+3. Screenshots: https://github.com/NishakarKT/QuikMartt/tree/main/demo/screenshots
+4. Hosted Link (Frontend): https://quikmartt.netlify.app/
+5. Hosted Link (Backend): https://quikmartt.onrender.com/
 
 # Screenshots
 
