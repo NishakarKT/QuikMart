@@ -164,11 +164,13 @@ const AuthUser = () => {
           })
           .catch((err) => {
             console.log(err);
+            setEmailErr(err.response.data.message || "Something went wrong!");
             setIsGglLoading(false);
           });
       })
       .catch((err) => {
         console.log(err);
+        setEmailErr(err.message || "Something went wrong!");
         setIsGglLoading(false);
       });
   };

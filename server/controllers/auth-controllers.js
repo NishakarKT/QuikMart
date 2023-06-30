@@ -19,15 +19,11 @@ export const signIn = async (req, res) => {
       const users = await User.find({ email });
       const user = users.find((user) => user.role === role);
       if (!user) {
-        // if (role === "user") {
-        if (role) {
+        if (role === "user" || role === "vendor") {
           const newUser = new User({ email, role });
           const userData = await newUser.save();
           const token = generateJWT({ email }, { expiresIn: "30d" });
           res.status(201).send({ users: [...users, userData], message: "new user", token });
-        } else if (role === "vendor") {
-          res.status(401);
-          throw new Error("Unauthorized Vendor");
         } else if (role === "admin") {
           res.status(401);
           throw new Error("Unauthorized Admin");

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+// utils
+import { truncateStr } from "../../utils";
 // mui
 import { Stack, Grid, Box, Collapse, TableCell, TableRow, Typography, List, ListItem, ListItemText } from "@mui/material";
 import { CheckCircle, Cancel } from "@mui/icons-material";
@@ -74,8 +76,8 @@ const Order = ({ index, order, isPast }) => {
                     <List disablePadding>
                       {order?.products?.map((product, index) => (
                         <ListItem key={product.title} sx={{ py: 1, px: 0 }}>
-                          <ListItemText primary={product.quantity + " " + product.title} secondary={product.desc} />
-                          <Typography variant="body2">
+                          <ListItemText primary={product.quantity + " " + product.title} secondary={truncateStr(product.desc, 400)} />
+                          <Typography variant="body2" sx={{ whiteSpace: "nowrap" }}>
                             {product.quantity + " x " + product.price + " = " + Number(product.quantity) * Number(product.price)}
                           </Typography>
                         </ListItem>

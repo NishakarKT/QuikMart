@@ -6,6 +6,7 @@ import { useTheme } from "@mui/material/styles";
 
 const Chart = ({ title, chartData }) => {
   const theme = useTheme();
+  console.log(chartData)
   return chartData.length ? (
     <>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -22,7 +23,7 @@ const Chart = ({ title, chartData }) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="x" stroke={theme.palette.text.secondary} style={theme.typography.body2} />
+          <XAxis dataKey="date" stroke={theme.palette.text.secondary} style={theme.typography.body2} />
           <YAxis stroke={theme.palette.text.secondary} style={theme.typography.body2}>
             <Label
               angle={270}
@@ -40,7 +41,7 @@ const Chart = ({ title, chartData }) => {
           <Tooltip />
           <Legend />
           {Object.keys(chartData[0])
-            .filter((key) => key !== "x")
+            .filter((key) => key !== "date")
             .map((key) => (
               <Line
                 isAnimationActive={true}

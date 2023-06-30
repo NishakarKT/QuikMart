@@ -6,6 +6,8 @@ import AdminContext from "../../contexts/AdminContext";
 import { ADMIN_EDIT_DOCUMENT_ENDPOINT, ADMIN_REMOVE_DOCUMENTS_ENDPOINT } from "../../constants/endpoints";
 // components
 import Loader from "../../components/Loader";
+// utils
+import { truncateStr } from "../../utils";
 // mui
 import { Box, Stack, Grid, Collapse, TableCell, TableRow, Typography, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
@@ -67,7 +69,7 @@ const Document = ({ document, setDocuments }) => {
           .filter((key) => typeof document[key] === "string")
           .map((key) => (
             <TableCell key={key} align="left">
-              {document[key]}
+              {truncateStr(document[key], 50)}
             </TableCell>
           ))}
       </TableRow>

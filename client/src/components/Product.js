@@ -223,19 +223,21 @@ const Product = () => {
                 <SendIcon />
               </IconButton>
             </Stack>
-            {product.reviews.map((review) => (
-              <Stack key={review._id} direction="row" alignItems="flex-start" spacing={1} sx={{ mb: 2 }}>
-                <Avatar src={UPLOAD_URL + review.fromProfilePic} loading="lazy" />
-                <Stack>
-                  <Typography variant="body2" color="text.primary">
-                    {review.review}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {review.from} on {new Date(review.date).toLocaleDateString()}
-                  </Typography>
-                </Stack>
-              </Stack>
-            ))}
+            {product.reviews?.length
+              ? product.reviews.map((review) => (
+                  <Stack key={review._id} direction="row" alignItems="flex-start" spacing={1} sx={{ mb: 2 }}>
+                    <Avatar src={UPLOAD_URL + review.fromProfilePic} loading="lazy" />
+                    <Stack>
+                      <Typography variant="body2" color="text.primary">
+                        {review.review}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {review.from} on {new Date(review.date).toLocaleDateString()}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                ))
+              : null}
           </CardContent>
         </Card>
       </Stack>

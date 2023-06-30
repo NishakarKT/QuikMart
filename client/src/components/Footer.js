@@ -3,13 +3,23 @@ import { useNavigate } from "react-router-dom";
 // constants
 import { COMPANY, COMPANY2 } from "../constants/variables";
 import { IMAGES_WEBSITE_LOGO_WHITE_PNG } from "../constants/images";
-import { HOME_ROUTE } from "../constants/routes";
+import { CART_ROUTE, HOME_ROUTE, ORDERS_ROUTE, PROFILE_ROUTE, WISHLIST_ROUTE } from "../constants/routes";
 import { CONTACT_FB_URL, CONTACT_IN_URL, CONTACT_IG_URL, CONTACT_EM_URL } from "../constants/urls";
 // contexts
 import AppContext from "../contexts/AppContext";
 // mui
 import { Grid, Stack, Typography, Divider, IconButton, Tooltip } from "@mui/material";
-import { Facebook, LinkedIn, Instagram, AlternateEmail, Home } from "@mui/icons-material";
+import {
+  Facebook,
+  LinkedIn,
+  Instagram,
+  AlternateEmail,
+  Home,
+  Favorite,
+  ShoppingCart,
+  AccountCircle,
+  FormatListNumbered,
+} from "@mui/icons-material";
 
 const Footer = ({ sx }) => {
   const navigate = useNavigate();
@@ -98,6 +108,70 @@ const Footer = ({ sx }) => {
             >
               <Home sx={{ mr: 1 }} />
               <Typography>Home</Typography>
+            </Stack>
+            <Stack
+              onClick={() => navigate(WISHLIST_ROUTE)}
+              direction="row"
+              alignItems="center"
+              sx={{
+                ml: { xs: 0, md: 1 },
+                p: 1,
+                borderRadius: "5px",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
+              }}
+            >
+              <Favorite sx={{ mr: 1 }} />
+              <Typography>wishlist</Typography>
+            </Stack>
+            <Stack
+              onClick={() => navigate(CART_ROUTE)}
+              direction="row"
+              alignItems="center"
+              sx={{
+                ml: { xs: 0, md: 1 },
+                p: 1,
+                borderRadius: "5px",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
+              }}
+            >
+              <ShoppingCart sx={{ mr: 1 }} />
+              <Typography>Cart</Typography>
+            </Stack>
+            <Stack
+              onClick={() => navigate(ORDERS_ROUTE)}
+              direction="row"
+              alignItems="center"
+              sx={{
+                ml: { xs: 0, md: 1 },
+                p: 1,
+                borderRadius: "5px",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
+              }}
+            >
+              <FormatListNumbered sx={{ mr: 1 }} />
+              <Typography>Orders</Typography>
+            </Stack>
+            <Stack
+              onClick={() => navigate(PROFILE_ROUTE)}
+              direction="row"
+              alignItems="center"
+              sx={{
+                ml: { xs: 0, md: 1 },
+                p: 1,
+                borderRadius: "5px",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
+              }}
+            >
+              <AccountCircle sx={{ mr: 1 }} />
+              <Typography>Profile</Typography>
             </Stack>
           </Stack>
         </Grid>

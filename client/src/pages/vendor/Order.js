@@ -4,6 +4,8 @@ import axios from "axios";
 import VendorContext from "../../contexts/VendorContext";
 // components
 import Loader from "../../components/Loader";
+// utils
+import { truncateStr } from "../../utils";
 // constants
 import { PRODUCT_CANCEL_ORDERS_ENDPOINT, PRODUCT_ACCEPT_ORDERS_ENDPOINT } from "../../constants/endpoints";
 // mui
@@ -119,8 +121,8 @@ const Order = ({ index, order, isPast }) => {
                     <List disablePadding>
                       {order?.products?.map((product, index) => (
                         <ListItem key={product.title} sx={{ py: 1, px: 0 }}>
-                          <ListItemText primary={product.title} secondary={product.desc} />
-                          <Typography variant="body2">
+                          <ListItemText primary={product.title} secondary={truncateStr(product.desc, 400)} />
+                          <Typography variant="body2" sx={{ whiteSpace: "nowrap" }}>
                             {product.quantity + " x " + product.price + " = " + Number(product.quantity) * Number(product.price)}
                           </Typography>
                         </ListItem>
