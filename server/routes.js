@@ -36,6 +36,7 @@ Router.get("/analytics/get", analyticsControllers.getAnalytics);
 Router.delete("/product/remove-products", productsControllers.removeProducts);
 Router.get("/product/get-featured-products", productsControllers.getFeaturedProducts);
 Router.get("/product/get-products-by-query", productsControllers.getProductsByQuery);
+Router.get("/product/get-products-count-by-query", productsControllers.getProductsCountByQuery);
 Router.get("/product/get-products-by-location", productsControllers.getProductsByLocation);
 Router.post("/product/new-product", productsControllers.newProduct);
 Router.patch("/product/edit-product", productsControllers.editProduct);

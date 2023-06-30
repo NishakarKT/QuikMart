@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Helmet } from "react-helmet";
 import { Carousel } from "react-responsive-carousel";
+import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 // constants
 import { COMPANY } from "../../constants/variables";
 import { UPLOAD_URL } from "../../constants/urls";
 import { categories } from "../../constants/data";
 import { PRODUCTS_GET_FEATURED_PRODUCTS_ENDPOINT } from "../../constants/endpoints";
+import { SEARCH_ROUTE } from "../../constants/routes";
 // contexts
 import UserContext from "../../contexts/UserContext";
-import AppContext from "../../contexts/AppContext";
 // mui
 import { Typography, Stack, Avatar, Box, Button, ButtonGroup, Link } from "@mui/material";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
@@ -21,7 +22,7 @@ import axios from "axios";
 const MAX_PRODUCT_CARD_WIDTH = 500;
 
 const Home = () => {
-  const { setCategory } = useContext(AppContext);
+  const navigate = useNavigate();
   const { setProduct } = useContext(UserContext);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [count, setCount] = useState(Math.ceil(window.innerWidth / MAX_PRODUCT_CARD_WIDTH));
@@ -117,7 +118,7 @@ const Home = () => {
                     <Button
                       key={category}
                       onClick={() => {
-                        setCategory(category.title);
+                        navigate(SEARCH_ROUTE + "/" + category.title);
                         setProduct(null);
                       }}
                       sx={{ whiteSpace: "nowrap", borderRadius: 0 }}
@@ -150,13 +151,19 @@ const Home = () => {
                       autoPlay
                       infiniteLoop
                     >
-                      {featuredProducts[key].filter((item, index) => index % 3 === 0).map((product, index) => (
-                        <Stack key={product._id} justifyContent="center" direction="row" p={2} mx={3} spacing={2}>
-                          {featuredProducts[key].slice(index * count, index * count + count).map((product, index) => (
-                            <ProductCard key={product._id} sx={{ width: "100%", maxWidth: window.innerWidth / count }} product={product} />
-                          ))}
-                        </Stack>
-                      ))}
+                      {featuredProducts[key]
+                        .filter((item, index) => index % 3 === 0)
+                        .map((product, index) => (
+                          <Stack key={product._id} justifyContent="center" direction="row" p={2} mx={3} spacing={2}>
+                            {featuredProducts[key].slice(index * count, index * count + count).map((product, index) => (
+                              <ProductCard
+                                key={product._id}
+                                sx={{ width: "100%", maxWidth: window.innerWidth / count }}
+                                product={product}
+                              />
+                            ))}
+                          </Stack>
+                        ))}
                     </Carousel>
                   </Stack>
                 ))}

@@ -209,8 +209,19 @@ export const getFeaturedProducts = async (req, res) => {
 
 export const getProductsByQuery = async (req, res) => {
   const query = req.query;
+  if (query.search) {
+    query["$text"] = { $search: query.search };
+    delete query["search"];
+  }
   try {
-    let products = (await Product.find(query)).map((product) => ({ ...product._doc }));
+    let products = [];
+    if (query.page && query.limit)
+      products = (
+        await Product.find(query)
+          .skip((query.page - 1) * query.limit || 0)
+          .limit(query.limit || 10)
+      ).map((product) => ({ ...product._doc }));
+    else products = (await Product.find(query)).map((product) => ({ ...product._doc }));
     // ratings
     const ratings = await Rating.find({ product: { $in: products.map((product) => product._id) } });
     products = products.map((product) => {
@@ -225,6 +236,23 @@ export const getProductsByQuery = async (req, res) => {
       return product;
     });
     res.status(200).send({ data: products, message: "found products" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ message: err.message });
+  }
+};
+
+export const getProductsCountByQuery = async (req, res) => {
+  const query = req.query;
+  if (query.search) {
+    query["$text"] = { $search: query.search };
+    delete query["search"];
+  }
+  try {
+    let ttl = 0;
+    if (query.page && query.limit) ttl = await Product.count(query);
+    else ttl = await Product.count(query);
+    res.status(200).send({ data: Math.ceil(ttl / (query.limit || 1)), message: "found products count" });
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ message: err.message });

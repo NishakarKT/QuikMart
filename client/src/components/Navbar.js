@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // constants
 import { COMPANY, COMPANY2 } from "../constants/variables";
 import { AUTH_ROUTE, CART_ROUTE, HOME_ROUTE, PROFILE_ROUTE, WISHLIST_ROUTE, ORDERS_ROUTE } from "../constants/routes";
@@ -29,13 +29,19 @@ import {
 } from "@mui/material";
 import { Search, MoreVert, Login, Logout, Favorite, ShoppingCart, AccountCircle, FormatListNumbered } from "@mui/icons-material";
 
-const Navbar = () => {
+const Navbar = (props) => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [user, setUser] = useState({});
-  const { users, setUsers, role } = useContext(AppContext);
-  const { wishlist, cart, orders, products } = useContext(HomeContext);
+  const [query, setQuery] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
+  const { users, setUsers, role } = useContext(AppContext);
+  const { wishlist, cart, orders, products } = useContext(HomeContext);
+
+  useEffect(() => {
+    if (location.pathname.startsWith("/search")) setQuery(location.pathname.split("/search/")[1].replaceAll("%20", " "));
+  }, [location]);
 
   const handleMenuOpen = (e) => {
     setAnchorEl(e.currentTarget);
@@ -96,12 +102,13 @@ const Navbar = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const query = formData.get("query");
-    console.log(query)
+    setQuery(query);
+    navigate(`/search/${query}`);
   };
 
   useEffect(() => {
     setUser(users.find((u) => u.role === role) || {});
-  }, [users, role])
+  }, [users, role]);
 
   return (
     <Box component="nav" sx={{ flexGrow: 1, position: "fixed", zIndex: 3, width: "100%" }}>
@@ -126,6 +133,8 @@ const Navbar = () => {
             <Stack px={2} py={1} spacing={1} alignItems="center" direction="row">
               <Autocomplete
                 disablePortal
+                freeSolo={true}
+                value={query}
                 clearOnBlur={false}
                 sx={{ flex: 1, input: { color: "white" }, svg: { color: "white" }, label: { color: "white !important" } }}
                 options={products.map((product) => ({ label: product.title }))}

@@ -64,8 +64,6 @@ const App = () => {
     setMode(mode);
   };
 
-  useEffect(() => console.log(users), [users]);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

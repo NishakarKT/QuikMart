@@ -34,6 +34,7 @@ const Orders = lazy(() => import("./Orders"));
 const Cart = lazy(() => import("./Cart"));
 const WishList = lazy(() => import("./WishList"));
 const Profile = lazy(() => import("./Profile"));
+const Search = lazy(() => import("./Search"));
 
 const Index = () => {
   const [user, setUser] = useState({});
@@ -192,6 +193,7 @@ const Index = () => {
         <Navbar />
         <Toolbar />
         <Routes>
+          <Route exact path="/search/:search" element={<Search />} />
           <Route exact path="/orders" element={<Orders />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="wishlist" element={<WishList />} />

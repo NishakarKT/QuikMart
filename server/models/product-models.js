@@ -17,6 +17,8 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+productSchema.index({'$**': 'text'});
+
 const wishlistSchema = new mongoose.Schema(
   {
     product: { type: String },

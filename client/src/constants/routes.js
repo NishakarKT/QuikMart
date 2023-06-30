@@ -1,5 +1,6 @@
 // user Routes
 export const HOME_ROUTE = "/";
+export const SEARCH_ROUTE = "/search";
 export const ORDERS_ROUTE = "/orders";
 export const CART_ROUTE = "/cart";
 export const WISHLIST_ROUTE = "/wishlist";
