@@ -3,7 +3,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { Routes, Route } from "react-router-dom";
 // mui
-import { Drawer, Toolbar } from "@mui/material";
+import { Drawer, Toolbar, Stack, Typography } from "@mui/material";
 // constants
 import { COMPANY } from "../../constants/variables";
 import {
@@ -58,7 +58,6 @@ const Index = () => {
         axios
           .get(PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT, { params: query })
           .then((res) => {
-            console.log(res.data.data);
             setProducts(res.data.data);
             // setLocationRangeOpen(false);
             window.scrollTo(0, 0);
@@ -209,7 +208,27 @@ const Index = () => {
           setLocationRangeOpen={setLocationRangeOpen}
         /> */}
         {/* <SelectCategoryDialog category={category} setCategory={setCategory} categoryOpen={categoryOpen} setCategoryOpen={setCategoryOpen} /> */}
-        <Footer />
+        <Footer sx={{ mb: 4 }} />
+        <Stack
+          sx={{
+            position: "fixed",
+            width: "100vw",
+            left: 0,
+            bottom: 0,
+            backgroundColor: "primary.main",
+            fontSize: "20px",
+            textAlign: "center",
+            p: 0.5,
+          }}
+        >
+          <marquee behavior="scroll" direction="left" scrollamount="10">
+            {products.slice(0, 5).map((product) => (
+              <Typography component="span" variant="body1" align="left" color="white">
+                {product.title} | {product.ownerName} | {product.category} | {product.price} {product.currency}
+              </Typography>
+            ))}
+          </marquee>
+        </Stack>
       </UserContext.Provider>
     </>
   );

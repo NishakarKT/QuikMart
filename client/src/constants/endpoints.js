@@ -22,6 +22,7 @@ export const PRODUCTS_GET_CART_ENDPOINT = BASE + "/product/get-cart";
 export const PRODUCT_EDIT_PRODUCT_ENDPOINT = BASE + "/product/edit-product";
 export const PRODUCT_NEW_PRODUCT_ENDPOINT = BASE + "/product/new-product";
 export const PRODUCT_NEW_PRODUCTS_ENDPOINT = BASE + "/product/new-products";
+export const PRODUCTS_GET_FEATURED_PRODUCTS_ENDPOINT = BASE + "/product/get-featured-products";
 export const PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT = BASE + "/product/get-products-by-query";
 export const PRODUCT_GET_PRODUCTS_BY_LOCATION_ENDPOINT = BASE + "/product/get-products-by-location";
 export const PRODUCT_ADD_TO_CART_ENDPOINT = BASE + "/product/add-to-cart";

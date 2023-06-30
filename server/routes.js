@@ -34,6 +34,7 @@ Router.post("/analytics/new", analyticsControllers.newAnalytics);
 Router.get("/analytics/get", analyticsControllers.getAnalytics);
 // Products Routes
 Router.delete("/product/remove-products", productsControllers.removeProducts);
+Router.get("/product/get-featured-products", productsControllers.getFeaturedProducts);
 Router.get("/product/get-products-by-query", productsControllers.getProductsByQuery);
 Router.get("/product/get-products-by-location", productsControllers.getProductsByLocation);
 Router.post("/product/new-product", productsControllers.newProduct);

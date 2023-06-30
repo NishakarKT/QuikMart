@@ -181,12 +181,15 @@ const ProductCard = ({ product, sx }) => {
           subheader={truncateStr(product.ownerName, 25)}
           align="left"
         />
-        <CardContent align="left" sx={{ py: 1 }}>
-          <Typography variant="body2" color="text.secondary" gutterBottom>
+        <CardContent align="left" sx={{ pb: 1, pt: 0 }}>
+          <Typography variant="body2" color="primary" sx={{ fontWeight: "700" }} gutterBottom>
+            {product.category}
+          </Typography>
+          <Typography variant="body2" color="text.primary" gutterBottom>
             {truncateStr(product.desc, 100)}
           </Typography>
           <Typography variant="h5" color="primary.main">
-            {product.price}
+            {product.price} {product.currency}
             <Typography sx={{ fontSize: "12px", fontWeight: "bold", ml: 1 }} variant="span" color="error.main">
               {product.deal}
             </Typography>

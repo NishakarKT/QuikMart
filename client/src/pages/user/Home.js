@@ -4,20 +4,26 @@ import { Carousel } from "react-responsive-carousel";
 // constants
 import { COMPANY } from "../../constants/variables";
 import { UPLOAD_URL } from "../../constants/urls";
+import { categories } from "../../constants/data";
+import { PRODUCTS_GET_FEATURED_PRODUCTS_ENDPOINT } from "../../constants/endpoints";
 // contexts
 import UserContext from "../../contexts/UserContext";
+import AppContext from "../../contexts/AppContext";
 // mui
-import { Container, Typography, Stack, Avatar, Box, Button } from "@mui/material";
+import { Typography, Stack, Avatar, Box, Button, ButtonGroup, Link } from "@mui/material";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 // components
 import ProductCard from "../../components/ProductCard";
 // utils
 import { truncateStr } from "../../utils";
+import axios from "axios";
 // vars
 const MAX_PRODUCT_CARD_WIDTH = 500;
 
 const Home = () => {
-  const { products, setProduct } = useContext(UserContext);
+  const { setCategory } = useContext(AppContext);
+  const { setProduct } = useContext(UserContext);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
   const [count, setCount] = useState(Math.ceil(window.innerWidth / MAX_PRODUCT_CARD_WIDTH));
 
   useEffect(() => {
@@ -26,12 +32,19 @@ const Home = () => {
     return () => window.removeEventListener("resize", updateCount);
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(PRODUCTS_GET_FEATURED_PRODUCTS_ENDPOINT, { params: { limit: 10 } })
+      .then((res) => setFeaturedProducts(res.data.data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
       <Helmet>
         <title>Home | {COMPANY}</title>
       </Helmet>
-      {products.length ? (
+      {Object.keys(featuredProducts).filter((key) => featuredProducts[key].length).length ? (
         <React.Fragment>
           <Carousel
             sx={{ width: "100%", height: "50vh", overflow: "hidden", userSelect: "none" }}
@@ -44,14 +57,14 @@ const Home = () => {
             autoPlay
             infiniteLoop
           >
-            {products.slice(0, 5).map((product) => (
+            {featuredProducts[Object.keys(featuredProducts).filter((key) => featuredProducts[key].length)[0]].map((product) => (
               <Box
                 key={product._id}
                 onClick={() => setProduct(product)}
                 sx={{ width: "100%", height: "50vh", overflow: "hidden", cursor: "pointer" }}
               >
                 <img
-                  style={{ width: "100%", height: "100vh", objectFit: "cover", filter: "brightness(0.25)" }}
+                  style={{ width: "100%", height: "100vh", objectFit: "cover", filter: "brightness(0.75)" }}
                   src={
                     product.files.length ? (product.files[0].startsWith("https://") ? product.files[0] : UPLOAD_URL + product.files[0]) : ""
                   }
@@ -75,16 +88,19 @@ const Home = () => {
                       </Typography>
                     </Stack>
                   </Stack>
-                  <Typography align="left" variant="h5" color="white" sx={{ py: 2 }}>
-                    {product.price}
-                    <Typography sx={{ fontSize: "12px", fontWeight: "bold", ml: 1 }} variant="span" color="error.main">
-                      {product.deal}
+                  <Typography variant="body2" color="warning.light" align="left" sx={{ fontWeight: "700" }} gutterBottom>
+                    {product.category}
+                  </Typography>
+                  <Typography variant="body2" align="left" color="white" sx={{ pb: 2, maxWidth: "600px" }}>
+                    {truncateStr(product.desc, 250)}
+                  </Typography>
+                  <Stack alignItems="center" direction="row" spacing={2} sx={{ flex: 1 }}>
+                    <Typography align="left" variant="h5" color="white">
+                      {product.price} {product.currency}
+                      <Typography sx={{ fontSize: "12px", fontWeight: "bold", ml: 1 }} variant="span" color="error.light">
+                        {product.deal}
+                      </Typography>
                     </Typography>
-                  </Typography>
-                  <Typography variant="body2" align="left" color="white" sx={{ pb: 2 }}>
-                    {truncateStr(product.desc, 100)}
-                  </Typography>
-                  <Stack alignItems="flex-end" direction="row" spacing={1} sx={{ flex: 1 }}>
                     <Button sx={{ px: 5 }} variant="contained" startIcon={<PointOfSaleIcon />}>
                       Place Order
                     </Button>
@@ -93,17 +109,59 @@ const Home = () => {
               </Box>
             ))}
           </Carousel>
-          <Carousel showStatus={false} showIndicators={false} stopOnHover={false} showThumbs={false} autoFocus autoPlay infiniteLoop>
-            {products
-              .slice(0, 10)
-              .map((product, index) => (
-                <Stack key={product._id} justifyContent="center" direction="row" p={2} mx={3} spacing={2}>
-                  {products.slice(index, index + count).map((product, index) => (
-                    <ProductCard key={product._id} sx={{ width: "100%", maxWidth: window.innerWidth / count }} product={product} />
+          {categories.length ? (
+            <Stack spacing={2} alignItems="center" justifyContent="center">
+              <Stack direction="row" spacing={2}>
+                <ButtonGroup disableElevation variant="outlined" sx={{ flexWrap: "wrap" }}>
+                  {categories.map((category) => (
+                    <Button
+                      key={category}
+                      onClick={() => {
+                        setCategory(category.title);
+                        setProduct(null);
+                      }}
+                      sx={{ whiteSpace: "nowrap", borderRadius: 0 }}
+                    >
+                      {category.title}
+                    </Button>
                   ))}
-                </Stack>
-              ))}
-          </Carousel>
+                </ButtonGroup>
+              </Stack>
+            </Stack>
+          ) : null}
+          {Object.keys(featuredProducts).filter((key) => featuredProducts[key].length).length ? (
+            <Stack spacing={2} p={2}>
+              {Object.keys(featuredProducts)
+                .filter((key) => featuredProducts[key].length)
+                .map((key) => (
+                  <Stack key={key} spacing={2}>
+                    <Typography variant="h6" align="left" color="primary">
+                      {key}
+                    </Typography>
+                    <Link onClick={() => {}} sx={{ cursor: "pointer", mt: "0 !important" }}>
+                      View All
+                    </Link>
+                    <Carousel
+                      showStatus={false}
+                      showIndicators={false}
+                      stopOnHover={false}
+                      showThumbs={false}
+                      autoFocus
+                      autoPlay
+                      infiniteLoop
+                    >
+                      {featuredProducts[key].filter((item, index) => index % 3 === 0).map((product, index) => (
+                        <Stack key={product._id} justifyContent="center" direction="row" p={2} mx={3} spacing={2}>
+                          {featuredProducts[key].slice(index * count, index * count + count).map((product, index) => (
+                            <ProductCard key={product._id} sx={{ width: "100%", maxWidth: window.innerWidth / count }} product={product} />
+                          ))}
+                        </Stack>
+                      ))}
+                    </Carousel>
+                  </Stack>
+                ))}
+            </Stack>
+          ) : null}
         </React.Fragment>
       ) : (
         <Stack py={16} spacing={2} alignItems="center" justifyContent="center">

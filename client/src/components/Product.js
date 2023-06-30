@@ -189,12 +189,15 @@ const Product = () => {
               ))}
             </Carousel>
           </Stack>
-          <CardContent align="left">
-            <Typography variant="body2" color="text.secondary">
+          <CardContent align="left" sx={{ pb: 1, pt: 0 }}>
+            <Typography variant="body2" color="primary" sx={{ fontWeight: "700" }} gutterBottom>
+              {product.category}
+            </Typography>
+            <Typography variant="body2" color="text.primary">
               {product.desc}
             </Typography>
             <Typography sx={{ py: 2 }} variant="h5" color="primary.main">
-              {product.price}
+              {product.price} {product.currency}
               <Typography sx={{ fontSize: "12px", fontWeight: "bold", ml: 1 }} variant="span" color="error.main">
                 {product.deal}
               </Typography>

@@ -3,19 +3,19 @@ import { useNavigate } from "react-router-dom";
 // constants
 import { COMPANY, COMPANY2 } from "../constants/variables";
 import { IMAGES_WEBSITE_LOGO_WHITE_PNG } from "../constants/images";
-import { CART_ROUTE, HOME_ROUTE, PROFILE_ROUTE, WISHLIST_ROUTE } from "../constants/routes";
-import { CONTACT_FB_URL, CONTACT_IN_URL, CONTACT_IG_URL, CONTACT_EM_URL, MISC_DONATE_URL } from "../constants/urls";
+import { HOME_ROUTE } from "../constants/routes";
+import { CONTACT_FB_URL, CONTACT_IN_URL, CONTACT_IG_URL, CONTACT_EM_URL } from "../constants/urls";
 // contexts
 import AppContext from "../contexts/AppContext";
 // mui
-import { Grid, Stack, Typography, Divider, IconButton, Tooltip, Link } from "@mui/material";
-import { Facebook, LinkedIn, Instagram, AlternateEmail, Home, ShoppingCart, Favorite, AccountCircle } from "@mui/icons-material";
+import { Grid, Stack, Typography, Divider, IconButton, Tooltip } from "@mui/material";
+import { Facebook, LinkedIn, Instagram, AlternateEmail, Home } from "@mui/icons-material";
 
-const Footer = () => {
+const Footer = ({ sx }) => {
   const navigate = useNavigate();
-  const { mode, user } = useContext(AppContext);
+  const { mode } = useContext(AppContext);
   return (
-    <Stack component="footer" color="white" bgcolor={mode === "dark" ? "#272727" : "primary.main"} p={2} spacing={2}>
+    <Stack component="footer" color="white" bgcolor={mode === "dark" ? "#272727" : "primary.main"} p={2} spacing={2} sx={sx}>
       <Stack direction="row" flexWrap="wrap" justifyContent="space-between">
         <Stack direction="row" alignItems="center">
           <img style={{ width: "60px", height: "60px" }} src={IMAGES_WEBSITE_LOGO_WHITE_PNG} alt={"logo"} loading="lazy" />

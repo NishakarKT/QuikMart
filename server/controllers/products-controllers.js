@@ -147,10 +147,70 @@ export const getOrders = async (req, res) => {
   }
 };
 
+export const getFeaturedProducts = async (req, res) => {
+  const { limit } = req.query;
+  try {
+    // find analytics
+    const views = await Analytics.find({ type: "product", action: "view" });
+    const addToCarts = await Analytics.find({ type: "product", action: "addToCart" });
+    const addToWishlists = await Analytics.find({ type: "product", action: "addToWishlist" });
+    const ratings = await Rating.find();
+    // find products
+    const mostViewedProducts = views.reduce((acc, view) => {
+      if (acc[view.product]) acc[view.product] += 1;
+      else acc[view.product] = 1;
+      return acc;
+    }, {});
+    const mostAddedToCartProducts = addToCarts.reduce((acc, addToCart) => {
+      if (acc[addToCart.product]) acc[addToCart.product] += 1;
+      else acc[addToCart.product] = 1;
+      return acc;
+    }, {});
+    const mostAddedToWishlistProducts = addToWishlists.reduce((acc, addToWishlist) => {
+      if (acc[addToWishlist.product]) acc[addToWishlist.product] += 1;
+      else acc[addToWishlist.product] = 1;
+      return acc;
+    }, {});
+    const mostRatedProducts = ratings.reduce((acc, rating) => {
+      acc[rating.product] = rating.rating;
+      return acc;
+    }, {});
+    // get products separately
+    const mostViewedProductsArray = (await Product.find({ _id: { $in: Object.keys(mostViewedProducts) } })).slice(0, limit);
+    const mostAddedToCartProductsArray = (await Product.find({ _id: { $in: Object.keys(mostAddedToCartProducts) } })).slice(0, limit);
+    const mostAddedToWishlistProductsArray = (await Product.find({ _id: { $in: Object.keys(mostAddedToWishlistProducts) } })).slice(
+      0,
+      limit
+    );
+    const mostRatedProductsArray = (await Product.find({ _id: { $in: Object.keys(mostRatedProducts) } }))
+      .map((item) => item._doc)
+      .slice(0, limit)
+      .map((item) => ({ ...item, rating: mostRatedProducts[item._id] }));
+    const latestProductsArray = await Product.find().sort({ updatedAt: -1 }).limit(limit);
+    // sort
+    mostViewedProductsArray.sort((a, b) => mostViewedProducts[b._id] - mostViewedProducts[a._id]);
+    mostAddedToCartProductsArray.sort((a, b) => mostAddedToCartProducts[b._id] - mostAddedToCartProducts[a._id]);
+    mostAddedToWishlistProductsArray.sort((a, b) => mostAddedToWishlistProducts[b._id] - mostAddedToWishlistProducts[a._id]);
+    // send data
+    res.status(200).send({
+      data: {
+        "Most Viewed": mostViewedProductsArray,
+        "Always In Carts": mostAddedToCartProductsArray,
+        "Loved By Users": mostAddedToWishlistProductsArray,
+        "Most Rated": mostRatedProductsArray,
+        "Latest Products": latestProductsArray,
+      },
+      message: "found featured products",
+    });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
 export const getProductsByQuery = async (req, res) => {
   const query = req.query;
   try {
-    let products = (await Product.find(query)).map((product) => ({...product._doc}));
+    let products = (await Product.find(query)).map((product) => ({ ...product._doc }));
     // ratings
     const ratings = await Rating.find({ product: { $in: products.map((product) => product._id) } });
     products = products.map((product) => {
