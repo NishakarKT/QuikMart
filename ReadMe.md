@@ -11,11 +11,18 @@
 
 1. Commands => "cd ./client/" => "npm i" => "npm start" => React Frontend live at http://localhost:3000
 2. Commands => "cd ./server/" => "npm i" => "npm run start" => Node Server live at http://localhost:8000
+3. Create server/.env with following environment variables,<br>
+   COMPANY=<company_name><br>
+   DB_URI=<mongo_conn_url><br>
+   JWT_SECRET_KEY=<jwt_secret><br>
+   EMAIL=<your_email><br>
+   DISPLAY_EMAIL=<your_email><br>
+   PASSWORD=<app_password><br>
 
 # Important Links:
 
 1. Repo Link: https://github.com/NishakarKT/QuikMartt
-2. Video Demonstration: https://drive.google.com/file/d/1CTCDKwz36hJOBGNJ1hQGBUO67RlHL1KD/view?usp=sharing
+2. Video Demonstration: https://drive.google.com/file/d/1CrkdCEbNMDhSN37_R4_WExyc25N-6fwc/view?usp=sharing
 3. Screenshots: https://github.com/NishakarKT/QuikMartt/tree/main/demo/screenshots
 4. Hosted Link (Frontend): https://quikmartt.netlify.app/
 5. Hosted Link (Backend): https://quikmartt.onrender.com/
