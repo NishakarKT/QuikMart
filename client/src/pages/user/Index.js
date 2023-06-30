@@ -16,6 +16,7 @@ import {
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Product from "../../components/Product";
+import Loader from "../../components/Loader";
 // import SelectCategoryDialog from "../../components/SelectCategoryDialog";
 // import LocationRangeDialog from "../../components/LocationRangeDialog";
 // mui
@@ -48,6 +49,7 @@ const Index = () => {
   // const [categoryOpen, setCategoryOpen] = useState(false);
   // const [locationRangeOpen, setLocationRangeOpen] = useState(false);
   const [locationRange, setLocationRange] = useState([0, 40000]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getProducts = useCallback(() => {
     (async () => {
@@ -56,19 +58,24 @@ const Index = () => {
         // const coordinates = await getLocation();
         query["availability"] = "true";
         // query["location"] = { coordinates, minDist: locationRange[0] || 0, maxDist: locationRange[1] || 1000 };
+        setIsLoading(true);
         axios
           .get(PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT, { params: query })
           .then((res) => {
-            setProducts(res.data.data);
+            if (res.data.data?.length) setProducts(res.data.data);
+            else setProducts([]);
             // setLocationRangeOpen(false);
+            setIsLoading(false);
             window.scrollTo(0, 0);
           })
           .catch((err) => {
             // setLocationRangeOpen(false);
+            setIsLoading(false);
             window.scrollTo(0, 0);
           });
       } catch (err) {
         // setLocationRangeOpen(false);
+        setIsLoading(false);
         window.scrollTo(0, 0);
       }
     })();
@@ -93,7 +100,9 @@ const Index = () => {
             const wishlist = products.filter((product) => productIds.includes(product._id));
             setWishlist(wishlist);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+          });
       } catch (err) {
         console.log(err);
       }
@@ -105,7 +114,9 @@ const Index = () => {
             const cart = products.filter((product) => productIds.includes(product._id));
             setCart(cart);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+          });
       } catch (err) {
         console.log(err);
       }
@@ -135,10 +146,11 @@ const Index = () => {
               const coinValue = COIN_VALUE_FACTOR * ma[ma.length - 1];
               setCoinValue(coinValue);
             }
-            // console.log(movingAverage(7, Object.values(costs)));
             setOrders(orders);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+          });
       } catch (err) {
         console.log(err);
       }
@@ -159,6 +171,7 @@ const Index = () => {
       <Helmet>
         <title>Home | {COMPANY}</title>
       </Helmet>
+      {isLoading ? <Loader /> : null}
       <SpeedDial
         sx={{ position: "fixed", bottom: 0, right: 0, zIndex: 3, p: 2 }}
         icon={<SpeedDialIcon />}

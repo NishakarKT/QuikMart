@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import VendorContext from "../../contexts/VendorContext";
 // components
 import Footer from "../../components/Footer";
+import Loader from "../../components/Loader";
 // constants
 import { UPLOAD_URL } from "../../constants/urls";
 import { AUTH_VENDOR_ROUTE } from "../../constants/routes";
@@ -147,6 +148,7 @@ const Profile = () => {
         overflow: "auto",
       }}
     >
+      {isLoading ? <Loader /> : null}
       <Toolbar />
       <Grid container spacing={2} sx={{ p: 2 }}>
         <Grid item xs={12} sm={6} md={8}>

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 // contexts
 import VendorContext from "../../contexts/VendorContext";
+// components
+import Loader from "../../components/Loader";
 // constants
 import { PRODUCT_CANCEL_ORDERS_ENDPOINT, PRODUCT_ACCEPT_ORDERS_ENDPOINT } from "../../constants/endpoints";
 // mui
@@ -12,6 +14,7 @@ const Order = ({ index, order, isPast }) => {
   const { setOrders } = useContext(VendorContext);
   const [total, setTotal] = useState(0);
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (order?.products?.length) {
@@ -24,35 +27,47 @@ const Order = ({ index, order, isPast }) => {
   const cancelOrder = (orderId) => {
     if (window.confirm("Are you sure you want to cancel this order?"))
       try {
+        setIsLoading(true);
         axios
           .patch(PRODUCT_CANCEL_ORDERS_ENDPOINT, { _id: orderId })
           .then((res) => {
             alert("Order cancelled!");
             setOrders((orders) => orders.map((order) => (order._id === orderId ? { ...order, status: "cancelled" } : order)));
+            setIsLoading(false);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
       } catch (err) {
         console.log(err);
+        setIsLoading(false);
       }
   };
 
   const acceptOrder = (orderId) => {
     if (window.confirm("Are you sure you want to accept this order?"))
       try {
+        setIsLoading(true);
         axios
           .patch(PRODUCT_ACCEPT_ORDERS_ENDPOINT, { _id: orderId })
           .then((res) => {
             alert("Order accepted!");
             setOrders((orders) => orders.map((order) => (order._id === orderId ? { ...order, status: "accepted" } : order)));
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
       } catch (err) {
         console.log(err);
+        setIsLoading(false);
       }
   };
 
   return (
     <>
+      {isLoading ? <Loader /> : null}
       <TableRow
         onClick={() => setOpen((open) => !open)}
         sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer", "&::hover": { backgroundColor: "rgba(0, 0, 0, 0.5)" } }}

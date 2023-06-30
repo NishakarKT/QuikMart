@@ -12,6 +12,7 @@ import { AUTH_ADMIN_ROUTE, PROFILE_ROUTE } from "../../constants/routes";
 import { ADMIN_NEW_DOCUMENT_ENDPOINT } from "../../constants/endpoints";
 // components
 import Footer from "../../components/Footer";
+import Loader from "../../components/Loader";
 
 const NewDocuments = () => {
   const formRef = useRef(null);
@@ -56,6 +57,7 @@ const NewDocuments = () => {
         overflow: "auto",
       }}
     >
+      {isLoading ? <Loader /> : null}
       <Toolbar />
       {isProfileComplete(user) ? (
         <Grid container spacing={2} sx={{ p: 2 }}>

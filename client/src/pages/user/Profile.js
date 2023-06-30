@@ -4,6 +4,8 @@ import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 // contexts
 import UserContext from "../../contexts/UserContext";
+// components
+import Loader from "../../components/Loader";
 // constants
 import { UPLOAD_URL } from "../../constants/urls";
 import { COMPANY } from "../../constants/variables";
@@ -142,6 +144,7 @@ const Profile = () => {
       <Helmet>
         <title>Profile | User | {COMPANY}</title>
       </Helmet>
+      {isLoading ? <Loader /> : null}
       {user && user.email ? (
         <Box p={2}>
           <Grid container>

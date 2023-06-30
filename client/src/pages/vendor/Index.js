@@ -31,6 +31,8 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import InsightsIcon from "@mui/icons-material/Insights";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
+// components
+import Loader from "../../components/Loader";
 // contexts
 import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
@@ -102,6 +104,7 @@ const Index = () => {
   const [open, setOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { users, mode, handleMode } = useContext(AppContext);
 
   const toggleDrawer = () => {
@@ -134,6 +137,7 @@ const Index = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+      {isLoading ? <Loader /> : null}
       <SpeedDial
         sx={{ position: "fixed", bottom: 0, right: 0, zIndex: 10001, p: 2 }}
         icon={<SpeedDialIcon />}

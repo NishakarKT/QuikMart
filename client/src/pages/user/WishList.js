@@ -4,6 +4,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 // components
 import ProductCard from "../../components/ProductCard";
+import Loader from "../../components/Loader";
 // contexts
 import UserContext from "../../contexts/UserContext";
 // constants
@@ -21,6 +22,7 @@ const Wishlist = () => {
   const navigate = useNavigate();
   const { user, setCart, wishlist, setWishlist } = useContext(UserContext);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!user) navigate(AUTH_USER_ROUTE);
@@ -32,17 +34,26 @@ const Wishlist = () => {
   };
 
   const clearWishList = () => {
+    setIsLoading(true);
     try {
       axios
         .patch(PRODUCT_EMPTY_WISHLIST_ENDPOINT, { userId: user._id })
-        .then((res) => setWishlist([]))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          setWishlist([]);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
     }
   };
 
   const addToCart = () => {
+    setIsLoading(true);
     try {
       axios
         .patch(PRODUCT_WISHLIST_TO_CART_ENDPOINT, { userId: user._id })
@@ -55,10 +66,15 @@ const Wishlist = () => {
           });
           setWishlist([]);
           navigate(CART_ROUTE);
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
     }
   };
 
@@ -67,6 +83,7 @@ const Wishlist = () => {
       <Helmet>
         <title>Wishlist | {COMPANY}</title>
       </Helmet>
+      {isLoading ? <Loader /> : null}
       {user ? (
         <Box p={2}>
           <Stack>

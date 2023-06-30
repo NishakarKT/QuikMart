@@ -31,6 +31,8 @@ import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturi
 // contexts
 import AppContext from "../../contexts/AppContext";
 import AdminContext from "../../contexts/AdminContext";
+// components
+import Loader from "../../components/Loader";
 // constants
 import { HOME_ROUTE, ADMIN_ROUTE, ADMIN_NEW_ROUTE } from "../../constants/routes";
 import { ADMIN_GET_COLLECTIONS_ENDPOINT, ADMIN_GET_DOCUMENTS_ENDPOINT } from "../../constants/endpoints";
@@ -90,6 +92,7 @@ const Index = () => {
   const [collection, setCollection] = useState("");
   const [collections, setCollections] = useState([]);
   const [documents, setDocuments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { users, mode, handleMode } = useContext(AppContext);
 
   const toggleDrawer = () => {
@@ -112,6 +115,7 @@ const Index = () => {
     const user = users.find((user) => user.role === "admin");
     setUser(user);
     if (user && user._id) {
+      setIsLoading(true);
       axios
         .get(ADMIN_GET_COLLECTIONS_ENDPOINT, { params: { _id: user._id } })
         .then((res) => {
@@ -119,16 +123,27 @@ const Index = () => {
             setCollection(res.data.data[0].name);
             setCollections(res.data.data.map((item) => item.name));
           }
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     }
   }, [users]);
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(ADMIN_GET_DOCUMENTS_ENDPOINT, { params: { name: collection } })
-      .then((res) => setDocuments(res.data.data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        setDocuments(res.data.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   }, [collection]);
 
   return (

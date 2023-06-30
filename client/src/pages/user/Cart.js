@@ -14,6 +14,8 @@ import {
   PRODUCT_NEW_ORDERS_ENDPOINT,
   USER_ENDPOINT,
 } from "../../constants/endpoints";
+// components
+import Loader from "../../components/Loader";
 // mui
 import {
   Box,
@@ -43,6 +45,7 @@ const Cart = () => {
   const [cartPage, setCartPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [order, setOrder] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!user) navigate(AUTH_USER_ROUTE);
@@ -65,6 +68,7 @@ const Cart = () => {
       description: "Purchase Description",
       image: IMAGES_WEBSITE_LOGO_BLACK_PNG,
       handler: (res) => {
+        setIsLoading(true);
         axios
           .post(PRODUCT_NEW_ORDERS_ENDPOINT, finalOrders)
           .then((res) => {
@@ -75,13 +79,18 @@ const Cart = () => {
                 setUser((user) => ({ ...user, coins: updatedCoins }));
                 alert("Orders have been placed!" + (!coins ? "You earned " + generatedCoins + " coins" : ""));
                 clearOrder();
+                setIsLoading(false);
               })
               .catch((err) => {
                 alert("Orders have been placed!");
                 clearOrder();
+                setIsLoading(false);
               });
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
       },
       prefill: {
         name: user.name,
@@ -169,46 +178,62 @@ const Cart = () => {
 
   const clearCart = () => {
     try {
+      setIsLoading(true);
       axios
         .patch(PRODUCT_EMPTY_CART_ENDPOINT, { userId: user._id })
-        .then((res) => setCart([]))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          setCart([]);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
     }
   };
 
   const moveToWishlist = () => {
     try {
+      setIsLoading(true);
       axios
         .patch(PRODUCT_CART_TO_WISHLIST_ENDPOINT, { userId: user._id })
         .then((res) => {
           setWishlist((wishlist) => [...wishlist, ...cart]);
           setCart([]);
           navigate(WISHLIST_ROUTE);
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
     }
   };
 
   const handleRemove = (product) => {
     try {
-      try {
-        axios
-          .patch(PRODUCT_REMOVE_FROM_CART_ENDPOINT, { userId: user._id, productId: product._id })
-          .then((res) => {
-            setCart(cart.filter((prod) => prod._id !== product._id));
-            alert(product.title + " removed from cart!");
-            window.scrollTo(0, 0);
-          })
-          .catch((err) => console.log(err));
-      } catch (err) {
-        console.log(err);
-      }
+      setIsLoading(true);
+      axios
+        .patch(PRODUCT_REMOVE_FROM_CART_ENDPOINT, { userId: user._id, productId: product._id })
+        .then((res) => {
+          setCart(cart.filter((prod) => prod._id !== product._id));
+          alert(product.title + " removed from cart!");
+          window.scrollTo(0, 0);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
     }
   };
 
@@ -217,6 +242,7 @@ const Cart = () => {
       <Helmet>
         <title>Cart | {COMPANY}</title>
       </Helmet>
+      {isLoading ? <Loader /> : null}
       {user ? (
         <Box p={2}>
           <Stack direction="row" justifyContent="space-between" mb={2}>

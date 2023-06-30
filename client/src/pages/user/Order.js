@@ -1,15 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-// contexts
-import UserContext from "../../contexts/UserContext";
-// constants
-import { PRODUCT_CANCEL_ORDERS_ENDPOINT } from "../../constants/endpoints";
+import React, { useState, useEffect } from "react";
 // mui
-import { Stack, Grid, Box, Collapse, TableCell, TableRow, Typography, Button, List, ListItem, ListItemText } from "@mui/material";
-import { Close, CheckCircle, Cancel } from "@mui/icons-material";
+import { Stack, Grid, Box, Collapse, TableCell, TableRow, Typography, List, ListItem, ListItemText } from "@mui/material";
+import { CheckCircle, Cancel } from "@mui/icons-material";
 
 const Order = ({ index, order, isPast }) => {
-  const { setOrders } = useContext(UserContext);
   const [total, setTotal] = useState(0);
   const [open, setOpen] = useState(false);
 

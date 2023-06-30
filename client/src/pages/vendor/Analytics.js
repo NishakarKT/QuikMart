@@ -6,6 +6,7 @@ import { Stack, Box, Toolbar, Grid, Paper, Button, Typography } from "@mui/mater
 // components
 import Chart from "./Chart";
 import Footer from "../../components/Footer";
+import Loader from "../../components/Loader";
 // constants
 import { ANALYTICS_GET_ENDPOINT } from "../../constants/endpoints";
 import { AUTH_VENDOR_ROUTE, VENDOR_PROFILE_ROUTE } from "../../constants/routes";
@@ -16,10 +17,12 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user, isProfileComplete } = useContext(VendorContext);
   const [chartsData, setChartsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!user) navigate(AUTH_VENDOR_ROUTE);
     else {
+      setIsLoading(true);
       axios
         .get(ANALYTICS_GET_ENDPOINT, { params: { vendor: user._id, type: "product" } })
         .then((res) => {
@@ -34,10 +37,7 @@ const Dashboard = () => {
               const data = productAnalytics.filter((analytic) => analytic.action === action);
               if (!chartsData[action]) {
                 data.forEach((item) => {
-                  if (!chartsData[action])
-                    chartsData[action] = [
-                      { x: new Date(item.createdAt).toLocaleString(), y1: 1 },
-                    ];
+                  if (!chartsData[action]) chartsData[action] = [{ x: new Date(item.createdAt).toLocaleString(), y1: 1 }];
                   else
                     chartsData[action].push({
                       x: new Date(item.createdAt).toLocaleString(),
@@ -47,8 +47,12 @@ const Dashboard = () => {
               }
               setChartsData(chartsData);
             });
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     }
   }, [user, navigate]);
 
@@ -63,6 +67,7 @@ const Dashboard = () => {
       }}
     >
       <Toolbar />
+      {isLoading ? <Loader /> : null}
       {isProfileComplete(user) ? (
         <Grid container spacing={2} sx={{ p: 2 }}>
           {Object.keys(chartsData).map((action) => (

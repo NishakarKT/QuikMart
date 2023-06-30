@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // contexts
-import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
+// components
+import Loader from "../../components/Loader";
 // constants
 import { PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT } from "../../constants/endpoints";
 import { VENDOR_NEW_PRODUCTS_ROUTE, AUTH_VENDOR_ROUTE, VENDOR_PROFILE_ROUTE } from "../../constants/routes";
@@ -33,14 +34,15 @@ const ITEMS_PER_PAGE = 5;
 const Products = () => {
   const navigate = useNavigate();
   const containerRef = useRef(null);
-  const { mode } = useContext(AppContext);
   const { user, isProfileComplete, products, setProducts } = useContext(VendorContext);
   const [page, setPage] = useState(1);
   const [product, setProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!user) navigate(AUTH_VENDOR_ROUTE);
     else if (user._id) {
+      setIsLoading(true);
       axios
         .get(PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT, { params: { owner: user._id } })
         .then((res) => {
@@ -49,8 +51,12 @@ const Products = () => {
             setProducts(products);
             setPage(1);
           }
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     }
   }, [user, setProducts, navigate]);
 
@@ -71,6 +77,7 @@ const Products = () => {
         overflow: "auto",
       }}
     >
+      {isLoading ? <Loader /> : null}
       <Toolbar />
       {isProfileComplete(user) ? (
         <Grid container spacing={2} sx={{ p: 2 }}>

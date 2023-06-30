@@ -4,6 +4,8 @@ import axios from "axios";
 import AdminContext from "../../contexts/AdminContext";
 // constants
 import { ADMIN_EDIT_DOCUMENT_ENDPOINT, ADMIN_REMOVE_DOCUMENTS_ENDPOINT } from "../../constants/endpoints";
+// components
+import Loader from "../../components/Loader";
 // mui
 import { Box, Stack, Grid, Collapse, TableCell, TableRow, Typography, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
@@ -56,15 +58,18 @@ const Document = ({ document, setDocuments }) => {
 
   return (
     <>
+      {isLoading ? <Loader /> : null}
       <TableRow
         onClick={() => setOpen((open) => !open)}
         sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer", "&::hover": { backgroundColor: "rgba(0, 0, 0, 0.5)" } }}
       >
-        {Object.keys(document).filter(key => typeof document[key] === "string").map((key) => (
-          <TableCell key={key} align="left">
-            {document[key]}
-          </TableCell>
-        ))}
+        {Object.keys(document)
+          .filter((key) => typeof document[key] === "string")
+          .map((key) => (
+            <TableCell key={key} align="left">
+              {document[key]}
+            </TableCell>
+          ))}
       </TableRow>
       <TableRow>
         <TableCell sx={{ p: 0 }} colSpan={16}>
@@ -77,19 +82,21 @@ const Document = ({ document, setDocuments }) => {
                   </Typography>
                   <form onSubmit={handleUpdate}>
                     <Grid container spacing={2}>
-                      {Object.keys(document).filter(key => typeof document[key] === "string").map((key) => (
-                        <Grid key={key} item xs={12} sm={6} md={4} lg={3}>
-                          <TextField
-                            multiline
-                            maxRows={4}
-                            name={key}
-                            label={key}
-                            fullWidth
-                            variant="outlined"
-                            defaultValue={document[key]}
-                          />
-                        </Grid>
-                      ))}
+                      {Object.keys(document)
+                        .filter((key) => typeof document[key] === "string")
+                        .map((key) => (
+                          <Grid key={key} item xs={12} sm={6} md={4} lg={3}>
+                            <TextField
+                              multiline
+                              maxRows={4}
+                              name={key}
+                              label={key}
+                              fullWidth
+                              variant="outlined"
+                              defaultValue={document[key]}
+                            />
+                          </Grid>
+                        ))}
                     </Grid>
                     <Stack spacing={2} direction="row" justifyContent={"space-between"} sx={{ display: "flex", mt: 2 }}>
                       <LoadingButton loading={isLoading} type="submit" variant="contained" startIcon={<SyncAlt />}>

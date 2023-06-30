@@ -32,6 +32,7 @@ import { PRODUCT_NEW_PRODUCT_ENDPOINT, FILE_NEW_FILES_ENDPOINT } from "../../con
 import { categories, currencies } from "../../constants/data";
 // components
 import Footer from "../../components/Footer";
+import Loader from "../../components/Loader";
 // vars
 const product = {
   title: "Sample Product",
@@ -121,6 +122,7 @@ const NewProducts = () => {
         overflow: "auto",
       }}
     >
+      {isLoading ? <Loader /> : null}
       <Toolbar />
       {isProfileComplete(user) ? (
         <Grid container spacing={2} sx={{ p: 2 }}>

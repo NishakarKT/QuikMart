@@ -4,6 +4,8 @@ import { Carousel } from "react-responsive-carousel";
 // contexts
 import AppContext from "../../contexts/AppContext";
 import VendorContext from "../../contexts/VendorContext";
+// components
+import Loader from "../../components/Loader";
 // constants
 import { categories, currencies } from "../../constants/data";
 import { UPLOAD_URL } from "../../constants/urls";
@@ -46,7 +48,8 @@ const Product = ({ index, product, setProducts }) => {
     formData.forEach((value, key) => (data[key] = value));
     data["availability"] = isAvailable.toString();
     const updatedFiles = newFiles.map(
-      (file, index) => new File([file], user.role + "." + user.email + "." + now + "." + index + "." + file.name.split(".").at(-1), { type: file.type })
+      (file, index) =>
+        new File([file], user.role + "." + user.email + "." + now + "." + index + "." + file.name.split(".").at(-1), { type: file.type })
     );
     data["files"] = [...oldFiles, ...updatedFiles.map((file) => file.name)];
     data["deletedFiles"] = product.files.filter((file) => !data["files"].includes(file));
@@ -94,14 +97,19 @@ const Product = ({ index, product, setProducts }) => {
 
   const handleRemove = (productId) => {
     try {
+      setIsLoading(true);
       axios
         .delete(PRODUCT_REMOVE_PRODUCTS_ENDPOINT, { data: { _id: productId } })
         .then((res) => {
           setProducts((products) => products.filter((product) => product._id !== productId));
           alert(product.title + " has been REMOVED!");
           window.scrollTo(0, 0);
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     } catch (err) {
       console.log(err);
     }
@@ -126,6 +134,7 @@ const Product = ({ index, product, setProducts }) => {
 
   return (
     <>
+      {isLoading ? <Loader /> : null}
       <TableRow
         onClick={() => setOpen((open) => !open)}
         sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer", "&::hover": { backgroundColor: "rgba(0, 0, 0, 0.5)" } }}

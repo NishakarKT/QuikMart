@@ -15,6 +15,7 @@ import { Typography, Stack, Avatar, Box, Button, ButtonGroup, Link } from "@mui/
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 // components
 import ProductCard from "../../components/ProductCard";
+import Loader from "../../components/Loader";
 // utils
 import { truncateStr } from "../../utils";
 import axios from "axios";
@@ -25,6 +26,7 @@ const Home = () => {
   const navigate = useNavigate();
   const { setProduct } = useContext(UserContext);
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [count, setCount] = useState(Math.ceil(window.innerWidth / MAX_PRODUCT_CARD_WIDTH));
 
   useEffect(() => {
@@ -34,10 +36,17 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(PRODUCTS_GET_FEATURED_PRODUCTS_ENDPOINT, { params: { limit: 10 } })
-      .then((res) => setFeaturedProducts(res.data.data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        setFeaturedProducts(res.data.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   }, []);
 
   return (
@@ -45,6 +54,7 @@ const Home = () => {
       <Helmet>
         <title>Home | {COMPANY}</title>
       </Helmet>
+      {isLoading ? <Loader /> : null}
       {Object.keys(featuredProducts).filter((key) => featuredProducts[key].length).length ? (
         <React.Fragment>
           <Carousel
@@ -113,7 +123,7 @@ const Home = () => {
           {categories.length ? (
             <Stack spacing={2} alignItems="center" justifyContent="center">
               <Stack direction="row" spacing={2}>
-                <ButtonGroup disableElevation variant="outlined" sx={{ flexWrap: "wrap" }}>
+                <ButtonGroup disableElevation variant="contained" sx={{ flexWrap: "wrap" }}>
                   {categories.map((category) => (
                     <Button
                       key={category}
@@ -139,9 +149,9 @@ const Home = () => {
                     <Typography variant="h6" align="left" color="primary">
                       {key}
                     </Typography>
-                    <Link onClick={() => {}} sx={{ cursor: "pointer", mt: "0 !important" }}>
+                    {/* <Link onClick={() => {}} sx={{ cursor: "pointer", mt: "0 !important" }}>
                       View All
-                    </Link>
+                    </Link> */}
                     <Carousel
                       showStatus={false}
                       showIndicators={false}

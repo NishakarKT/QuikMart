@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // contexts
 import AdminContext from "../../contexts/AdminContext";
+// components
+import Loader from "../../components/Loader";
 // constants
 import { ADMIN_GET_DOCUMENTS_ENDPOINT } from "../../constants/endpoints";
 import { ADMIN_NEW_ROUTE, AUTH_ADMIN_ROUTE } from "../../constants/routes";
@@ -36,10 +38,12 @@ const Documents = () => {
   const containerRef = useRef(null);
   const { user, isProfileComplete, documents, setDocuments, collection, setCollection, collections } = useContext(AdminContext);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!user) navigate(AUTH_ADMIN_ROUTE);
     else if (user._id) {
+      setIsLoading(true);
       axios
         .get(ADMIN_GET_DOCUMENTS_ENDPOINT, { params: { owner: user._id } })
         .then((res) => {
@@ -48,8 +52,12 @@ const Documents = () => {
             setDocuments(documents);
             setPage(1);
           }
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     }
   }, [user, setDocuments, navigate]);
 
@@ -68,6 +76,7 @@ const Documents = () => {
         overflow: "auto",
       }}
     >
+      {isLoading ? <Loader /> : null}
       <Toolbar />
       {isProfileComplete(user) ? (
         <Grid container spacing={2} sx={{ p: 2 }}>
