@@ -22,7 +22,7 @@
 # Important Links:
 
 1. Repo Link: https://github.com/NishakarKT/QuikMartt
-2. Video Demonstration: https://drive.google.com/file/d/1CrkdCEbNMDhSN37_R4_WExyc25N-6fwc/view?usp=sharing
+2. Video Demonstration: https://drive.google.com/file/d/1CrkdCEbNMDhSN37_R4_WExyc25N-6fwc/view?usp=sharing (bugs in video had been fixed already before the deadline)
 3. Screenshots: https://github.com/NishakarKT/QuikMartt/tree/main/demo/screenshots
 4. Hosted Link (Frontend): https://quikmartt.netlify.app/
 5. Hosted Link (Backend): https://quikmartt.onrender.com/
