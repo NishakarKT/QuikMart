@@ -178,10 +178,7 @@ export const getFeaturedProducts = async (req, res) => {
     // get products separately
     const mostViewedProductsArray = (await Product.find({ _id: { $in: Object.keys(mostViewedProducts) } })).slice(0, limit);
     const mostAddedToCartProductsArray = (await Product.find({ _id: { $in: Object.keys(mostAddedToCartProducts) } })).slice(0, limit);
-    const mostAddedToWishlistProductsArray = (await Product.find({ _id: { $in: Object.keys(mostAddedToWishlistProducts) } })).slice(
-      0,
-      limit
-    );
+    const mostAddedToWishlistProductsArray = (await Product.find({ _id: { $in: Object.keys(mostAddedToWishlistProducts) } })).slice(0, limit);
     const mostRatedProductsArray = (await Product.find({ _id: { $in: Object.keys(mostRatedProducts) } }))
       .map((item) => item._doc)
       .slice(0, limit)
@@ -261,24 +258,27 @@ export const getProductsCountByQuery = async (req, res) => {
 
 export const getProductsByLocation = async (req, res) => {
   const query = req.query;
-  const location = {
-    $nearSphere: {
-      $geometry: {
-        type: "Point",
-        coordinates: [Number(query.location.coordinates[0]), Number(query.location.coordinates[1])],
+  let location = null;
+  if (query.location) {
+    location = {
+      $nearSphere: {
+        $geometry: {
+          type: "Point",
+          coordinates: [Number(query.location.coordinates[0]), Number(query.location.coordinates[1])],
+        },
+        $minDistance: Number(Number(query.location.minDist) || 0),
+        $maxDistance: Number(Number(query.location.maxDist) || 10000),
       },
-      $minDistance: Number(Number(query.location.minDist) || 0),
-      $maxDistance: Number(Number(query.location.maxDist) || 10000),
-    },
-  };
+    };
+    delete query["location"];
+  }
   try {
     const owners = {};
-    const users = await User.find({ location }, { _id: 1, name: 1, location: 1, profilePic: 1 });
-    users.forEach(
-      (user) =>
-        (owners[user._id] = { _id: user._id.toString(), name: user.name, profilePic: user.profilePic, location: user.location.coordinates })
-    );
+    const users = await User.find(location ? { location } : {}, { _id: 1, name: 1, location: 1, profilePic: 1 });
+    users.forEach((user) => (owners[user._id] = { _id: user._id.toString(), name: user.name, profilePic: user.profilePic, location: user.location.coordinates }));
     const products = await Product.find({ ...query, owner: { $in: Object.keys(owners) } });
+    console.log(users.length);
+    console.log(products.length);
     res.status(200).send({ data: products, message: "found products" });
   } catch (err) {
     res.status(500).send({ message: err.message });

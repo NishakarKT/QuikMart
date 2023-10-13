@@ -46,7 +46,7 @@ const Home = () => {
         Object.keys(featuredProducts).forEach((key) => {
           filteredFeaturedProducts[key] = featuredProducts[key].filter((product) => (category ? product.category === category : true));
         });
-        setFeaturedProducts(filteredFeaturedProducts);
+        setFeaturedProducts((featuredProducts) => ({ ...featuredProducts, ...filteredFeaturedProducts }));
         setIsLoading(false);
       })
       .catch((err) => {
@@ -62,19 +62,23 @@ const Home = () => {
           const query = {};
           const coordinates = await getLocation();
           query["availability"] = "true";
-          if (coordinates.length && locationRange) query["location"] = { coordinates, minDist: locationRange[0] || 0, maxDist: locationRange[1] || 1000 };
-          setIsLoading(true);
-          axios
-            .get(PRODUCT_GET_PRODUCTS_BY_LOCATION_ENDPOINT, { params: query })
-            .then((res) => {
-              setFeaturedProducts((featuredProducts) => ({ ...featuredProducts, "Deals Nearby": res.data.data.filter((product) => (category ? product.category === category : true))  }));
-              setIsLoading(false);
-              window.scrollTo(0, 0);
-            })
-            .catch((err) => {
-              setIsLoading(false);
-              window.scrollTo(0, 0);
-            });
+          if (coordinates.length && locationRange) {
+            query["location"] = { coordinates, minDist: locationRange[0] || 0, maxDist: locationRange[1] || 10000 };
+            setIsLoading(true);
+            console.log(query);
+            axios
+              .get(PRODUCT_GET_PRODUCTS_BY_LOCATION_ENDPOINT, { params: query })
+              .then((res) => {
+                console.log(res.data.data.filter((product) => (category ? product.category === category : true)));
+                setFeaturedProducts((featuredProducts) => ({ ...featuredProducts, "Deals Nearby": res.data.data.filter((product) => (category ? product.category === category : true)) }));
+                setIsLoading(false);
+                window.scrollTo(0, 0);
+              })
+              .catch((err) => {
+                setIsLoading(false);
+                window.scrollTo(0, 0);
+              });
+          }
         } catch (err) {
           setIsLoading(false);
           window.scrollTo(0, 0);
@@ -155,7 +159,8 @@ const Home = () => {
           ) : null}
           {Object.keys(featuredProducts).length ? (
             <Stack spacing={2} p={2}>
-              {Object.keys(featuredProducts).reverse()
+              {Object.keys(featuredProducts)
+                .reverse()
                 .map((key) => (
                   <Stack key={key} spacing={2}>
                     <Typography variant="h6" align="left" color="primary">
