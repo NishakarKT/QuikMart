@@ -1,2 +1,2 @@
-export const COMPANY = "QuikMartt";
-export const COMPANY2 = "Where Quality Meets Convenience!";
+export const COMPANY = "QuikMart";
+export const COMPANY2 = "Shop Quik, Shop Smart!";

@@ -21,43 +21,43 @@
 
 # Important Links:
 
-1. Repo Link: https://github.com/NishakarKT/QuikMartt
+1. Repo Link: https://github.com/NishakarKT/QuikMart
 2. Video Demonstration: https://drive.google.com/file/d/1CrkdCEbNMDhSN37_R4_WExyc25N-6fwc/view?usp=sharing (bugs in video had been fixed already before the deadline)
-3. Screenshots: https://github.com/NishakarKT/QuikMartt/tree/main/demo/screenshots
-4. Hosted Link (Frontend): https://quikmartt.netlify.app/
-5. Hosted Link (Backend): https://quikmartt.onrender.com/
+3. Screenshots: https://github.com/NishakarKT/QuikMart/tree/main/demo/screenshots
+4. Hosted Link (Frontend): https://quikmart.netlify.app/
+5. Hosted Link (Backend): https://quikmart.onrender.com/
 
 # Screenshots
 
 1. Authentication
-   ![Authentication](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/auth_user.png?raw=true)
-   ![Authentication](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/auth_vendor.png?raw=true)
-   ![Authentication](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/auth_admin.png?raw=true)
-   ![Authentication](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/auth_google.png?raw=true)
-   ![Authentication](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/auth_otp.png?raw=true)
-   ![Authentication](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/auth_otp_mail.png?raw=true)
+   ![Authentication](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/auth_user.png?raw=true)
+   ![Authentication](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/auth_vendor.png?raw=true)
+   ![Authentication](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/auth_admin.png?raw=true)
+   ![Authentication](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/auth_google.png?raw=true)
+   ![Authentication](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/auth_otp.png?raw=true)
+   ![Authentication](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/auth_otp_mail.png?raw=true)
 
 3. Home
-   ![Home](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/user_home_2.png?raw=true)
-   ![Home](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/user_home_3.png?raw=true)
-   ![Home](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/user_home_1.png?raw=true)
-   ![Home](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/user_home_dark.png?raw=true)
-   ![Home](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/user_orders.png?raw=true)
-   ![Home](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/user_profile.png?raw=true)
-   ![Home](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/user_wishlist.png?raw=true)
-   ![Home](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/user_cart_1.png?raw=true)
-   ![Home](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/user_cart_2.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/user_home_2.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/user_home_3.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/user_home_1.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/user_home_dark.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/user_orders.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/user_profile.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/user_wishlist.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/user_cart_1.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/user_cart_2.png?raw=true)
 
 4. Vendor
-   ![Vendor](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/vendor_dashboard_1.png?raw=true)
-   ![Vendor](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/vendor_dashboard_2.png?raw=true)
-   ![Vendor](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/vendor_new.png?raw=true)
-   ![Vendor](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/vendor_products.png?raw=true)
-   ![Vendor](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/vendor_profile.png?raw=true)
+   ![Vendor](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/vendor_dashboard_1.png?raw=true)
+   ![Vendor](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/vendor_dashboard_2.png?raw=true)
+   ![Vendor](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/vendor_new.png?raw=true)
+   ![Vendor](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/vendor_products.png?raw=true)
+   ![Vendor](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/vendor_profile.png?raw=true)
 
 5. Admin
-   ![Admin](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/admin_dashboard.png?raw=true)
-   ![Admin](https://github.com/NishakarKT/QuikMartt/blob/main/demo/screenshots/admin_new.png?raw=true)
+   ![Admin](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/admin_dashboard.png?raw=true)
+   ![Admin](https://github.com/NishakarKT/QuikMart/blob/main/demo/screenshots/admin_new.png?raw=true)
 
 # Architecture
 

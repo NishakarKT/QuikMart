@@ -72,23 +72,23 @@ const Footer = ({ sx }) => {
       </Stack>
       <Divider />
       <Grid container>
-        <Grid item xs={12} md={9} sx={{ pl: { xs: 1, md: 2 } }}>
+        <Grid item xs={12} md={8} sx={{ pl: { xs: 1, md: 2 } }}>
           <Typography gutterBottom variant="h5">
             About Us
           </Typography>
           <Typography variant="body2" gutterBottom>
-            Welcome to {COMPANY}, your one-stop destination for all your online shopping needs. Discover an extensive range of high-quality
-            products at unbeatable prices.
+            Welcome to {COMPANY}, your one-stop destination for all your online shopping needs.<br />Discover an extensive range of high-quality
+            products near you and grab the best deals at unbeatable prices.
           </Typography>
-          <Typography variant="body2" sx={{ fontWeight: "bold" }} gutterBottom>
+          <Typography variant="body2" sx={{ fontWeight: "bold", my: 2 }} gutterBottom>
             From electronics and fashion to home essentials and more, we've got you covered.
           </Typography>
           <Typography variant="body2" gutterBottom>
-            Enjoy a seamless shopping experience with secure payments, fast shipping, and excellent customer support. Shop smart, shop{" "}
+            Enjoy a seamless shopping experience with secure payments and excellent support. Shop smart, shop{" "}
             {COMPANY}.
           </Typography>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={4}>
           <Stack>
             <Typography gutterBottom variant="h5" sx={{ ml: { xs: 1, md: 2 } }}>
               Lost ?
@@ -123,7 +123,7 @@ const Footer = ({ sx }) => {
               }}
             >
               <Favorite sx={{ mr: 1 }} />
-              <Typography>wishlist</Typography>
+              <Typography>Wishlist</Typography>
             </Stack>
             <Stack
               onClick={() => navigate(CART_ROUTE)}

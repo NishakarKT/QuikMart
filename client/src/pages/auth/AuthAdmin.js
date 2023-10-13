@@ -6,40 +6,10 @@ import { Helmet } from "react-helmet";
 // firebase
 import { auth, googleProvider } from "../../firebase";
 // mui
-import {
-  Container,
-  Stack,
-  TextField,
-  InputAdornment,
-  Tooltip,
-  FormControlLabel,
-  Checkbox,
-  Divider,
-  Chip,
-  Typography,
-  SpeedDial,
-  SpeedDialIcon,
-  SpeedDialAction,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-} from "@mui/material";
+import { Container, Stack, TextField, InputAdornment, Tooltip, FormControlLabel, Checkbox, Divider, Chip, Typography, SpeedDial, SpeedDialIcon, SpeedDialAction, Button, List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { makeStyles } from "@mui/styles";
-import {
-  AccountCircle,
-  Key,
-  Login,
-  LockOpen,
-  LightMode,
-  DarkMode,
-  Home,
-  StarBorder,
-  LocalShipping,
-  Google,
-} from "@mui/icons-material";
+import { AccountCircle, Key, Login, LockOpen, LightMode, DarkMode, Home, StarBorder, LocalShipping, Google } from "@mui/icons-material";
 // contexts
 import AppContext from "../../contexts/AppContext";
 // constants
@@ -125,10 +95,7 @@ const AuthAdmin = () => {
 
   useEffect(() => {
     const user = users.find((user) => user.role === role) || {};
-    if (user.email) {
-      if (location.key) navigate(-1);
-      else navigate(ADMIN_ROUTE);
-    }
+    if (user.email) navigate(ADMIN_ROUTE);
   }, [users, role, navigate, location.key]);
 
   useEffect(() => {
@@ -277,24 +244,13 @@ const AuthAdmin = () => {
       <Helmet>
         <title>Auth | User | {COMPANY}</title>
       </Helmet>
-      <SpeedDial
-        sx={{ position: "fixed", bottom: 0, right: 0, zIndex: 3, p: 2 }}
-        icon={<SpeedDialIcon />}
-        direction={"up"}
-        ariaLabel="SpeedDial playground example"
-      >
+      <SpeedDial sx={{ position: "fixed", bottom: 0, right: 0, zIndex: 3, p: 2 }} icon={<SpeedDialIcon />} direction={"up"} ariaLabel="SpeedDial playground example">
         {mode !== "light" ? <SpeedDialAction onClick={() => handleMode("light")} icon={<LightMode />} tooltipTitle={"Light Mode"} /> : null}
         {mode !== "dark" ? <SpeedDialAction onClick={() => handleMode("dark")} icon={<DarkMode />} tooltipTitle={"Dark Mode"} /> : null}
       </SpeedDial>
       <Stack direction="row" className={classes.stack}>
         <Stack sx={{ position: "relative", height: "100vh", display: { xs: "none", sm: "flex" } }} justifyContent="flex-end" flex={2}>
-          <video
-            style={{ position: "absolute", zIndex: "-1", width: "100%", height: "100%", objectFit: "cover" }}
-            src={VIDEOS_AUTH_ADMIN_MP4}
-            muted
-            autoPlay
-            loop
-          ></video>
+          <video style={{ position: "absolute", zIndex: "-1", width: "100%", height: "100%", objectFit: "cover" }} src={VIDEOS_AUTH_ADMIN_MP4} muted autoPlay loop></video>
           <Stack justifyContent="flex-end" sx={{ height: "100%", backgroundColor: "rgba(0, 0, 255, 0.4)" }}>
             <Stack p={2} spacing={2} sx={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
               <Typography color="white" variant="h4">
@@ -323,10 +279,7 @@ const AuthAdmin = () => {
                   <ListItemIcon>
                     <StarBorder sx={{ color: "white" }} />
                   </ListItemIcon>
-                  <ListItemText
-                    sx={{ color: "white" }}
-                    primary="Your data and sensitive information are protected through robust security measures."
-                  />
+                  <ListItemText sx={{ color: "white" }} primary="Your data and sensitive information are protected through robust security measures." />
                 </ListItem>
               </List>
               <Stack direction="row" spacing={1}>
@@ -345,12 +298,7 @@ const AuthAdmin = () => {
         </Stack>
         <Stack flex={1} px={2} spacing={2} justifyContent="center" maxWidth="sm" className={classes.stack}>
           <Stack direction="row">
-            <img
-              className={classes.logo}
-              src={mode === "dark" ? IMAGES_WEBSITE_LOGO_WHITE_PNG : IMAGES_WEBSITE_LOGO_BLACK_PNG}
-              alt={"logo"}
-              loading="lazy"
-            />
+            <img className={classes.logo} src={mode === "dark" ? IMAGES_WEBSITE_LOGO_WHITE_PNG : IMAGES_WEBSITE_LOGO_BLACK_PNG} alt={"logo"} loading="lazy" />
             <Stack sx={{ userSelect: "none", ml: 1 }}>
               <Typography variant="h5" align="left">
                 {COMPANY}{" "}
@@ -398,11 +346,7 @@ const AuthAdmin = () => {
                   }}
                 />
               ) : null}
-              <FormControlLabel
-                sx={{ mb: 1 }}
-                control={<Checkbox checked={remMe} onChange={(e, val) => setRemMe(val)} />}
-                label="Remember Me?"
-              />
+              <FormControlLabel sx={{ mb: 1 }} control={<Checkbox checked={remMe} onChange={(e, val) => setRemMe(val)} />} label="Remember Me?" />
               <LoadingButton type="submit" variant="contained" loading={isLoading} endIcon={!isOtpSent ? <Login /> : <LockOpen />}>
                 {!isOtpSent ? "Login" : "Verify"}
               </LoadingButton>

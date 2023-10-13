@@ -271,7 +271,7 @@ export const getProductsByLocation = async (req, res) => {
       $maxDistance: Number(Number(query.location.maxDist) || 100000),
     },
   };
-  delete query["location"];
+  console.log(location);
   try {
     const owners = {};
     const users = await User.find({ location }, { _id: 1, name: 1, location: 1, profilePic: 1 });

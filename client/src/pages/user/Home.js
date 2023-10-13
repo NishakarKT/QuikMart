@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { Carousel } from "react-responsive-carousel";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import axios from "axios";
 // constants
 import { COMPANY } from "../../constants/variables";
 import { UPLOAD_URL } from "../../constants/urls";
 import { categories } from "../../constants/data";
-import { PRODUCTS_GET_FEATURED_PRODUCTS_ENDPOINT } from "../../constants/endpoints";
+import { PRODUCTS_GET_FEATURED_PRODUCTS_ENDPOINT, PRODUCT_GET_PRODUCTS_BY_LOCATION_ENDPOINT } from "../../constants/endpoints";
 import { SEARCH_ROUTE } from "../../constants/routes";
 // contexts
 import UserContext from "../../contexts/UserContext";
@@ -17,14 +18,13 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import ProductCard from "../../components/ProductCard";
 import Loader from "../../components/Loader";
 // utils
-import { truncateStr } from "../../utils";
-import axios from "axios";
+import { truncateStr, getLocation } from "../../utils";
 // vars
 const MAX_PRODUCT_CARD_WIDTH = 500;
 
 const Home = () => {
   const navigate = useNavigate();
-  const { setProduct } = useContext(UserContext);
+  const { setProduct, category, locationRange } = useContext(UserContext);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [count, setCount] = useState(Math.ceil(window.innerWidth / MAX_PRODUCT_CARD_WIDTH));
@@ -35,19 +35,60 @@ const Home = () => {
     return () => window.removeEventListener("resize", updateCount);
   }, []);
 
+  console.log(locationRange);
+
   useEffect(() => {
     setIsLoading(true);
+    const params = { limit: 10 };
     axios
-      .get(PRODUCTS_GET_FEATURED_PRODUCTS_ENDPOINT, { params: { limit: 10 } })
+      .get(PRODUCTS_GET_FEATURED_PRODUCTS_ENDPOINT, { params })
       .then((res) => {
-        setFeaturedProducts(res.data.data);
+        const featuredProducts = res.data.data;
+        const filteredFeaturedProducts = {};
+        Object.keys(featuredProducts).forEach((key) => {
+          filteredFeaturedProducts[key] = featuredProducts[key].filter((product) => (category ? product.category === category : true));
+        });
+        setFeaturedProducts(filteredFeaturedProducts);
         setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
       });
-  }, []);
+  }, [category]);
+
+  const getProducts = useCallback(
+    (category, locationRange) => {
+      (async () => {
+        try {
+          const query = {};
+          const coordinates = await getLocation();
+          query["availability"] = "true";
+          if (coordinates.length && locationRange) query["location"] = { coordinates, minDist: locationRange[0] || 0, maxDist: locationRange[1] || 40000 };
+          setIsLoading(true);
+          axios
+            .get(PRODUCT_GET_PRODUCTS_BY_LOCATION_ENDPOINT, { params: query })
+            .then((res) => {
+              setFeaturedProducts((featuredProducts) => ({ ...featuredProducts, "Deals Nearby": res.data.data.filter((product) => (category ? product.category === category : true))  }));
+              setIsLoading(false);
+              window.scrollTo(0, 0);
+            })
+            .catch((err) => {
+              setIsLoading(false);
+              window.scrollTo(0, 0);
+            });
+        } catch (err) {
+          setIsLoading(false);
+          window.scrollTo(0, 0);
+        }
+      })();
+    },
+    [setFeaturedProducts]
+  );
+
+  useEffect(() => {
+    getProducts(category, locationRange);
+  }, [category, locationRange, getProducts]);
 
   return (
     <>
@@ -57,39 +98,13 @@ const Home = () => {
       {isLoading ? <Loader /> : null}
       {Object.keys(featuredProducts).filter((key) => featuredProducts[key].length).length ? (
         <React.Fragment>
-          <Carousel
-            sx={{ width: "100%", height: "50vh", overflow: "hidden", userSelect: "none" }}
-            stopOnHover={false}
-            showArrows={false}
-            showIndicators={false}
-            showStatus={false}
-            showThumbs={false}
-            autoFocus
-            autoPlay
-            infiniteLoop
-          >
+          <Carousel sx={{ width: "100%", height: "50vh", overflow: "hidden", userSelect: "none" }} stopOnHover={false} showArrows={false} showIndicators={false} showStatus={false} showThumbs={false} autoFocus autoPlay infiniteLoop>
             {featuredProducts[Object.keys(featuredProducts).filter((key) => featuredProducts[key].length)[0]].map((product) => (
-              <Box
-                key={product._id}
-                onClick={() => setProduct(product)}
-                sx={{ width: "100%", height: "50vh", overflow: "hidden", cursor: "pointer" }}
-              >
-                <img
-                  style={{ width: "100%", height: "100vh", objectFit: "cover", filter: "brightness(0.75)" }}
-                  src={
-                    product.files.length ? (product.files[0].startsWith("https://") ? product.files[0] : UPLOAD_URL + product.files[0]) : ""
-                  }
-                  alt={product.title}
-                  loading="lazy"
-                />
+              <Box key={product._id} onClick={() => setProduct(product)} sx={{ width: "100%", height: "50vh", overflow: "hidden", cursor: "pointer" }}>
+                <img style={{ width: "100%", height: "100vh", objectFit: "cover", filter: "brightness(0.75)" }} src={product.files.length ? (product.files[0].startsWith("https://") ? product.files[0] : UPLOAD_URL + product.files[0]) : ""} alt={product.title} loading="lazy" />
                 <Stack p={2} sx={{ position: "fixed", bottom: "0", width: "100%", userSelect: "text" }}>
                   <Stack onClick={() => {}} direction="row" alignItems="center" sx={{ cursor: "pointer" }}>
-                    <Avatar
-                      sx={{ width: 50, height: 50, m: 1, ml: 0 }}
-                      src={UPLOAD_URL + product.ownerProfilePic || product.ownerName}
-                      alt={product.ownerName}
-                      loading="lazy"
-                    />
+                    <Avatar sx={{ width: 50, height: 50, m: 1, ml: 0 }} src={UPLOAD_URL + product.ownerProfilePic || product.ownerName} alt={product.ownerName} loading="lazy" />
                     <Stack>
                       <Typography variant="h5" align="left" color="white">
                         {product.title}
@@ -126,7 +141,7 @@ const Home = () => {
                 <ButtonGroup disableElevation variant="contained" sx={{ flexWrap: "wrap" }}>
                   {categories.map((category) => (
                     <Button
-                      key={category}
+                      key={category.title}
                       onClick={() => {
                         navigate(SEARCH_ROUTE + "/" + category.title);
                         setProduct(null);
@@ -140,10 +155,9 @@ const Home = () => {
               </Stack>
             </Stack>
           ) : null}
-          {Object.keys(featuredProducts).filter((key) => featuredProducts[key].length).length ? (
+          {Object.keys(featuredProducts).length ? (
             <Stack spacing={2} p={2}>
-              {Object.keys(featuredProducts)
-                .filter((key) => featuredProducts[key].length)
+              {Object.keys(featuredProducts).reverse()
                 .map((key) => (
                   <Stack key={key} spacing={2}>
                     <Typography variant="h6" align="left" color="primary">
@@ -152,25 +166,13 @@ const Home = () => {
                     {/* <Link onClick={() => {}} sx={{ cursor: "pointer", mt: "0 !important" }}>
                       View All
                     </Link> */}
-                    <Carousel
-                      showStatus={false}
-                      showIndicators={false}
-                      stopOnHover={false}
-                      showThumbs={false}
-                      autoFocus
-                      autoPlay
-                      infiniteLoop
-                    >
+                    <Carousel showStatus={false} showIndicators={false} stopOnHover={false} showThumbs={false} autoFocus autoPlay infiniteLoop>
                       {featuredProducts[key]
-                        .filter((item, index) => index % 3 === 0)
+                        .filter((item, index) => index % count === 0)
                         .map((product, index) => (
                           <Stack key={product._id} justifyContent="center" direction="row" p={2} mx={3} spacing={2}>
                             {featuredProducts[key].slice(index * count, index * count + count).map((product, index) => (
-                              <ProductCard
-                                key={product._id}
-                                sx={{ width: "100%", maxWidth: window.innerWidth / count }}
-                                product={product}
-                              />
+                              <ProductCard key={product._id} sx={{ width: "100%", maxWidth: window.innerWidth / count }} product={product} />
                             ))}
                           </Stack>
                         ))}

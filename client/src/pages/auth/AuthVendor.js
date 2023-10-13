@@ -125,10 +125,8 @@ const AuthVendor = () => {
 
   useEffect(() => {
     const user = users.find((user) => user.role === role) || {};
-    if (user.email) {
-      if (location.key) navigate(-1);
-      else navigate(VENDOR_ROUTE);
-    }
+    if (user.email)
+      navigate(VENDOR_ROUTE);
   }, [users, role, navigate, location.key]);
 
   useEffect(() => {

@@ -25,7 +25,7 @@ const App = () => {
   const [role, setRole] = useState("user");
   const [users, setUsers] = useState([]);
   const [mode, setMode] = useState("light");
-  const [category, setCategory] = useState(categories[0]?.title || "");
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     // fetch local data
@@ -39,6 +39,7 @@ const App = () => {
           .then((res) => {
             const users = res.data.users || [];
             setUsers(users);
+            console.log(users)
           })
           .catch((err) => {
             setUsers([]);

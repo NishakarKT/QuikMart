@@ -37,7 +37,7 @@ const Navbar = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
   const { users, setUsers, role } = useContext(AppContext);
-  const { wishlist, cart, orders, products } = useContext(HomeContext);
+  const { category, wishlist, cart, orders, products } = useContext(HomeContext);
 
   useEffect(() => {
     if (location.pathname.startsWith("/search")) setQuery(location.pathname.split("/search/")[1].replaceAll("%20", " "));
@@ -126,7 +126,7 @@ const Navbar = (props) => {
               {COMPANY}
             </Typography>
             <Typography variant="h6" noWrap component="div" sx={{ display: { xs: "none", sm: "block" }, fontSize: "12px" }}>
-              {COMPANY2}
+              {category || COMPANY2}
             </Typography>
           </Stack>
           <form style={{ flex: "1" }} onSubmit={(e) => handleQuery(e)}>
