@@ -39,7 +39,6 @@ const App = () => {
           .then((res) => {
             const users = res.data.users || [];
             setUsers(users);
-            console.log(users)
           })
           .catch((err) => {
             setUsers([]);
@@ -56,6 +55,11 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => window.scrollTo(0, 0), 100);
   }, [location]);
+
+  useEffect(() => {
+    const category = JSON.parse(localStorage.getItem(COMPANY))?.category;
+    if (category) setCategory(category);
+  }, [setCategory]);
 
   const theme = createTheme({ palette: { mode } });
 

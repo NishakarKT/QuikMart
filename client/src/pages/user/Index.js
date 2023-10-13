@@ -43,7 +43,7 @@ const Index = () => {
   const [coinValue, setCoinValue] = useState(0);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [locationRangeOpen, setLocationRangeOpen] = useState(false);
-  const [locationRange, setLocationRange] = useState([0, 40000]);
+  const [locationRange, setLocationRange] = useState([0, 1000]);
   const [isLoading, setIsLoading] = useState(false);
 
   const getProducts = useCallback(category => {
@@ -52,7 +52,7 @@ const Index = () => {
         const query = {};
         const coordinates = await getLocation();
         query["availability"] = "true";
-        query["location"] = { coordinates, minDist: locationRange[0] || 0, maxDist: locationRange[1] || 40000 };
+        query["location"] = { coordinates, minDist: locationRange[0] || 0, maxDist: locationRange[1] || 1000 };
         if(category) query["category"] = category;
         setIsLoading(true);
         axios
@@ -153,9 +153,9 @@ const Index = () => {
   }, [user, products]);
 
   useEffect(() => {
-    const category = JSON.parse(localStorage.getItem(COMPANY))?.category;
-    if (category) setCategory(category);
-  }, [setCategory]);
+    const locationRange = JSON.parse(localStorage.getItem(COMPANY))?.range;
+    if (locationRange) setLocationRange(locationRange);
+  }, [setLocationRange]);
 
   useEffect(() => setUser((user) => (user && user._id ? { ...user, coinValue } : user)), [coinValue]);
 

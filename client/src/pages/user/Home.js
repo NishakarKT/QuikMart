@@ -35,8 +35,6 @@ const Home = () => {
     return () => window.removeEventListener("resize", updateCount);
   }, []);
 
-  console.log(locationRange);
-
   useEffect(() => {
     setIsLoading(true);
     const params = { limit: 10 };
@@ -64,7 +62,7 @@ const Home = () => {
           const query = {};
           const coordinates = await getLocation();
           query["availability"] = "true";
-          if (coordinates.length && locationRange) query["location"] = { coordinates, minDist: locationRange[0] || 0, maxDist: locationRange[1] || 40000 };
+          if (coordinates.length && locationRange) query["location"] = { coordinates, minDist: locationRange[0] || 0, maxDist: locationRange[1] || 1000 };
           setIsLoading(true);
           axios
             .get(PRODUCT_GET_PRODUCTS_BY_LOCATION_ENDPOINT, { params: query })

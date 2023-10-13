@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
+// constants
+import { COMPANY } from "../constants/variables";
 // mui
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Slider, Paper } from "@mui/material";
 // vars
-const locationMarks = [{ value: 0, label: "0" }, { value: 10000, label: "10 KM" }, { value: 50000, label: "50 KM" }, { value: 100000, label: "100 KM" }]
+const locationMarks = [{ value: 0, label: "0" }, { value: 1000, label: "1 KM" }, { value: 5000, label: "5 KM" }, { value: 10000, label: "10 KM" }]
 
 const PaperComponent = props => {
     return (
@@ -19,8 +21,14 @@ const PaperComponent = props => {
 const LocationRangeDialog = ({ locationRangeOpen, setLocationRangeOpen, locationRange, setLocationRange }) => {
     const [range, setRange] = useState(locationRange);
 
+    useEffect(() => {
+        setRange(locationRange);
+    }, [locationRange]);
+
     const handleRange = () => {
         setLocationRange(range);
+        const currData = JSON.parse(localStorage.getItem(COMPANY));
+        localStorage.setItem(COMPANY, JSON.stringify({ ...currData, range }));
         setLocationRangeOpen(false);
     };
 
@@ -43,11 +51,11 @@ const LocationRangeDialog = ({ locationRangeOpen, setLocationRangeOpen, location
                 value={range}
                 onChange={(e, newRange) => setRange(newRange)}
                 valueLabelDisplay="auto"
-                step={100}
+                step={10}
                 valueLabelFormat={val => `${(val / 1000).toFixed(1)} KM`}
                 marks={locationMarks}
                 sx={{ mx: "32px", mt: 2, mb: 4, width: "calc(100% - 64px)", boxSizing: "border-box" }}
-                max={100000}
+                max={10000}
             />
             <DialogActions>
                 <Button variant="outlined" onClick={() => setLocationRangeOpen(false)}>Cancel</Button>

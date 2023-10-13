@@ -268,10 +268,9 @@ export const getProductsByLocation = async (req, res) => {
         coordinates: [Number(query.location.coordinates[0]), Number(query.location.coordinates[1])],
       },
       $minDistance: Number(Number(query.location.minDist) || 0),
-      $maxDistance: Number(Number(query.location.maxDist) || 100000),
+      $maxDistance: Number(Number(query.location.maxDist) || 10000),
     },
   };
-  console.log(location);
   try {
     const owners = {};
     const users = await User.find({ location }, { _id: 1, name: 1, location: 1, profilePic: 1 });
