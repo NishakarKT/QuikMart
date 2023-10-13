@@ -1,12 +1,3 @@
-# Team Incognito Members (1 Member)
-
-1.  Name = Nishakar Kumar
-2.  Email = nishakarkumar0@outlook.com
-3.  Academics = 3rd Year UG at IIT Kharagpur
-4.  GitHub = https://github.com/NishakarKT
-5.  LinkedIn = https://www.linkedin.com/in/nishakar-kumar-7016451ba/
-6.  YouTube = https://www.youtube.com/@nkodedevelopment
-
 # How to run the app?
 
 1. Commands => "cd ./client/" => "npm i" => "npm start" => React Frontend live at http://localhost:3000
@@ -22,10 +13,9 @@
 # Important Links:
 
 1. Repo Link: https://github.com/NishakarKT/QuikMart
-2. Video Demonstration: https://drive.google.com/file/d/1CrkdCEbNMDhSN37_R4_WExyc25N-6fwc/view?usp=sharing (bugs in video had been fixed already before the deadline)
-3. Screenshots: https://github.com/NishakarKT/QuikMart/tree/main/demo/images
-4. Hosted Link (Frontend): https://quikmart.netlify.app/
-5. Hosted Link (Backend): https://quikmart.onrender.com/
+2. Screenshots: https://github.com/NishakarKT/QuikMart/tree/main/demo/images
+3. Hosted Link (Frontend):
+4. Hosted Link (Backend):
 
 # Screenshots
 
@@ -43,7 +33,7 @@
    ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/images/user_orders.png?raw=true)
    ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/images/user_profile.png?raw=true)
    ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/images/user_wishlist.png?raw=true)
-   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/images/user_cart1.png?raw=true)
+   ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/images/user_cart.png?raw=true)
    ![Home](https://github.com/NishakarKT/QuikMart/blob/main/demo/images/user_cart2.png?raw=true)
 
 4. Vendor
