@@ -277,8 +277,6 @@ export const getProductsByLocation = async (req, res) => {
     const users = await User.find(location ? { location } : {}, { _id: 1, name: 1, location: 1, profilePic: 1 });
     users.forEach((user) => (owners[user._id] = { _id: user._id.toString(), name: user.name, profilePic: user.profilePic, location: user.location.coordinates }));
     const products = await Product.find({ ...query, owner: { $in: Object.keys(owners) } });
-    console.log(users.length);
-    console.log(products.length);
     res.status(200).send({ data: products, message: "found products" });
   } catch (err) {
     res.status(500).send({ message: err.message });

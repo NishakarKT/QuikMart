@@ -1,5 +1,5 @@
-const BASE = "http://localhost:8000";
-// const BASE = "https://quikmart.onrender.com";
+// const BASE = "http://localhost:8000";
+const BASE = "https://quikmartt.onrender.com";
 // auth endpoints
 export const AUTH_IN_ENDPOINT = BASE + "/auth/in";
 export const AUTH_TOKEN_ENDPOINT = BASE + "/auth/token";

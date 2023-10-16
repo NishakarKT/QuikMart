@@ -6,11 +6,12 @@ import { Routes, Route } from "react-router-dom";
 import { Drawer, Toolbar, Stack, Typography } from "@mui/material";
 // constants
 import { COMPANY } from "../../constants/variables";
-import { PRODUCTS_GET_CART_ENDPOINT, PRODUCTS_GET_WISHLIST_ENDPOINT, PRODUCT_GET_ORDERS_ENDPOINT } from "../../constants/endpoints";
+import { PRODUCTS_GET_CART_ENDPOINT, PRODUCTS_GET_WISHLIST_ENDPOINT, PRODUCT_GET_ORDERS_ENDPOINT, PRODUCT_GET_PRODUCTS_BY_LOCATION_ENDPOINT, PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT } from "../../constants/endpoints";
 // components
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Product from "../../components/Product";
+import Loader from "../../components/Loader";
 import SelectCategoryDialog from "../../components/SelectCategoryDialog";
 import LocationRangeDialog from "../../components/LocationRangeDialog";
 // mui
@@ -43,6 +44,7 @@ const Index = () => {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [locationRangeOpen, setLocationRangeOpen] = useState(false);
   const [locationRange, setLocationRange] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const user = users.find((user) => user.role === "user");
@@ -123,11 +125,33 @@ const Index = () => {
 
   useEffect(() => setUser((user) => (user && user._id ? { ...user, coinValue } : user)), [coinValue]);
 
+  useEffect(() => {
+    try {
+      const query = {};
+      query["availability"] = "true";
+      axios
+        .get(PRODUCT_GET_PRODUCTS_BY_QUERY_ENDPOINT, { params: query })
+        .then((res) => {
+          setProducts(res.data.data);
+          setIsLoading(false);
+          window.scrollTo(0, 0);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          window.scrollTo(0, 0);
+        });
+    } catch (err) {
+      setIsLoading(false);
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   return (
     <>
       <Helmet>
         <title>Home | {COMPANY}</title>
       </Helmet>
+      {isLoading ? <Loader /> : null}
       <SpeedDial sx={{ position: "fixed", bottom: 0, right: 0, zIndex: 3, p: 2 }} icon={<SpeedDialIcon />} direction={"up"} ariaLabel="SpeedDial playground example">
         {mode !== "light" ? <SpeedDialAction onClick={() => handleMode("light")} icon={<LightMode />} tooltipTitle={"Light Mode"} /> : null}
         {mode !== "dark" ? <SpeedDialAction onClick={() => handleMode("dark")} icon={<DarkMode />} tooltipTitle={"Dark Mode"} /> : null}
